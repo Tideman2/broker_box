@@ -1,0 +1,34 @@
+ <svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#0b0b0f3f" />
+                    <stop offset="100%" stopColor="#1a1a22c8" />
+                </linearGradient>
+
+                <filter id="glow">
+                    <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                    <feMerge>
+                        <feMergeNode in="coloredBlur" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                </filter>
+            </defs>
+            <rect width="240" height="240" rx="24" fill="url(#bg)" />
+            <g transform="skewX(-10)">
+                <rect x="135" y="115" width="55" height="35" rx="6" fill="#111" stroke="#4ADE80" strokeWidth="2" />
+                <circle cx="150" cy="155" r="7" fill="#4ADE80" />
+                <circle cx="180" cy="155" r="7" fill="#4ADE80" />
+            </g>
+            <path d="M130 115 Q110 110 95 120" stroke="#4ADE80" strokeWidth="2" fill="none" filter="url(#glow)" />
+            <g>
+
+                <ellipse cx="75" cy="160" rx="20" ry="6" fill="#e4d9d9ff" opacity="0.4" />
+                <path d="M60 95 Q75 85 90 95 L85 135 Q75 145 65 135 Z" fill="#f2f2f8ff" />
+                <path d="M55 85 Q75 60 95 85 Q85 95 65 95 Z" fill="#20202A" />
+                <ellipse cx="75" cy="85" rx="8" ry="10" fill="#e3ece0ff" />
+
+                <path d="M60 95 Q75 85 90 95" stroke="#2A2A35" strokeWidth="1" />
+
+                <path d="M85 110 Q100 115 95 120" stroke="#E5E7EB" strokeWidth="2" fill="none" />
+            </g>
+        </svg>
