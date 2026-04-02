@@ -3,21 +3,60 @@ import { createTheme } from '@mui/material/styles';
 const baseTypography = {
     fontFamily: `'Geist', 'Inter', 'Roboto', sans-serif`,
 
-    h1: { fontSize: '3rem', fontWeight: 700, letterSpacing: '-0.02em' },
-    h2: { fontSize: '2.5rem', fontWeight: 600 },
-    h3: { fontSize: '2rem', fontWeight: 600 },
-    h4: { fontSize: '1.75rem', fontWeight: 600 },
-    h5: { fontSize: '1.5rem', fontWeight: 500 },
-    h6: { fontSize: '1.25rem', fontWeight: 500 },
+    h1: {
+        fontSize: 'clamp(2.5rem, 6vw, 3.75rem)',
+        fontWeight: 700,
+        letterSpacing: '-0.02em',
+    },
+    h2: {
+        fontSize: 'clamp(2.2rem, 5vw, 3rem)',
+        fontWeight: 600,
+    },
+    h3: {
+        fontSize: 'clamp(1.8rem, 4vw, 2.4rem)',
+        fontWeight: 600,
+    },
+    h4: {
+        fontSize: 'clamp(1.6rem, 3.2vw, 2rem)',
+        fontWeight: 600,
+    },
+    h5: {
+        fontSize: 'clamp(1.4rem, 2.5vw, 1.6rem)',
+        fontWeight: 500,
+    },
+    h6: {
+        fontSize: 'clamp(1.2rem, 2vw, 1.3rem)',
+        fontWeight: 500,
+    },
 
-    subtitle1: { fontSize: '1.1rem', fontWeight: 500, color: '#9FB3C8' },
-    subtitle2: { fontSize: '0.95rem', fontWeight: 500 },
+    subtitle1: {
+        fontSize: 'clamp(1rem, 1.8vw, 1.1rem)',
+        fontWeight: 500,
+        color: '#9FB3C8',
+    },
+    subtitle2: {
+        fontSize: 'clamp(0.9rem, 1.5vw, 0.95rem)',
+        fontWeight: 500,
+    },
 
-    body1: { fontSize: '1rem', lineHeight: 1.7 },
-    body2: { fontSize: '0.9rem', lineHeight: 1.6 },
+    body1: {
+        fontSize: 'clamp(0.95rem, 1.4vw, 1rem)',
+        lineHeight: 1.7,
+    },
+    body2: {
+        fontSize: 'clamp(0.85rem, 1.2vw, 0.9rem)',
+        lineHeight: 1.6,
+    },
 
-    caption: { fontSize: '0.75rem', opacity: 0.7 },
-    overline: { fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.1em' },
+    caption: {
+        fontSize: 'clamp(0.7rem, 1vw, 0.75rem)',
+        opacity: 0.7,
+    },
+    overline: {
+        fontSize: 'clamp(0.65rem, 0.9vw, 0.7rem)',
+        textTransform: 'uppercase',
+        letterSpacing: '0.1em',
+    },
 };
 
 const baseComponents = {
@@ -27,9 +66,23 @@ const baseComponents = {
                 borderRadius: 12,
                 textTransform: 'none',
                 boxShadow: '0 0 12px rgba(0,229,255,0.3)',
+
+                // default (md)
+                fontSize: 'clamp(0.85rem, 1.2vw, 1rem)',
+                padding: 'clamp(6px, 1vw, 10px) clamp(14px, 2vw, 18px)',
             },
+
+            sizeSmall: {
+                fontSize: 'clamp(0.75rem, 1vw, 0.85rem)',
+                padding: 'clamp(4px, 0.8vw, 6px) clamp(10px, 1.5vw, 14px)',
+            },
+
+            sizeLarge: {
+                fontSize: 'clamp(1rem, 1.5vw, 1.15rem)',
+                padding: 'clamp(8px, 1.2vw, 12px) clamp(18px, 2.5vw, 24px)',
+            },
+
             contained: {
-                // automatic text color contrast
                 color: 'inherit',
                 '&:hover': {
                     filter: 'brightness(1.1)',
@@ -59,15 +112,40 @@ const baseComponents = {
 export const darkTheme = createTheme({
     palette: {
         mode: 'dark',
-        primary: { main: '#00E5FF', contrastText: '#0A0F1C' },
-        secondary: { main: '#7C4DFF', contrastText: '#FFFFFF' },
-        background: { default: '#0A0F1C', paper: '#12182B' },
-        text: { primary: '#E6F1FF', secondary: '#9FB3C8', disabled: '#5C6B82' },
-        success: { main: '#00FFA3', contrastText: '#0A0F1C' },
-        error: { main: '#FF4D6D', contrastText: '#0A0F1C' },
-        warning: { main: '#FFC857', contrastText: '#0A0F1C' },
-        info: { main: '#38BDF8', contrastText: '#0A0F1C' },
+
+        // ---------------- Primary & CTA ----------------
+        primary: {
+            main: '#00D6FF',       // CTA buttons, primary links
+            contrastText: '#0A0F1C', // Text on primary buttons
+        },
+        secondary: {
+            main: '#8C5CFF',       // Secondary buttons / highlights
+            contrastText: '#FFFFFF',
+        },
+
+        // ---------------- Backgrounds ----------------
+        background: {
+            default: '#0A0F1C',    // Main page background
+            paper: '#12182B',      // Cards, modals, panels
+        },
+
+        // ---------------- Text ----------------
+        text: {
+            primary: '#E6F1FF',    // Main text on dark backgrounds
+            secondary: '#FFFFFF',  // Subtext, labels, hints (increased contrast from #9FB3C8)
+            disabled: '#5C6B82',   // Disabled / inactive text
+        },
+
+        // ---------------- Feedback / Status ----------------
+        success: { main: '#00FFA3', contrastText: '#0A0F1C' }, // success messages / badges
+        error: { main: '#FF4D6D', contrastText: '#0A0F1C' },   // errors / alerts
+        warning: { main: '#FFC857', contrastText: '#0A0F1C' }, // warnings / caution
+        info: { main: '#38BDF8', contrastText: '#0A0F1C' },    // informational
+
+        // ---------------- Divider / Borders ----------------
+        divider: '#1E2640',       // Lines / borders
     },
+
     typography: baseTypography,
     components: {
         ...baseComponents,
@@ -82,9 +160,9 @@ export const darkTheme = createTheme({
         MuiLink: {
             styleOverrides: {
                 root: {
-                    color: '#00E5FF',
-                    '&.active': { color: '#7C4DFF' },
-                    '&:hover': { textShadow: '0 0 8px #00E5FF' },
+                    color: '#00D6FF',            // Links
+                    '&.active': { color: '#8C5CFF' },
+                    '&:hover': { textShadow: '0 0 8px #00D6FF' },
                 },
             },
         },
@@ -95,15 +173,40 @@ export const darkTheme = createTheme({
 export const lightTheme = createTheme({
     palette: {
         mode: 'light',
-        primary: { main: '#00B0FF', contrastText: '#FFFFFF' },
-        secondary: { main: '#B388FF', contrastText: '#FFFFFF' },
-        background: { default: '#F4F7FA', paper: '#FFFFFF' },
-        text: { primary: '#0A0F1C', secondary: '#FFFFFF', disabled: '#9FB3C8' },
+
+        // ---------------- Primary & CTA ----------------
+        primary: {
+            main: '#007BFF',        // CTA buttons, primary links (darker blue for contrast)
+            contrastText: '#FFFFFF', // Text on primary buttons
+        },
+        secondary: {
+            main: '#9C6BFF',        // Secondary buttons / highlights
+            contrastText: '#FFFFFF',
+        },
+
+        // ---------------- Backgrounds ----------------
+        background: {
+            default: '#F4F7FA',     // Main page
+            paper: '#FFFFFF',       // Cards, panels
+        },
+
+        // ---------------- Text ----------------
+        text: {
+            primary: '#0A0F1C',     // Main text on light background
+            secondary: '#5C6B82',   // Subtext / labels
+            disabled: '#9FB3C8',    // Disabled text
+        },
+
+        // ---------------- Feedback / Status ----------------
         success: { main: '#00C48C', contrastText: '#FFFFFF' },
-        error: { main: '#FF6B6B', contrastText: '#FFFFFF' },
+        error: { main: '#FF4D6D', contrastText: '#FFFFFF' },
         warning: { main: '#FFC857', contrastText: '#0A0F1C' },
         info: { main: '#38BDF8', contrastText: '#FFFFFF' },
+
+        // ---------------- Divider / Borders ----------------
+        divider: '#D1D9E6',       // Lines / borders
     },
+
     typography: baseTypography,
     components: {
         ...baseComponents,
@@ -118,9 +221,9 @@ export const lightTheme = createTheme({
         MuiLink: {
             styleOverrides: {
                 root: {
-                    color: '#00B0FF',
-                    '&.active': { color: '#B388FF' },
-                    '&:hover': { textShadow: '0 0 6px #00B0FF' },
+                    color: '#007BFF',            // Links
+                    '&.active': { color: '#9C6BFF' },
+                    '&:hover': { textShadow: '0 0 6px #007BFF' },
                 },
             },
         },

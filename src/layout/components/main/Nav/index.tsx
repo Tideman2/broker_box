@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-
+import { Brightness7 } from '@mui/icons-material';
 import {
     AppBar,
     Toolbar,
@@ -12,14 +12,16 @@ import {
     List,
     ListItemButton,
     ListItemText,
+    styled
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
 
 import BrandLogo from '@/asset/logo';
 import { PATHS } from '@/routes/paths';
+import { useThemeMode } from '@/contexts/theme/hooks';
 
-import ContentWrapper from '../ContentWrapper';
+import ContentWrapper from '../../ContentWrapper';
 import { NavbarItem } from './NavbarItem';
 
 const NAV_ITEMS = [
@@ -29,9 +31,23 @@ const NAV_ITEMS = [
     { label: 'Login', href: PATHS.auth.login },
 ];
 
+const ThemeToggleButton = styled(IconButton)(({ theme }) => ({
+    position: "fixed",
+    top: theme.spacing(1),
+    right: theme.spacing(2),
+    zIndex: 1500,
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.text.primary,
+    boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+    '&:hover': {
+        backgroundColor: theme.palette.background.default,
+    },
+}));
+
 export default function Navbar() {
     const [open, setOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const { toggleTheme } = useThemeMode();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -48,13 +64,18 @@ export default function Navbar() {
     };
 
     return (
-        <AppBar position="static" color={isScrolled ? "default" : "transparent"}
-            elevation={isScrolled ? 4 : 0} sx={{ transition: 'background-color 0.3s, box-shadow 0.3s', }}>
-            <ContentWrapper sx={{ paddingY: 0 }}>
+        <AppBar position="sticky"
+            color={isScrolled ? "default" : "transparent"}
+            elevation={isScrolled ? 4 : 0}
+            sx={{
+                top: 0,
+                transition: 'background-color 0.3s, box-shadow 0.3s',
+            }}>
+            <ContentWrapper sx={{ paddingY: 1 }}>
                 <Toolbar>
                     {/* Logo */}
                     <BrandLogo width={40} height={40} />
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, ml: 2 }}>
+                    <Typography variant="h6" sx={{ flexGrow: 1, ml: 2 }}>
                         Merchant Box
                     </Typography>
                     {/* Desktop Menu */}
@@ -67,6 +88,9 @@ export default function Navbar() {
                         {NAV_ITEMS.map((item) => (
                             <NavbarItem key={item.href} label={item.label} href={item.href} />
                         ))}
+                        <ThemeToggleButton onClick={toggleTheme}>
+                            <Brightness7 />
+                        </ThemeToggleButton>
                     </Box>
 
                     {/* Mobile Menu Button */}
@@ -90,6 +114,9 @@ export default function Navbar() {
                                 ))}
                             </List>
                         </Box>
+                        <ThemeToggleButton onClick={toggleTheme}>
+                            <Brightness7 />
+                        </ThemeToggleButton>
                     </Drawer>
                 </Toolbar>
             </ContentWrapper>

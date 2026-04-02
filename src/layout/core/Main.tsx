@@ -1,16 +1,19 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { Box, Container } from '@mui/material';
+import { Box } from '@mui/material';
 
-import Navbar from '../components/Nav';
-
+import Navbar from '../components/main/Nav';
+import Footer from '../components/main/Footer';
+import TradingViewTicker2 from '@/views/trading-view-widgets/TradingViewTicker2';
 
 export default function MainLayout({ children }: { children: ReactNode }) {
     return (
-        <Box>
+        <Box width={"100vw"} pb={8}>
             <Navbar />
-            <Box sx={{ mt: 4 }}>{children}</Box>
+            {children}
+            <TradingViewTicker2 />
+            <Footer />
         </Box>
     );
 }

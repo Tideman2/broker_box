@@ -1,12 +1,14 @@
 "use client"
 import { Box } from "@mui/material";
 
-import Hero from "./Hero";
+import CtaSection from "./CtaSection";
+import TradingSkillsSection from "./TradingSkillsSection";
 
 export default function HomePage() {
     return (
         <Box>
-            <Hero />
+            <CtaSection />
+            <TradingSkillsSection />
         </Box>
     );
 }
