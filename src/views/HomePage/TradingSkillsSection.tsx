@@ -47,6 +47,7 @@ export default function TradingSkillsSection() {
     return (
         <ContentWrapper sx={{
             padding: 0,
+            paddingRight: { md: 30 },
             width: "100%",
             backgroundImage: `url(${investing_laptop.src})`,
             backgroundSize: 'cover',
@@ -66,7 +67,8 @@ export default function TradingSkillsSection() {
                         trends, seamlessly
                     </Typography>
                     <Typography variant="body1" color="textSecondary" gutterBottom>
-                        Manage your trades, track your portfolio, and stay ahead in the market.
+                        Manage your trades, track your portfolio <br />
+                        and stay ahead in the market.
                     </Typography>
 
                     <Button
