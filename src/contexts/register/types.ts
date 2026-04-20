@@ -25,8 +25,7 @@ export type Step =
     | 'account'
     | 'personal'
     | 'address'
-    | 'security'
-    | 'terms';
+    | 'finish';
 
 
 export type RegisterStateType = {

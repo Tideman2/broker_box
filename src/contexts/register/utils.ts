@@ -31,7 +31,7 @@ export const canProcedeToNextStep = (registrationData: RegistrationData, current
                 registrationData.zip.trim() !== ''
             );
 
-        case 'terms':
+        case 'finish':
             return registrationData.acceptTerms;
 
         default:

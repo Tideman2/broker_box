@@ -23,6 +23,7 @@ export const RegisterProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     // Registration action functions
     // ----------------------------------------------------------------------
     const addCountryInfo = useCallback((country: string) => {
+        console.log('Adding country info:', country);
         dispatch({ type: 'ADD_COUNTRY_INFO', payload: country });
     }, []);
 
@@ -51,6 +52,7 @@ export const RegisterProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         const currentIndex = REGISTRATION_STEPS.indexOf(currentStep);
         const nextIndex = currentIndex + 1;
         const nextStep = REGISTRATION_STEPS[nextIndex];
+        console.log('Going to next step:', nextStep);
 
         if (nextIndex === -1) {
             console.warn(`Invalid step: ${nextStep}`);
@@ -63,21 +65,21 @@ export const RegisterProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         }
 
         dispatch({ type: "GO_TO_STEP", payload: nextStep as Step });
-    }, []);
+    }, [state.currentStep, state.state, dispatch]);
 
     const goToPreviousStep = useCallback(() => {
         const currentStep = state.currentStep;
         const currentIndex = REGISTRATION_STEPS.indexOf(currentStep);
         const previousIndex = currentIndex - 1;
         const previousStep = REGISTRATION_STEPS[previousIndex];
-
+        console.log('Going to previous step:', previousStep);
         if (previousIndex === -1) {
             console.warn(`Invalid step: ${previousStep}`);
             return;
         }
 
         dispatch({ type: "GO_TO_STEP", payload: previousStep as Step });
-    }, []);
+    }, [state.currentStep, dispatch]);
 
     const setLoading = useCallback((isLoading: boolean) => {
         dispatch({ type: 'SET_LOADING', payload: isLoading });
