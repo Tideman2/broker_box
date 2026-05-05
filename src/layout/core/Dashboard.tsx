@@ -1,14 +1,32 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { Box } from '@mui/material';
-import DashboardSidebar from '../components/DashboardSidebar';
+
+import { useAppLayout } from '@/contexts/app_layout/context';
+
+import DashboardSidebar from '../components/dashboard_comps/DashboardSidebar';
+import DashboardNavbar from '../components/dashboard_comps/DashboardNavbar';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
+    const { isMobile } = useAppLayout();
+    const [mobileOpen, setMobileOpen] = useState(false);
+
     return (
         <Box sx={{ display: 'flex' }}>
-            <DashboardSidebar />
-            <Box sx={{ flex: 1, p: 3 }}>{children}</Box>
+            {/* Sidebar */}
+            <DashboardSidebar mobileOpenProp={mobileOpen} setMobileOpenProp={setMobileOpen} />
+
+            {/* Main Area */}
+            <Box sx={{ flex: 1, display: 'flex', ml: isMobile ? 0 : "270px", flexDirection: 'column' }}>
+                {/* Navbar */}
+                <DashboardNavbar setMobileOpen={setMobileOpen} />
+
+                {/* Page Content */}
+                <Box sx={{ p: 3 }}>
+                    {children}
+                </Box>
+            </Box>
         </Box>
     );
 }

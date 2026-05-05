@@ -7,6 +7,5 @@ type NavbarItemProps = {
 }
 
 export const NavbarItem = ({ label, href }: NavbarItemProps) => {
-
     return <Button color="inherit" component={Link} href={href}>{label}</Button>;
 }

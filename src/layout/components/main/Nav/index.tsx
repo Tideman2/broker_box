@@ -104,7 +104,28 @@ export default function Navbar() {
                     </IconButton>
 
                     {/* Mobile Drawer */}
-                    <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
+                    <Drawer
+                        anchor="right"
+                        open={open} onClose={toggleDrawer(false)}
+                        transitionDuration={400}
+                        ModalProps={{
+                            keepMounted: true,
+                        }}
+                        BackdropProps={{
+                            sx: {
+                                backdropFilter: 'blur(6px)',
+                                backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                            },
+                        }}
+                        sx={{
+                            '& .MuiDrawer-paper': {
+                                width: 270,
+                                boxSizing: 'border-box',
+                                backdropFilter: 'blur(12px)',
+                                borderRight: '1px solid',
+                                borderColor: 'divider',
+                            },
+                        }}>
                         <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
                             <List>
                                 {NAV_ITEMS.map((item) => (

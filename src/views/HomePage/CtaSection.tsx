@@ -5,7 +5,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import ContentWrapper from '@/layout/components/ContentWrapper';
 import { flower } from '@/components/exports';
-import useWindowSize from '@/layout/hook/useWindowSize';
+import { useAppLayout } from '@/contexts/app_layout/context';
 
 import TopSlideModal from './components/TopSlideModal';
 
@@ -39,8 +39,7 @@ const modalTextContent = () => {
 
 export default function CtaSection() {
     const [open, setOpen] = useState(false);
-    const { width } = useWindowSize();
-    const isMobile = width < 600;
+    const { isMobile } = useAppLayout();
 
     return (
         <ContentWrapper sx={{
