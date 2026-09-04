@@ -7,7 +7,7 @@ export type RegistrationData = {
     fullName: string;
 
     phone: string;
-    dob: string;
+    dob?: string;
     username?: string;
 
     address1: string;

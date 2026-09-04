@@ -60,9 +60,10 @@ export const TradingPlanSection = () => {
 
             <Box display={"flex"} gap={2} justifyContent={"space-around"} flexWrap={"wrap"}>
                 {
-                    Tradingplan.map((plan) => {
+                    Tradingplan.map((plan, indx) => {
                         return (
                             <TradingPlanCard
+                                key={indx}
                                 title={plan.title}
                                 features={plan.feat}
                                 onClick={plan.onBtnClick}

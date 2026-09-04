@@ -16,14 +16,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SearchIcon from '@mui/icons-material/Search';
 
-import { useAppLayout } from '@/contexts/app_layout/context';
+import { useMediaQuery } from '@/layout/hook/useMediaQueries';
 
 type props = {
     setMobileOpen: (open: boolean) => void;
 }
 
 export default function DashboardNavbar({ setMobileOpen }: props) {
-    const { isMobile } = useAppLayout();
+    const isMobile = useMediaQuery("upToSm");
 
     return (
         <AppBar

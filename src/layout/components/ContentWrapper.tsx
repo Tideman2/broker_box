@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, SxProps, Theme } from '@mui/material';
-import { useAppLayout } from '@/contexts/app_layout/context';
+import { useMediaQuery } from '../hook/useMediaQueries';
 
 interface ContentWrapperProps {
     children: React.ReactNode;
@@ -9,7 +9,7 @@ interface ContentWrapperProps {
 }
 
 export default function ContentWrapper({ children, sx }: ContentWrapperProps) {
-    const { isMobile } = useAppLayout();
+    const isMobile = useMediaQuery("upToSm");
 
     return (
         <Box

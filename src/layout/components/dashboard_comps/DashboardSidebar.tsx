@@ -15,7 +15,7 @@ import MoneyIcon from '@mui/icons-material/Money';
 
 import { PATHS } from '@/routes/paths';
 
-import { useAppLayout } from '@/contexts/app_layout/context';
+import { useMediaQuery } from '@/layout/hook/useMediaQueries';
 
 import SideBarItem from './SideBarItem';
 import { ElitePlanCardLogout } from './components/ElitePlanCardLogout';
@@ -34,8 +34,9 @@ type props = {
     mobileOpenProp: boolean;
     setMobileOpenProp: (open: boolean) => void;
 }
+
 export default function DashboardSidebar({ mobileOpenProp, setMobileOpenProp }: props) {
-    const { isMobile } = useAppLayout();
+    const isMobile = useMediaQuery("upToSm");
     const pathname = usePathname();
 
     useEffect(() => {
@@ -117,7 +118,6 @@ export default function DashboardSidebar({ mobileOpenProp, setMobileOpenProp }: 
                         />
                     ))
                 }
-
             </List>
             {/* Elite plan card and log out button */}
             <ElitePlanCardLogout />

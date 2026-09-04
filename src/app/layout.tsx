@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 
-import "./globals.css";
-
 import { GLOBAL_CONFIG } from "@/config/global";
 import Providers from "./providers";
 

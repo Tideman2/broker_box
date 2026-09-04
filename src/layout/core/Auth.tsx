@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 import { Box, Stack } from '@mui/material';
-import { marketplace, rockets } from '@/components/exports'
+import { marketplace } from '@/components/exports'
 
 type Props = {
     children: ReactNode;

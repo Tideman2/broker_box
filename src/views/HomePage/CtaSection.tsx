@@ -5,7 +5,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import ContentWrapper from '@/layout/components/ContentWrapper';
 import { flower } from '@/components/exports';
-import { useAppLayout } from '@/contexts/app_layout/context';
+import { useMediaQuery } from '@/layout/hook/useMediaQueries';
 
 import TopSlideModal from './components/TopSlideModal';
 
@@ -39,7 +39,7 @@ const modalTextContent = () => {
 
 export default function CtaSection() {
     const [open, setOpen] = useState(false);
-    const { isMobile } = useAppLayout();
+    const isMobile = useMediaQuery("upToSm");
 
     return (
         <ContentWrapper sx={{

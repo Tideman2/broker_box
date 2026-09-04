@@ -56,9 +56,9 @@ export const IntroToStepsToBegin = () => {
                 height={{ sm: "auto", md: "270px" }}
                 spacing={3}>
                 {
-                    IntroToStepImgAndTexts.map((step) => {
+                    IntroToStepImgAndTexts.map((step, index) => {
                         return (
-                            <IntroToStepIconText image={step.img} title={step.title} description={step.description} />
+                            <IntroToStepIconText key={index} image={step.img} title={step.title} description={step.description} />
                         )
                     })
                 }

@@ -10,11 +10,12 @@ import rockets from "@/asset/imgs/rockets.png"
 import phone1 from "@/asset/imgs/Smartphone_signals.png"
 import phone2 from "@/asset/imgs/phones2.png"
 import boxes from "@/asset/imgs/boxes.svg"
+import woman_buying from "@/asset/imgs/woman_is_buying.jpg"
 
 export {
     flower, widephone,
     investing_laptop, chainhome,
     bookmark, spindollar,
     tradehand, marketplace, rockets,
-    phone1, phone2, boxes
+    phone1, phone2, boxes, woman_buying
 };
