@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Brightness7 } from '@mui/icons-material';
 import {
     AppBar,
     Toolbar,
@@ -11,15 +10,14 @@ import {
     Drawer,
     List,
     ListItemButton,
-    ListItemText,
-    styled
+    ListItemText
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
 
 import BrandLogo from '@/asset/logo';
 import { PATHS } from '@/routes/paths';
-import { useThemeMode } from '@/contexts/theme/hooks';
+import ThemeToggleButtonComponent from '@/components/ThemeToggleButton';
 
 import ContentWrapper from '../../ContentWrapper';
 import { NavbarItem } from './NavbarItem';
@@ -31,23 +29,9 @@ const NAV_ITEMS = [
     { label: 'Login', href: PATHS.auth.login },
 ];
 
-const ThemeToggleButton = styled(IconButton)(({ theme }) => ({
-    position: "fixed",
-    top: theme.spacing(1),
-    right: theme.spacing(2),
-    zIndex: 1500,
-    backgroundColor: theme.palette.background.paper,
-    color: theme.palette.text.primary,
-    boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-    '&:hover': {
-        backgroundColor: theme.palette.background.default,
-    },
-}));
-
 export default function Navbar() {
     const [open, setOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    const { toggleTheme } = useThemeMode();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -88,9 +72,7 @@ export default function Navbar() {
                         {NAV_ITEMS.map((item) => (
                             <NavbarItem key={item.href} label={item.label} href={item.href} />
                         ))}
-                        <ThemeToggleButton onClick={toggleTheme}>
-                            <Brightness7 />
-                        </ThemeToggleButton>
+                        <ThemeToggleButtonComponent />
                     </Box>
 
                     {/* Mobile Menu Button */}
@@ -135,9 +117,7 @@ export default function Navbar() {
                                 ))}
                             </List>
                         </Box>
-                        <ThemeToggleButton onClick={toggleTheme}>
-                            <Brightness7 />
-                        </ThemeToggleButton>
+                        <ThemeToggleButtonComponent />
                     </Drawer>
                 </Toolbar>
             </ContentWrapper>

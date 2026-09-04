@@ -6,6 +6,10 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ContentWrapper from '@/layout/components/ContentWrapper';
 import { flower } from '@/components/exports';
 import { useMediaQuery } from '@/layout/hook/useMediaQueries';
+import { PATHS } from '@/routes/paths';
+
+import { useRouter } from 'next/navigation';
+
 
 import TopSlideModal from './components/TopSlideModal';
 
@@ -39,6 +43,7 @@ const modalTextContent = () => {
 
 export default function CtaSection() {
     const [open, setOpen] = useState(false);
+    const router = useRouter();
     const isMobile = useMediaQuery("upToSm");
 
     return (
@@ -81,6 +86,7 @@ export default function CtaSection() {
                     variant="contained"
                     color="inherit"
                     sx={{ mt: 3 }}
+                    onClick={() => router.push(PATHS.auth.register)}
                 >
                     Get Started
                 </Button>
