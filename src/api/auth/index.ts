@@ -2,7 +2,7 @@ import { RegistrationData } from "@/contexts/register/types";
 import { authConfig } from "@/config/auth";
 import { axios } from "@/api";
 
-import { setStorage } from "./utils/storage";
+import { setStorage } from "../utils/storage";
 
 // TYPES
 export type RegisterUserPayload = {
@@ -50,41 +50,24 @@ export const registerUser = async (
 
 // TRANSFORMERS
 
-
 export const transformRegistrationData = (
     data: RegistrationData
 ): RegisterUserPayload => {
 
     return {
-
         country: data.country,
-
         email: data.email,
-
         password: data.password,
-
         full_name: data.fullName,
-
         phone: data.phone,
-
         dob: data.dob || undefined,
-
         username: data.username || undefined,
-
         address1: data.address1,
-
         address2: data.address2 || undefined,
-
         city: data.city,
-
         state: data.state,
-
         zip: data.zip,
-
         accept_terms: data.acceptTerms,
-
         marketing_opt_in: data.marketingOptIn ?? false,
-
     };
-
 };

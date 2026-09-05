@@ -1,6 +1,6 @@
 export const authConfig = {
     token: '/auth/token',
-    profileEndpoint: '/user/profile',
+    profileEndpoint: '/auth/user',
     loginEndpoint: '/auth/login',
     resetPasswordEndpoint: '/user/reset-password',
     verifyResetPasswordEndpoint: '/user/reset-password/verify',
