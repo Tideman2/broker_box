@@ -21,7 +21,7 @@ const registrationData: RegistrationData = {
 export const initialState: RegisterStateType = {
     state: registrationData,
     currentStep: 'country',
-    laoding: false,
+    loading: false,
     error: null,
 }
 
@@ -107,7 +107,7 @@ export const registerReducer = (state: RegisterStateType, action: RegisterReduce
 
             return {
                 ...state,
-                laoding: action.payload,
+                loading: action.payload,
             }
         }
 

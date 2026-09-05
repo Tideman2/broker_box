@@ -7,7 +7,7 @@ export type RegistrationData = {
     fullName: string;
 
     phone: string;
-    dob?: string;
+    dob: string;
     username?: string;
 
     address1: string;
@@ -34,7 +34,7 @@ export type RegisterStateType = {
     //navigation
     currentStep: Step;
     // ui
-    laoding: boolean;
+    loading: boolean;
     error: string | null
 }
 
