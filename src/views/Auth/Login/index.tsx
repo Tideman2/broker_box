@@ -1,13 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-
+import { useRouter } from 'next/navigation';
 import {
     Box,
     TextField,
     Button,
     Typography,
 } from '@mui/material';
+import { CircularProgress } from '@mui/material';
+
+import { PATHS } from '@/routes/paths';
+import { loginUser } from '@/api/auth';
+
 
 import ThemeToggleButtonComponent from '@/components/ThemeToggleButton';
 
@@ -16,15 +21,15 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // At least 8 characters, one uppercase letter, one lowercase letter,
 // and one number.
-const PASSWORD_REGEX =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+// const PASSWORD_REGEX =
+//     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
 
 export default function Login() {
-
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({
         email: '',
         password: '',
@@ -44,14 +49,13 @@ export default function Login() {
         }
 
 
-        if (!PASSWORD_REGEX.test(password)) {
-            newErrors.password =
-                'Password must be at least 8 characters and contain an uppercase letter, lowercase letter, and number.';
-        }
+        // if (!PASSWORD_REGEX.test(password)) {
+        //     newErrors.password =
+        //         'Password must be at least 8 characters and contain an uppercase letter, lowercase letter, and number.';
+        // }
 
 
         setErrors(newErrors);
-
         return !newErrors.email && !newErrors.password;
     };
 
@@ -59,17 +63,24 @@ export default function Login() {
     const handleSubmit = (
         event: React.FormEvent<HTMLFormElement>
     ) => {
-
         event.preventDefault();
-
         const isValid = validate();
 
         if (!isValid) return;
 
-        console.log({
-            email,
-            password,
-        });
+        setLoading(true);
+
+        loginUser({ email, password })
+            .then(() => {
+                router.push(PATHS.dashboard.root);
+            })
+            .catch((error) => {
+                console.error('Login failed:', error);
+                setErrors({ ...errors, email: 'Login failed. Please try again.' });
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     };
 
 
@@ -133,7 +144,14 @@ export default function Login() {
                     variant="contained"
                     fullWidth
                 >
-                    Login
+                    {loading ? (
+                        <CircularProgress
+                            size={24}
+                            color="inherit"
+                        />
+                    ) : (
+                        'Login'
+                    )}
                 </Button>
 
             </Box>

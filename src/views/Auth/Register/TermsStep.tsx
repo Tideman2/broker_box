@@ -25,7 +25,6 @@ export default function TermsStep() {
         setError(null);
         setLoading(true);
 
-        // Here you can handle the final submission of the registration data
         registerUser(data)
             .then(() => {
                 router.push(PATHS.dashboard.root);

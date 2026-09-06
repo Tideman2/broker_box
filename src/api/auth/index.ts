@@ -22,6 +22,11 @@ export type RegisterUserPayload = {
     marketing_opt_in?: boolean;
 };
 
+export type LoginUserPayload = {
+    email: string;
+    password: string;
+};
+
 // API CALLS
 export const registerUser = async (
     data: RegistrationData
@@ -30,14 +35,13 @@ export const registerUser = async (
 
         const payload = transformRegistrationData(data);
         const response = await axios.post(
-            "auth/register",
+            authConfig.registerEndpoint,
             payload
         );
 
         setStorage(authConfig.token, response.data.token);
 
         return response.data;
-
     } catch (error) {
         console.error(
             "Error registering user:",
@@ -48,6 +52,24 @@ export const registerUser = async (
 };
 
 
+export const loginUser = async (data: LoginUserPayload) => {
+    try {
+        const response = await axios.post(
+            authConfig.loginEndpoint,
+            data
+        );
+
+        setStorage(authConfig.token, response.data.token);
+
+        return response.data;
+    } catch (error) {
+        console.error(
+            "Error logging in user:",
+            error
+        );
+        throw error;
+    }
+}
 // TRANSFORMERS
 
 export const transformRegistrationData = (
