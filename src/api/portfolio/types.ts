@@ -1,5 +1,3 @@
-// Backend contract types (snake_case). Mirror src/api/auth/types.ts conventions.
-
 export type AssetAllocationItem = {
     category: string;
     value?: number;

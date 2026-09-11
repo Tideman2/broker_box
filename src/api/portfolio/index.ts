@@ -7,7 +7,6 @@ import type {
     PortfolioProfitLossResponse,
 } from "./types";
 
-// API CALLS
 export const getPortfolioOverview = async (): Promise<PortfolioOverviewResponse> => {
     try {
         const response = await axios.get<PortfolioOverviewResponse>(
