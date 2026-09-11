@@ -60,7 +60,7 @@ export const allocationItemsWithPercent = (
     return items.map((item) => {
         const value = item.value ?? 0;
         const percentage =
-            item.percentage ?? (total > 0 ? (value / total) * 100 : 0);
+            item.allocation_percentage ?? (total > 0 ? (value / total) * 100 : 0);
         return { ...item, value, percentage };
     });
 };

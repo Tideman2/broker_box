@@ -40,7 +40,6 @@ export default function AssetAllocation({
         if (upper === "INDEX" || upper === "INDICES") return theme.palette.warning.main;
         return theme.palette.text.primary;
     };
-
     const allocation = allocationItemsWithPercent(items);
     const hasData = allocation.length > 0;
 
@@ -94,10 +93,10 @@ export default function AssetAllocation({
                                     stroke="none"
                                     isAnimationActive={false}
                                 >
-                                    {allocation.map((item) => (
+                                    {allocation.map((item, index) => (
                                         <Cell
-                                            key={item.category}
-                                            fill={categoryColor(item.category)}
+                                            key={index}
+                                            fill={categoryColor(item.symbol)}
                                         />
                                     ))}
                                 </Pie>
@@ -126,9 +125,9 @@ export default function AssetAllocation({
 
                     <AllocationLegend
                         items={allocation.map((item) => ({
-                            category: item.category,
-                            color: categoryColor(item.category),
-                            percentage: item.percentage,
+                            symbol: item.symbol,
+                            color: categoryColor(item.symbol),
+                            allocation_percentage: item.allocation_percentage,
                             value: item.value,
                         }))}
                     />

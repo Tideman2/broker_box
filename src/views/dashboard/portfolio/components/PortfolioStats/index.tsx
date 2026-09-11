@@ -43,7 +43,7 @@ export default function PortfolioStats({
         const totalPnlIsUp = totalPnl >= 0;
         const changePct =
             portfolioValue > 0 ? (totalPnl / portfolioValue) * 100 : 0;
-        const riskScore = overview?.portfolio_risk_score ?? 0;
+        const riskScore = Number(overview?.portfolio_risk_score ?? 0);
         const diversificationLabel = overview?.diversification_score ?? "";
 
         return [
@@ -69,7 +69,7 @@ export default function PortfolioStats({
                 label: "Diversification Score",
                 value: diversificationLabel
                     ? diversificationLabel.charAt(0).toUpperCase() +
-                      diversificationLabel.slice(1).toLowerCase()
+                    diversificationLabel.slice(1).toLowerCase()
                     : "—",
                 icon: DonutSmallIcon,
                 status: diversificationLabel

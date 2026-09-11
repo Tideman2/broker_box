@@ -1,7 +1,7 @@
 export type AssetAllocationItem = {
-    category: string;
-    value?: number;
-    percentage?: number;
+    symbol: string;
+    value: number;
+    allocation_percentage: number;
 };
 
 export type PortfolioOverviewResponse = {
@@ -9,6 +9,7 @@ export type PortfolioOverviewResponse = {
     asset_allocation: AssetAllocationItem[];
     diversification_score: string;
     portfolio_risk_score: number;
+    portfolio_risk_label: string;
 };
 
 export type HoldingResponse = {
