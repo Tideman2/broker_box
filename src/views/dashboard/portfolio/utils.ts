@@ -41,8 +41,11 @@ export const performanceByInstrument = (
 
 const AMOUNT_UNIT: Record<string, string> = {
     FOREX: "Lots",
+    FOREXES: "Lots",
     COMMODITY: "oz",
+    COMMODITIES: "oz",
     INDEX: "Units",
+    INDICES: "Units",
 };
 
 export const amountWithUnit = (holding: HoldingResponse): string => {

@@ -1,7 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material";
 
-import { formatPercent } from "@/utils/format";
-
 type LegendItem = {
     category: string;
     color: string;
@@ -40,7 +38,7 @@ export default function AllocationLegend({ items }: AllocationLegendProps) {
                                 {item.category}
                             </Typography>
                             <Typography variant="caption">
-                                {formatPercent(item.percentage)}
+                                {item.percentage.toFixed(1)}%
                             </Typography>
                         </Stack>
                         <Typography
