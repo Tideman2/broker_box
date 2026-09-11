@@ -24,14 +24,17 @@ export default function Portfolio() {
     const overviewQuery = useQuery({
         queryKey: portfolioQueryKeys.overview,
         queryFn: getPortfolioOverview,
+        refetchOnWindowFocus: false,
     });
     const holdingsQuery = useQuery({
         queryKey: portfolioQueryKeys.holdings,
         queryFn: getPortfolioHoldings,
+        refetchOnWindowFocus: false,
     });
     const profitLossQuery = useQuery({
         queryKey: portfolioQueryKeys.profitLoss,
         queryFn: getPortfolioProfitLoss,
+        refetchOnWindowFocus: false,
     });
 
     const loading =
