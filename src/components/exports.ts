@@ -10,7 +10,7 @@ import rockets from "@/asset/imgs/rockets.png"
 import phone1 from "@/asset/imgs/Smartphone_signals.png"
 import phone2 from "@/asset/imgs/phones2.png"
 import boxes from "@/asset/imgs/boxes.svg"
-import woman_buying from "@/asset/imgs/woman_is_buying.jpg"
+import woman_buying from "@/asset/imgs/woman-is-buying-pumpkins-to-decorate-for-thanksgiving-day-vector.jpg"
 
 export {
     flower, widephone,

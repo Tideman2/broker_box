@@ -48,12 +48,10 @@ export default function Login() {
             newErrors.email = 'Please enter a valid email address.';
         }
 
-
         // if (!PASSWORD_REGEX.test(password)) {
         //     newErrors.password =
         //         'Password must be at least 8 characters and contain an uppercase letter, lowercase letter, and number.';
         // }
-
 
         setErrors(newErrors);
         return !newErrors.email && !newErrors.password;
@@ -85,7 +83,6 @@ export default function Login() {
 
 
     return (
-
         <Box
             component="form"
             onSubmit={handleSubmit}
@@ -103,7 +100,6 @@ export default function Login() {
             <Typography variant="h4">
                 Login
             </Typography>
-
 
             <Box
                 width="100%"
@@ -125,7 +121,6 @@ export default function Login() {
                     helperText={errors.email}
                 />
 
-
                 <TextField
                     label="Password"
                     type="password"
@@ -137,7 +132,6 @@ export default function Login() {
                     error={Boolean(errors.password)}
                     helperText={errors.password}
                 />
-
 
                 <Button
                     type="submit"
