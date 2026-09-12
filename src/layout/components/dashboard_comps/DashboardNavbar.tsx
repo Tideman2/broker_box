@@ -15,8 +15,10 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SearchIcon from '@mui/icons-material/Search';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 import { useMediaQuery } from '@/layout/hook/useMediaQueries';
+import { useThemeMode } from '@/contexts/theme/hooks';
 
 type props = {
     setMobileOpen: (open: boolean) => void;
@@ -24,6 +26,7 @@ type props = {
 
 export default function DashboardNavbar({ setMobileOpen }: props) {
     const isMobile = useMediaQuery("upToSm");
+    const { toggleTheme } = useThemeMode();
 
     return (
         <AppBar
@@ -75,6 +78,11 @@ export default function DashboardNavbar({ setMobileOpen }: props) {
 
                 {/* Right side */}
                 <Stack direction="row" spacing={2} alignItems="center">
+                    {/* Theme toggle */}
+                    <IconButton onClick={toggleTheme}>
+                        <Brightness7Icon />
+                    </IconButton>
+
                     {/* Notifications */}
                     <IconButton>
                         <Badge badgeContent={3} color="error">
