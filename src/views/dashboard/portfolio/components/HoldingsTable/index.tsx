@@ -25,8 +25,8 @@ import {
     downloadCsv,
     timeAgo,
 } from "../../utils";
-import EmptyState from "../EmptyState";
-import LoadingState from "../LoadingState";
+import EmptyState from "@/components/EmptyState";
+import LoadingState from "@/components/LoadingState";
 
 import HoldingsRow from "./components/HoldingsRow";
 

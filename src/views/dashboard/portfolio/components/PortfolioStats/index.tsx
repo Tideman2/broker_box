@@ -9,8 +9,8 @@ import SpeedIcon from "@mui/icons-material/Speed";
 
 import { formatCurrency } from "@/utils/format";
 import { diversificationStatusColor, riskLabelFromScore } from "../../utils";
-import EmptyState from "../EmptyState";
-import LoadingState from "../LoadingState";
+import EmptyState from "@/components/EmptyState";
+import LoadingState from "@/components/LoadingState";
 
 import StatCard from "./components/StatCard";
 import type { KpiStat } from "./components/StatCard";

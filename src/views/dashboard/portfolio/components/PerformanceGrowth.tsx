@@ -6,7 +6,7 @@ import ShowChartIcon from "@mui/icons-material/ShowChart";
 
 import DashboardCard from "@/components/DashboardCard";
 
-import EmptyState from "./EmptyState";
+import EmptyState from "@/components/EmptyState";
 
 type Timeframe = "7D" | "1M";
 

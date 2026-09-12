@@ -8,8 +8,8 @@ import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import DashboardCard from "@/components/DashboardCard";
 import { formatCurrency } from "@/utils/format";
 import { allocationItemsWithPercent } from "../../utils";
-import EmptyState from "../EmptyState";
-import LoadingState from "../LoadingState";
+import EmptyState from "@/components/EmptyState";
+import LoadingState from "@/components/LoadingState";
 
 import AllocationLegend from "./components/AllocationLegend";
 
