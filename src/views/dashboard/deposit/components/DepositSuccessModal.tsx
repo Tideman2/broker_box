@@ -4,17 +4,19 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DetailRow from "@/components/DetailRow";
 import StatusPill from "@/components/StatusPill";
 
-import { formatAmount, formatDate, truncateAddress } from "./utils";
+import { formatDate } from "@/utils/display";
+import { formatAmount } from "@/utils/format";
+
 import { SUCCESS_MODAL_CAPTION, SUCCESS_MODAL_TITLE } from "./mockContent";
 
-import type { WithdrawFundsResponse } from "@/api/withdraw/types";
+import type { DepositFundsResponse } from "@/api/deposit/types";
 
-type WithdrawSuccessModalProps = {
-    data: WithdrawFundsResponse | null;
+type DepositSuccessModalProps = {
+    data: DepositFundsResponse | null;
     onDone: () => void;
 };
 
-export default function WithdrawSuccessModal({ data, onDone }: WithdrawSuccessModalProps) {
+export default function DepositSuccessModal({ data, onDone }: DepositSuccessModalProps) {
     const open = data != null;
 
     return (
@@ -56,19 +58,13 @@ export default function WithdrawSuccessModal({ data, onDone }: WithdrawSuccessMo
                             }
                         />
                         <DetailRow
-                            label="Destination"
+                            label="Method"
                             value={
                                 data
-                                    ? `${data.destination_label} (${data.destination_type})`
+                                    ? `${data.payment_method_name} (${data.payment_method_type})`
                                     : undefined
                             }
                         />
-                        {data?.address && (
-                            <DetailRow
-                                label="Wallet Address"
-                                value={truncateAddress(data.address, 12, 8)}
-                            />
-                        )}
                         {data?.bank_name && (
                             <DetailRow label="Bank Name" value={data.bank_name} />
                         )}

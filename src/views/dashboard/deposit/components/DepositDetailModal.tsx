@@ -1,32 +1,32 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
-import { getWithdrawalDetail } from "@/api/withdraw";
-import { withdrawQueryKeys } from "@/api/react-query-keys";
-
-import EmptyState from "@/components/EmptyState";
-import LoadingState from "@/components/LoadingState";
+import { getDepositDetail } from "@/api/deposit";
+import { depositQueryKeys } from "@/api/react-query-keys";
 
 import DetailRow from "@/components/DetailRow";
+import EmptyState from "@/components/EmptyState";
+import LoadingState from "@/components/LoadingState";
 import StatusPill from "@/components/StatusPill";
 
-import { formatAmount, formatDate, truncateAddress } from "./utils";
+import { formatDate } from "@/utils/display";
+import { formatAmount } from "@/utils/format";
 
-type WithdrawalDetailModalProps = {
-    recordId: number | null;
+type DepositDetailModalProps = {
+    depositId: number | null;
     onClose: () => void;
 };
 
-export default function WithdrawalDetailModal({
-    recordId,
+export default function DepositDetailModal({
+    depositId,
     onClose,
-}: WithdrawalDetailModalProps) {
-    const open = recordId != null;
+}: DepositDetailModalProps) {
+    const open = depositId != null;
 
     const detailQuery = useQuery({
-        queryKey: withdrawQueryKeys.withdrawal(recordId ?? -1),
-        queryFn: () => getWithdrawalDetail(recordId as number),
-        enabled: open && recordId != null,
+        queryKey: depositQueryKeys.depositById(depositId ?? -1),
+        queryFn: () => getDepositDetail(depositId as number),
+        enabled: open && depositId != null,
         refetchOnWindowFocus: false,
     });
 
@@ -34,14 +34,14 @@ export default function WithdrawalDetailModal({
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-            <DialogTitle>Withdrawal #{record?.id ?? recordId}</DialogTitle>
+            <DialogTitle>Deposit #{record?.id ?? depositId}</DialogTitle>
             <DialogContent>
                 {detailQuery.isLoading ? (
                     <LoadingState height={36} lines={7} />
                 ) : detailQuery.isError ? (
                     <EmptyState
                         title="Details unavailable"
-                        description="We could not load this withdrawal record."
+                        description="We could not load this deposit record."
                         action={
                             <Button size="small" variant="outlined" onClick={() => detailQuery.refetch()}>
                                 Retry
@@ -62,12 +62,9 @@ export default function WithdrawalDetailModal({
                             value={`${record.asset_symbol} — ${record.asset_name}`}
                         />
                         <DetailRow
-                            label="Destination"
-                            value={`${record.destination_label} (${record.destination_type})`}
+                            label="Method"
+                            value={`${record.payment_method_name} (${record.payment_method_type})`}
                         />
-                        {record.address && (
-                            <DetailRow label="Wallet Address" value={truncateAddress(record.address, 12, 8)} />
-                        )}
                         {record.bank_name && <DetailRow label="Bank Name" value={record.bank_name} />}
                         {record.account_name && <DetailRow label="Account Name" value={record.account_name} />}
                         {record.account_number && <DetailRow label="Account Number" value={record.account_number} />}

@@ -3,7 +3,7 @@ import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRo
 import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
 
-import StatusPill from "./StatusPill";
+import StatusPill from "@/components/StatusPill";
 
 import { formatAmount, formatDate } from "./utils";
 

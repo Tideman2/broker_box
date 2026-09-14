@@ -11,3 +11,10 @@ export const withdrawQueryKeys = {
     withdraws: ["withdraw", "withdraws"] as const,
     withdrawal: (id: number) => ["withdraw", "withdrawal", id] as const,
 };
+
+export const depositQueryKeys = {
+    assets: ["deposit", "assets"] as const,
+    availableBalance: ["deposit", "available-balance"] as const,
+    deposits: ["deposit", "deposits"] as const,
+    depositById: (id: number) => ["deposit", "deposit", id] as const,
+};

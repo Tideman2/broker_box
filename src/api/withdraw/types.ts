@@ -1,14 +1,6 @@
-export type DestinationType = "BANK" | "CRYPTO";
+export type { AssetResponse } from "@/api/types";
 
-export type AssetResponse = {
-    id: number;
-    symbol: string;
-    name: string;
-    address: string | null;
-    is_active: boolean;
-    created_at: string;
-    updated_at: string;
-};
+export type DestinationType = "BANK" | "CRYPTO";
 
 export type DestinationResponse = {
     id: number;

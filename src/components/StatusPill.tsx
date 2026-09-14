@@ -1,11 +1,9 @@
 import { Box, useTheme, type BoxProps } from "@mui/material";
 
-import { statusLabel, statusTone } from "./utils";
-
-import type { WithdrawStatus } from "@/api/withdraw/types";
+import { statusLabel, statusTone } from "@/utils/display";
 
 type StatusPillProps = {
-    status: WithdrawStatus;
+    status: string;
     sx?: BoxProps["sx"];
 };
 
