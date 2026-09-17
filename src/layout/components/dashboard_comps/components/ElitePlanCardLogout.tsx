@@ -6,7 +6,20 @@ import {
 
 import LogoutIcon from '@mui/icons-material/Logout';
 
+import { useRouter } from 'next/navigation';
+
+import { PATHS } from '@/routes/paths';
+
+import { logout } from '@/app/actions/auth-actions';
+
 export const ElitePlanCardLogout = () => {
+
+    const router = useRouter();
+
+    const handleLogout = async () => {
+        await logout();
+        router.push(PATHS.auth.login);
+    };
 
     return (
         <Stack alignItems="center" justifyContent="center" spacing={2} mt={"auto"} mb={2}>
@@ -23,6 +36,7 @@ export const ElitePlanCardLogout = () => {
             </Card>
 
             <ListItemButton
+                onClick={handleLogout}
                 sx={{
                     borderRadius: 2,
                     p: 2,

@@ -16,7 +16,6 @@ export async function middleware(request: NextRequest) {
         const response = await serverAxios.get(
             authConfig.profileEndpoint
         );
-        console.log("what about here")
         // Profile succeeded = authenticated
 
         if (isAuthRoute) {
@@ -51,7 +50,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
     matcher: [
         "/dashboard/:path*",
-        "/login",
-        "/register"
+        "/auth/login",
+        "/auth/register"
     ],
 };

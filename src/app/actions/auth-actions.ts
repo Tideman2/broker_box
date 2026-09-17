@@ -15,7 +15,7 @@ export async function handleServerLogin(payload: LoginUserPayload) {
         }
 
         // 2. Lock the token into an encrypted httpOnly cookie container
-        setCookie(authConfig.sessionToken, data.token)
+        await setCookie(authConfig.sessionToken, data.token)
 
         return { success: true };
     } catch (error: any) {
