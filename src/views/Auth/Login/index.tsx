@@ -11,11 +11,9 @@ import {
 import { CircularProgress } from '@mui/material';
 
 import { PATHS } from '@/routes/paths';
-import { loginUser } from '@/api/auth';
-
 
 import ThemeToggleButtonComponent from '@/components/ThemeToggleButton';
-
+import { handleServerLogin } from '@/app/actions/auth-actions';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -58,29 +56,44 @@ export default function Login() {
     };
 
 
-    const handleSubmit = (
+    const handleSubmit = async (
         event: React.FormEvent<HTMLFormElement>
     ) => {
         event.preventDefault();
+
         const isValid = validate();
 
         if (!isValid) return;
 
         setLoading(true);
 
-        loginUser({ email, password })
-            .then(() => {
-                router.push(PATHS.dashboard.root);
-            })
-            .catch((error) => {
-                console.error('Login failed:', error);
-                setErrors({ ...errors, email: 'Login failed. Please try again.' });
-            })
-            .finally(() => {
-                setLoading(false);
+        try {
+            const result = await handleServerLogin({
+                email,
+                password,
             });
-    };
 
+            if (result.error) {
+                setErrors({
+                    email: result.error,
+                    password: '',
+                });
+
+                return;
+            }
+
+            router.push(PATHS.dashboard.root);
+        } catch (error) {
+            console.error('Login failed:', error);
+
+            setErrors({
+                email: 'Login failed. Please try again.',
+                password: '',
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <Box

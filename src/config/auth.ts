@@ -1,4 +1,5 @@
 export const authConfig = {
+    sessionToken: "sessionToken",
     token: '/auth/token',
     profileEndpoint: '/auth/user',
     loginEndpoint: '/auth/login',

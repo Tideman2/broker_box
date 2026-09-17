@@ -98,9 +98,9 @@ export function AuthProvider({
         }, []);
 
 
-    useEffect(() => {
-        checkUserSession();
-    }, [checkUserSession]);
+    // useEffect(() => {
+    //     checkUserSession();
+    // }, [checkUserSession]);
 
 
     const role =
