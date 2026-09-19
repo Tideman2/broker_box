@@ -21,6 +21,7 @@ export async function proxy(request: NextRequest) {
         "object-src 'none'",
         "base-uri 'self'",
         "frame-ancestors 'none'",
+        "frame-src https://www.tradingview-widget.com",
         "form-action 'self'",
     ].join("; ");
 
