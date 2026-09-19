@@ -1,33 +1,60 @@
-// src/app/actions/auth-actions.ts
 "use server";
 
-import { loginUser, LoginUserPayload } from "@/api/auth/server-side";
+import { loginUser, registerUser } from "@/api/auth/server-side";
+import { extractServerErrorMessage } from "@/api/utils/server-error";
 import { authConfig } from "@/config/auth";
 import { setCookie, removeCookie } from "@/api/utils/cookies";
 
-export async function handleServerLogin(payload: LoginUserPayload) {
+import type { LoginUserPayload } from "@/api/auth/server-side";
+import type { RegistrationData } from "@/contexts/register/types";
+
+type AuthActionResult =
+    | { success: true }
+    | { success: false; error: string };
+
+export async function handleServerLogin(
+    payload: LoginUserPayload
+): Promise<AuthActionResult> {
     try {
-        // 1. Fire your existing Axios instance STRICTLY on the Next.js server
         const data = await loginUser(payload);
 
         if (!data || !data.token) {
             return { success: false, error: "Invalid credentials or token missing." };
         }
 
-        // 2. Lock the token into an encrypted httpOnly cookie container
-        await setCookie(authConfig.sessionToken, data.token)
+        await setCookie(authConfig.sessionToken, data.token);
 
         return { success: true };
-    } catch (error: any) {
+    } catch (error) {
         console.error("Server Action Login Failure:", error);
-        // Return a clean error message back to the UI component boundary
         return {
             success: false,
-            error: error.response?.data?.detail || error.message || "Authentication failed."
+            error: extractServerErrorMessage(error, "Authentication failed."),
         };
     }
 }
 
+export async function handleServerRegister(
+    data: RegistrationData
+): Promise<AuthActionResult> {
+    try {
+        const result = await registerUser(data);
+
+        if (!result || !result.token) {
+            return { success: false, error: "Registration failed. No session token returned." };
+        }
+
+        await setCookie(authConfig.sessionToken, result.token);
+
+        return { success: true };
+    } catch (error) {
+        console.error("Server Action Register Failure:", error);
+        return {
+            success: false,
+            error: extractServerErrorMessage(error, "Registration failed. Please try again."),
+        };
+    }
+}
 
 export async function logout() {
     await removeCookie(authConfig.sessionToken);

@@ -1,4 +1,4 @@
-import { axios } from "@/api";
+import { getServerAxios } from "../server-axios";
 import { portfolioConfig } from "@/config/portfolio";
 
 import type {
@@ -9,7 +9,8 @@ import type {
 
 export const getPortfolioOverview = async (): Promise<PortfolioOverviewResponse> => {
     try {
-        const response = await axios.get<PortfolioOverviewResponse>(
+        const server = await getServerAxios();
+        const response = await server.get<PortfolioOverviewResponse>(
             portfolioConfig.overviewEndpoint
         );
         return response.data;
@@ -21,7 +22,8 @@ export const getPortfolioOverview = async (): Promise<PortfolioOverviewResponse>
 
 export const getPortfolioHoldings = async (): Promise<HoldingResponse[]> => {
     try {
-        const response = await axios.get<HoldingResponse[]>(
+        const server = await getServerAxios();
+        const response = await server.get<HoldingResponse[]>(
             portfolioConfig.holdingsEndpoint
         );
         return response.data;
@@ -33,7 +35,8 @@ export const getPortfolioHoldings = async (): Promise<HoldingResponse[]> => {
 
 export const getPortfolioProfitLoss = async (): Promise<PortfolioProfitLossResponse> => {
     try {
-        const response = await axios.get<PortfolioProfitLossResponse>(
+        const server = await getServerAxios();
+        const response = await server.get<PortfolioProfitLossResponse>(
             portfolioConfig.profitLossEndpoint
         );
         return response.data;

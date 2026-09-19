@@ -9,7 +9,7 @@ import {
     getPortfolioHoldings,
     getPortfolioOverview,
     getPortfolioProfitLoss,
-} from "@/api/portfolio";
+} from "@/app/actions/portfolio-actions";
 import { portfolioQueryKeys } from "@/api/react-query-keys";
 
 import { performanceByInstrument } from "./utils";

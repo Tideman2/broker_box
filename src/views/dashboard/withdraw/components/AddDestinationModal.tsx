@@ -18,7 +18,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 
-import { getAssets, getWithdrawDestinations, addBankDestination, addCryptoDestination } from "@/api/withdraw";
+import { getAssets, getWithdrawDestinations, addBankDestination, addCryptoDestination } from "@/app/actions/withdraw-actions";
 import { withdrawQueryKeys } from "@/api/react-query-keys";
 
 import { extractErrorMessage } from "./utils";
@@ -85,7 +85,11 @@ export default function AddDestinationModal({
 
     const bankMutation = useMutation({
         mutationFn: addBankDestination,
-        onSuccess: () => {
+        onSuccess: (result) => {
+            if (!result.success) {
+                setServerError(result.error);
+                return;
+            }
             invalidateDestinations();
             onClose();
         },
@@ -94,7 +98,11 @@ export default function AddDestinationModal({
 
     const cryptoMutation = useMutation({
         mutationFn: addCryptoDestination,
-        onSuccess: () => {
+        onSuccess: (result) => {
+            if (!result.success) {
+                setServerError(result.error);
+                return;
+            }
             invalidateDestinations();
             onClose();
         },

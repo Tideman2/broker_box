@@ -73,7 +73,7 @@ export default function Login() {
                 password,
             });
 
-            if (result.error) {
+            if (!result.success) {
                 setErrors({
                     email: result.error,
                     password: '',
