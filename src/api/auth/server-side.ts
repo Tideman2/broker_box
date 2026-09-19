@@ -1,10 +1,14 @@
-import { RegistrationData } from "@/contexts/register/types";
 import { authConfig } from "@/config/auth";
-import { axios } from "@/api";
+import { getServerAxios } from "../server-axios";
 
-import { setStorage } from "../utils/storage";
+import type { RegistrationData } from "@/contexts/register/types";
+import type { User } from "./types";
 
-// TYPES
+export type LoginUserPayload = {
+    email: string;
+    password: string;
+};
+
 export type RegisterUserPayload = {
     country: string;
     email: string;
@@ -22,24 +26,33 @@ export type RegisterUserPayload = {
     marketing_opt_in?: boolean;
 };
 
-export type LoginUserPayload = {
-    email: string;
-    password: string;
-};
+export const loginUser = async (data: LoginUserPayload) => {
+    try {
+        const serverAxios = await getServerAxios()
+        const response = await serverAxios.post(
+            authConfig.loginEndpoint,
+            data
+        );
 
-// API CALLS
+        return response.data;
+    } catch (error) {
+        console.error(
+            "Error logging in user:",
+            error
+        );
+        throw error;
+    }
+}
+
 export const registerUser = async (
     data: RegistrationData
 ) => {
     try {
-
-        const payload = transformRegistrationData(data);
-        const response = await axios.post(
+        const serverAxios = await getServerAxios()
+        const response = await serverAxios.post(
             authConfig.registerEndpoint,
-            payload
+            transformRegistrationData(data)
         );
-
-        setStorage(authConfig.token, response.data.token);
 
         return response.data;
     } catch (error) {
@@ -51,31 +64,18 @@ export const registerUser = async (
     }
 };
 
+export const getCurrentUser = async (): Promise<User> => {
+    const serverAxios = await getServerAxios();
+    const response = await serverAxios.get<User>(
+        authConfig.profileEndpoint
+    );
 
-export const loginUser = async (data: LoginUserPayload) => {
-    try {
-        const response = await axios.post(
-            authConfig.loginEndpoint,
-            data
-        );
-
-        setStorage(authConfig.token, response.data.token);
-
-        return response.data;
-    } catch (error) {
-        console.error(
-            "Error logging in user:",
-            error
-        );
-        throw error;
-    }
-}
-// TRANSFORMERS
+    return response.data;
+};
 
 export const transformRegistrationData = (
     data: RegistrationData
 ): RegisterUserPayload => {
-
     return {
         country: data.country,
         email: data.email,

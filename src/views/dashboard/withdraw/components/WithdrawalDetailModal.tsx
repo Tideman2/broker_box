@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
-import { getWithdrawalDetail } from "@/api/withdraw";
+import { getWithdrawalDetail } from "@/app/actions/withdraw-actions";
 import { withdrawQueryKeys } from "@/api/react-query-keys";
 
 import EmptyState from "@/components/EmptyState";

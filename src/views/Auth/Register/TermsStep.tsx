@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { Checkbox, FormControlLabel, Button, Stack, Typography } from '@mui/material';
 import { CircularProgress } from '@mui/material';
 
-import { registerUser } from '@/api/auth';
+import { handleServerRegister } from '@/app/actions/auth-actions';
 import { PATHS } from '@/routes/paths';
 import { RegisterContext } from '@/contexts/register/context';
 
@@ -25,8 +25,12 @@ export default function TermsStep() {
         setError(null);
         setLoading(true);
 
-        registerUser(data)
-            .then(() => {
+        handleServerRegister(data)
+            .then((result) => {
+                if (!result.success) {
+                    setError(result.error);
+                    return;
+                }
                 router.push(PATHS.dashboard.root);
             })
             .catch((error) => {
