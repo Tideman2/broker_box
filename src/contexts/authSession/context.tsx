@@ -9,18 +9,12 @@ import {
     useState,
 } from 'react';
 
-import { getStorage } from '@/api/utils/storage';
-
-import { axios } from '@/api';
-
-import { authConfig } from '@/config/auth';
+import { getSessionUser } from '@/app/actions/session-actions';
 
 import type {
     User,
     UserRole,
 } from '@/api/auth/types';
-
-import { isTokenExpired, invalidateSession } from '@/api/utils/auth';
 
 export type AuthValuesProps = {
     user: User | null;
@@ -67,24 +61,9 @@ export function AuthProvider({
     const checkUserSession =
         useCallback(async () => {
             try {
+                const sessionUser = await getSessionUser();
 
-                const token = getStorage(
-                    authConfig.token
-                );
-
-                if (!token || isTokenExpired(token)) {
-                    console.log('Token is missing or expired. Invalidating session.');
-                    setUser(null);
-                    invalidateSession();
-                    return;
-                }
-
-                const response = await axios.get<User>(
-                    authConfig.profileEndpoint
-                );
-
-                setUser(response.data);
-
+                setUser(sessionUser);
             } catch (error) {
                 console.error(
                     'Failed to restore user session:',

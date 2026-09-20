@@ -1,4 +1,4 @@
-import { axios } from "@/api";
+import { getServerAxios } from "../server-axios";
 import { withdrawConfig } from "@/config/withdraw";
 
 import type {
@@ -13,7 +13,8 @@ import type {
 
 export const getAssets = async (): Promise<AssetResponse[]> => {
     try {
-        const response = await axios.get<AssetResponse[]>(
+        const server = await getServerAxios();
+        const response = await server.get<AssetResponse[]>(
             withdrawConfig.assetsEndpoint
         );
         return response.data;
@@ -25,7 +26,8 @@ export const getAssets = async (): Promise<AssetResponse[]> => {
 
 export const getWithdrawDestinations = async (): Promise<DestinationResponse[]> => {
     try {
-        const response = await axios.get<DestinationResponse[]>(
+        const server = await getServerAxios();
+        const response = await server.get<DestinationResponse[]>(
             withdrawConfig.destinationsEndpoint
         );
         return response.data;
@@ -39,7 +41,8 @@ export const addBankDestination = async (
     payload: AddBankDestinationRequest
 ): Promise<DestinationResponse> => {
     try {
-        const response = await axios.post<DestinationResponse>(
+        const server = await getServerAxios();
+        const response = await server.post<DestinationResponse>(
             withdrawConfig.bankAddEndpoint,
             payload
         );
@@ -54,7 +57,8 @@ export const addCryptoDestination = async (
     payload: AddCryptoDestinationRequest
 ): Promise<DestinationResponse> => {
     try {
-        const response = await axios.post<DestinationResponse>(
+        const server = await getServerAxios();
+        const response = await server.post<DestinationResponse>(
             withdrawConfig.cryptoAddEndpoint,
             payload
         );
@@ -67,7 +71,8 @@ export const addCryptoDestination = async (
 
 export const getAvailableBalance = async (): Promise<number> => {
     try {
-        const response = await axios.get<number>(
+        const server = await getServerAxios();
+        const response = await server.get<number>(
             withdrawConfig.availableBalanceEndpoint
         );
         return response.data;
@@ -81,7 +86,8 @@ export const withdrawFunds = async (
     payload: WithdrawFundsRequest
 ): Promise<WithdrawFundsResponse> => {
     try {
-        const response = await axios.post<WithdrawFundsResponse>(
+        const server = await getServerAxios();
+        const response = await server.post<WithdrawFundsResponse>(
             withdrawConfig.withdrawEndpoint,
             payload
         );
@@ -96,7 +102,8 @@ export const getWithdrawalRecords = async (): Promise<
     UserWithdrawalRecordsResponse[]
 > => {
     try {
-        const response = await axios.get<UserWithdrawalRecordsResponse[]>(
+        const server = await getServerAxios();
+        const response = await server.get<UserWithdrawalRecordsResponse[]>(
             withdrawConfig.withdrawsEndpoint
         );
         return response.data;
@@ -110,7 +117,8 @@ export const getWithdrawalDetail = async (
     id: number
 ): Promise<WithdrawFundsResponse> => {
     try {
-        const response = await axios.get<WithdrawFundsResponse>(
+        const server = await getServerAxios();
+        const response = await server.get<WithdrawFundsResponse>(
             `${withdrawConfig.withdrawalDetailEndpoint}/${id}`
         );
         return response.data;

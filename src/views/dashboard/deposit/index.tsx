@@ -6,7 +6,7 @@ import { Alert, Grid, Stack } from "@mui/material";
 
 import ContentWrapper from "@/layout/components/ContentWrapper";
 
-import { depositFunds, getAssets, getAvailableBalance, getDeposits } from "@/api/deposit";
+import { depositFunds, getAssets, getAvailableBalance, getDeposits } from "@/app/actions/deposit-actions";
 import { depositQueryKeys } from "@/api/react-query-keys";
 
 import { extractErrorMessage } from "@/utils/display";
@@ -63,8 +63,12 @@ export default function Deposit() {
     const depositMutation = useMutation({
         mutationFn: depositFunds,
         onMutate: () => setDepositError(""),
-        onSuccess: (data: DepositFundsResponse) => {
-            setSuccessData(data);
+        onSuccess: (result) => {
+            if (!result.success) {
+                setDepositError(result.error);
+                return;
+            }
+            setSuccessData(result.data);
             setFormResetKey((key) => key + 1);
             queryClient.invalidateQueries({ queryKey: depositQueryKeys.deposits });
             queryClient.invalidateQueries({ queryKey: depositQueryKeys.availableBalance });

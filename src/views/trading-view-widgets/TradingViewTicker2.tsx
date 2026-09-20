@@ -1,15 +1,18 @@
 // TradingViewWidget.jsx
-import React, { useEffect, useRef, memo } from 'react';
+"use client"
+import { useEffect, useRef, memo } from 'react';
 
-function TradingViewWidget() {
+function TradingViewWidget({ nonce }: { nonce: string }) {
   const container = useRef<HTMLDivElement | null>(null);
 
   useEffect(
     () => {
       const script = document.createElement("script");
+      script.nonce
       script.src = "https://s3.tradingview.com/external-embedding/embed-widget-tickers.js";
       script.type = "text/javascript";
       script.async = true;
+      script.nonce = nonce;
       script.innerHTML = `
         {
           "symbols": [
@@ -51,7 +54,7 @@ function TradingViewWidget() {
       if (!container.current) return;
       container.current.appendChild(script);
     },
-    []
+    [nonce]
   );
 
   return (

@@ -11,7 +11,7 @@ import {
     getWithdrawDestinations,
     getWithdrawalRecords,
     withdrawFunds,
-} from "@/api/withdraw";
+} from "@/app/actions/withdraw-actions";
 import { withdrawQueryKeys } from "@/api/react-query-keys";
 
 import { extractErrorMessage } from "./components/utils";
@@ -62,8 +62,12 @@ export default function Withdraw() {
     const withdrawMutation = useMutation({
         mutationFn: withdrawFunds,
         onMutate: () => setWithdrawError(""),
-        onSuccess: (data: WithdrawFundsResponse) => {
-            setSuccessData(data);
+        onSuccess: (result) => {
+            if (!result.success) {
+                setWithdrawError(result.error);
+                return;
+            }
+            setSuccessData(result.data);
             setFormResetKey((key) => key + 1);
             queryClient.invalidateQueries({ queryKey: withdrawQueryKeys.availableBalance });
             queryClient.invalidateQueries({ queryKey: withdrawQueryKeys.withdraws });

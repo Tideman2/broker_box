@@ -1,5 +1,5 @@
 export const authConfig = {
-    token: '/auth/token',
+    sessionToken: "sessionToken",
     profileEndpoint: '/auth/user',
     loginEndpoint: '/auth/login',
     registerEndpoint: '/auth/register',

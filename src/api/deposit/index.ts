@@ -1,11 +1,12 @@
-import { axios } from "@/api";
+import { getServerAxios } from "../server-axios";
 import { depositConfig } from "@/config/deposit";
 
 import type { AssetResponse, DepositFundsRequest, DepositFundsResponse, DepositResponse } from "./types";
 
 export const getAssets = async (): Promise<AssetResponse[]> => {
     try {
-        const response = await axios.get<AssetResponse[]>(
+        const server = await getServerAxios();
+        const response = await server.get<AssetResponse[]>(
             depositConfig.assetsEndpoint
         );
         return response.data;
@@ -17,7 +18,8 @@ export const getAssets = async (): Promise<AssetResponse[]> => {
 
 export const getAvailableBalance = async (): Promise<number> => {
     try {
-        const response = await axios.get<number>(
+        const server = await getServerAxios();
+        const response = await server.get<number>(
             depositConfig.availableBalanceEndpoint
         );
         return response.data;
@@ -32,7 +34,8 @@ export const getDeposits = async (
     offset: number
 ): Promise<DepositResponse[]> => {
     try {
-        const response = await axios.get<DepositResponse[]>(
+        const server = await getServerAxios();
+        const response = await server.get<DepositResponse[]>(
             depositConfig.depositsEndpoint,
             { params: { limit, offset } }
         );
@@ -47,7 +50,8 @@ export const depositFunds = async (
     payload: DepositFundsRequest
 ): Promise<DepositFundsResponse> => {
     try {
-        const response = await axios.post<DepositFundsResponse>(
+        const server = await getServerAxios();
+        const response = await server.post<DepositFundsResponse>(
             depositConfig.depositEndpoint,
             payload
         );
@@ -62,7 +66,8 @@ export const getDepositDetail = async (
     id: number
 ): Promise<DepositFundsResponse> => {
     try {
-        const response = await axios.get<DepositFundsResponse>(
+        const server = await getServerAxios();
+        const response = await server.get<DepositFundsResponse>(
             `${depositConfig.depositDetailEndpoint}/${id}`
         );
         return response.data;

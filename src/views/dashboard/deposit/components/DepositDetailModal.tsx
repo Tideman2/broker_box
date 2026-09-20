@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
-import { getDepositDetail } from "@/api/deposit";
+import { getDepositDetail } from "@/app/actions/deposit-actions";
 import { depositQueryKeys } from "@/api/react-query-keys";
 
 import DetailRow from "@/components/DetailRow";
