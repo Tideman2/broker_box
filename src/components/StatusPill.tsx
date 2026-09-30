@@ -2,14 +2,28 @@ import { Box, useTheme, type BoxProps } from "@mui/material";
 
 import { statusLabel, statusTone } from "@/utils/display";
 
+import type { StatusTone } from "@/utils/display";
+
 type StatusPillProps = {
     status: string;
+    /** Overrides the label resolved from STATUS_LABELS. */
+    label?: string;
+    /** Overrides the tone resolved from STATUS_TONES. Needed for statuses
+     *  whose keys are not in the shared maps, e.g. uppercase plan and
+     *  subscription statuses. */
+    tone?: StatusTone;
     sx?: BoxProps["sx"];
 };
 
-export default function StatusPill({ status, sx }: StatusPillProps) {
+export default function StatusPill({
+    status,
+    label,
+    tone,
+    sx,
+}: StatusPillProps) {
     const theme = useTheme();
-    const color = theme.palette[statusTone(status)] as { main: string };
+    const resolved = (tone ?? statusTone(status)) as "success" | "error" | "info";
+    const color = theme.palette[resolved] as { main: string };
 
     return (
         <Box
@@ -30,7 +44,7 @@ export default function StatusPill({ status, sx }: StatusPillProps) {
                 ...sx,
             }}
         >
-            {statusLabel(status)}
+            {label ?? statusLabel(status)}
         </Box>
     );
 }
