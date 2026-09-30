@@ -32,6 +32,7 @@ export const PATHS = {
         portfolio: `${ROOTS.DASHBOARD}/portfolio`,
         markets: `${ROOTS.DASHBOARD}/markets`,
         investmentplans: `${ROOTS.DASHBOARD}/investment-plans`,
+        investmentPlansCheckout: `${ROOTS.DASHBOARD}/investment-plans/checkout`,
         deposit: `${ROOTS.DASHBOARD}/deposit`,
         withdraw: `${ROOTS.DASHBOARD}/withdraw`,
     },
