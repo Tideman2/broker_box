@@ -30,6 +30,7 @@ export const PATHS = {
         root: ROOTS.DASHBOARD,
         settings: `${ROOTS.DASHBOARD}/settings`,
         portfolio: `${ROOTS.DASHBOARD}/portfolio`,
+        trades: `${ROOTS.DASHBOARD}/trades`,
         markets: `${ROOTS.DASHBOARD}/markets`,
         investmentplans: `${ROOTS.DASHBOARD}/investment-plans`,
         investmentPlansCheckout: `${ROOTS.DASHBOARD}/investment-plans/checkout`,

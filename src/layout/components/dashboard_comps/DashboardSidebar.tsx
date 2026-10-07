@@ -12,6 +12,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import MoneyIcon from '@mui/icons-material/Money';
+import TableChartIcon from '@mui/icons-material/TableChart';
 
 import { PATHS } from '@/routes/paths';
 
@@ -22,8 +23,8 @@ import { ElitePlanCardLogout } from './components/ElitePlanCardLogout';
 
 const SIDEBAR_ITEMS = [
     { label: 'Overview', href: PATHS.dashboard.root, icon: DashboardIcon },
-    { label: 'Markets', href: PATHS.dashboard.markets, icon: ShowChartIcon },
     { label: 'Portfolio', href: PATHS.dashboard.portfolio, icon: AccountBalanceWalletIcon },
+    { label: 'Trades', href: PATHS.dashboard.trades, icon: TableChartIcon },
     { label: 'Settings', href: PATHS.dashboard.settings, icon: SettingsIcon },
     { label: 'Deposit', href: PATHS.dashboard.deposit, icon: PaymentsIcon },
     { label: 'Withdraw', href: PATHS.dashboard.withdraw, icon: MoneyIcon },

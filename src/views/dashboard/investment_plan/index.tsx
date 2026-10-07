@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Alert, Button, Stack, Typography } from "@mui/material";
+import { Alert, Button, Stack } from "@mui/material";
 
 import ContentWrapper from "@/layout/components/ContentWrapper";
 
@@ -29,7 +29,6 @@ import PlanGrid from "./components/PlanGrid";
 
 import {
     ACTIVE_PLAN_EMPTY,
-    ACTIVE_PLANS_LABEL,
     BALANCE_ERROR_DESCRIPTION,
     BALANCE_ERROR_TITLE,
     BALANCE_LOADING_LABEL,
@@ -92,24 +91,14 @@ export default function InvestmentPlan() {
         },
         onError: (error: unknown) => setCancelError(extractErrorMessage(error)),
     });
+
     const plans = plansQuery.data?.plans ?? [];
     const subscriptions = subscriptionsQuery.data?.subscriptions ?? [];
-
-    // A user can hold more than one live subscription, so keep them all and
-    // show the most recent first. filter() returns a new array, so sorting it
-    // in place is safe.
-    const activeSubscriptions = subscriptions
-        .filter((subscription) =>
+    console.log(subscriptions)
+    const activeSubscription =
+        subscriptions.find((subscription) =>
             ACTIVE_SUBSCRIPTION_STATUSES.includes(subscription.status)
-        )
-        .sort(
-            (a, b) =>
-                new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        );
-
-    const activePlanIds = activeSubscriptions.map(
-        (subscription) => subscription.plan_id
-    );
+        ) ?? null;
 
     const handleCancel = (subscription: SubscriptionResponse) => {
         setCancelError("");
@@ -162,33 +151,23 @@ export default function InvestmentPlan() {
 
                 {!subscriptionsQuery.isLoading &&
                     !subscriptionsQuery.isError &&
-                    activeSubscriptions.length === 0 && (
+                    !activeSubscription && (
                         <Alert severity="info" variant="outlined">
                             {ACTIVE_PLAN_EMPTY}
                         </Alert>
                     )}
 
-                {activeSubscriptions.length > 0 && (
-                    <Stack spacing={2}>
-                        <Typography variant="h6">{ACTIVE_PLANS_LABEL}</Typography>
-                        {activeSubscriptions.map((subscription) => (
-                            <ActiveSubscriptionCard
-                                key={subscription.id}
-                                subscription={subscription}
-                                onCancel={handleCancel}
-                                showCancel={SUBSCRIPTION_CANCEL_ENABLED}
-                                cancelling={
-                                    cancelMutation.isPending &&
-                                    cancelTarget?.id === subscription.id
-                                }
-                            />
-                        ))}
-                    </Stack>
+                {activeSubscription && (
+                    <ActiveSubscriptionCard
+                        subscription={activeSubscription}
+                        onCancel={handleCancel}
+                        showCancel={SUBSCRIPTION_CANCEL_ENABLED}
+                        cancelling={cancelMutation.isPending}
+                    />
                 )}
 
                 <PlanGrid
                     plans={plans}
-                    activePlanIds={activePlanIds}
                     loading={plansQuery.isLoading}
                     error={plansQuery.isError}
                     onRetry={() => plansQuery.refetch()}

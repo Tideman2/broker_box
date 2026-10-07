@@ -2,6 +2,8 @@ export const portfolioQueryKeys = {
     overview: ["portfolio", "overview"] as const,
     holdings: ["portfolio", "holdings"] as const,
     profitLoss: ["portfolio", "profit-loss"] as const,
+    trades: ["portfolio", "trades"] as const,
+    tradesOverview: ["portfolio", "trades-overview"] as const,
 };
 
 export const withdrawQueryKeys = {

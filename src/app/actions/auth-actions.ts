@@ -23,6 +23,7 @@ export async function handleServerLogin(
         }
 
         await setCookie(authConfig.sessionToken, data.token);
+        await setCookie(authConfig.refreshToken, data.refresh_token);
 
         return { success: true };
     } catch (error) {
