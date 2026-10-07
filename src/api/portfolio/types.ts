@@ -41,3 +41,36 @@ export type PortfolioProfitLossResponse = {
     portfolio_total_profit_loss: number;
     instruments: InstrumentProfitLossResult[];
 };
+
+export type TradeType = "BUY" | "SELL";
+
+/**
+ * The trades endpoint returns a bare list with no total count, so pagination
+ * cannot report "of N". All numeric fields arrive as decimal strings and must
+ * go through `toNumber` before arithmetic.
+ */
+export type TradeResponse = {
+    transaction_id: number;
+    instrument_id: number;
+    symbol: string;
+    name: string;
+    type: TradeType;
+    quantity: string;
+    price: string;
+    total_value: string;
+    executed_at: string;
+};
+
+export type TradeOverviewResponse = {
+    total_trades: number;
+    win_rate: string;
+    total_net_profit: string;
+};
+
+export type GetTradesParams = {
+    instrument_id?: number;
+    type?: TradeType;
+    days?: number;
+    limit: number;
+    offset: number;
+};
