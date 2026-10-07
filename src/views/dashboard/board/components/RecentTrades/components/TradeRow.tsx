@@ -1,45 +1,29 @@
-import {
-    Box,
-    Chip,
-    Stack,
-    TableCell,
-    TableRow,
-    Typography,
-} from '@mui/material';
+import { Chip, Stack, TableCell, TableRow, Typography } from '@mui/material';
 
-import type { Trade } from '@/views/dashboard/board/mockData';
-import { formatCurrency } from '@/views/dashboard/board/utils';
+import { formatAmount } from '@/utils/format';
+import { executedAtParts } from '@/views/dashboard/trades/utils';
+import { tradeTypeColor } from '@/views/dashboard/trades/components/TradesTable/components/TradeRow';
 
-const TYPE_COLOR = {
-    Buy: 'success.main',
-    Sell: 'error.main',
-};
+import type { TradeResponse } from '@/api/portfolio/types';
 
 type TradeRowProps = {
-    trade: Trade;
+    trade: TradeResponse;
 };
 
 export default function TradeRow({ trade }: TradeRowProps) {
-    const typeColor = TYPE_COLOR[trade.type];
+    const color = tradeTypeColor(trade.type);
+    const executed = executedAtParts(trade.executed_at);
 
     return (
         <TableRow hover>
             <TableCell>
                 <Stack direction="row" alignItems="center" spacing={1}>
-                    <Box
-                        sx={{
-                            width: 8,
-                            height: 8,
-                            borderRadius: '50%',
-                            bgcolor: typeColor,
-                        }}
-                    />
-                    <Box>
-                        <Typography variant="body2">{trade.asset}</Typography>
-                        <Typography variant="caption" color="text.secondary">
-                            {trade.time}
-                        </Typography>
-                    </Box>
+                    <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                        {trade.symbol}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                        {trade.name}
+                    </Typography>
                 </Stack>
             </TableCell>
 
@@ -48,22 +32,27 @@ export default function TradeRow({ trade }: TradeRowProps) {
                     size="small"
                     label={trade.type}
                     sx={{
-                        color: typeColor,
+                        color,
                         border: '1px solid',
-                        borderColor: typeColor,
+                        borderColor: color,
                         bgcolor: 'transparent',
                     }}
                 />
             </TableCell>
 
             <TableCell>
-                <Typography variant="body2">{formatCurrency(trade.price)}</Typography>
+                <Typography variant="body2">
+                    {formatAmount(trade.total_value)}
+                </Typography>
             </TableCell>
 
-            <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
-                <Typography variant="caption" color="text.secondary">
-                    {trade.status}
-                </Typography>
+            <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                <Stack spacing={0}>
+                    <Typography variant="body2">{executed.date}</Typography>
+                    <Typography variant="caption" color="text.secondary">
+                        {executed.time}
+                    </Typography>
+                </Stack>
             </TableCell>
         </TableRow>
     );

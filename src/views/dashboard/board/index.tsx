@@ -10,34 +10,40 @@ import {
     getPortfolioHoldings,
     getPortfolioOverview,
     getPortfolioProfitLoss,
+    getTrades,
 } from '@/app/actions/portfolio-actions';
 import { getSubscriptions } from '@/app/actions/subscription-actions';
 import { getAvailableBalance } from '@/app/actions/deposit-actions';
+import { getPlans } from '@/app/actions/plan-actions';
 import {
     depositQueryKeys,
+    planQueryKeys,
     portfolioQueryKeys,
     subscriptionQueryKeys,
 } from '@/api/react-query-keys';
 import { ACTIVE_SUBSCRIPTION_STATUSES } from '@/views/dashboard/investment_plan/constants';
 
 import {
-    activeStrategyData,
     financialFlowData,
     marketSentimentData,
     portfolioAnalyticsData,
-    recentTradesData,
 } from './mockData';
 
 import PortfolioCommand from './components/PortfolioCommand';
 import PortfolioStats from './components/PortfolioStats';
 import PortfolioAnalytics from './components/PortfolioAnalytics';
-import ActiveStrategy from './components/ActiveStrategy';
+import TopInvestment from './components/TopInvestment';
 import MarketSentiment from './components/MarketSentiment';
 import RecentTrades from './components/RecentTrades';
 import FinancialFlow from './components/FinancialFlow';
 import DashboardFooter from './components/DashboardFooter';
 
 import type { PortfolioStat } from './mockData';
+import type { SubscriptionResponse } from '@/api/subscription/types';
+import type { TradeResponse } from '@/api/portfolio/types';
+
+/** Stable reference so the recent-trades prop never changes identity on render. */
+const NO_TRADES: TradeResponse[] = [];
 
 export default function DashboardBoard() {
     const balanceQuery = useQuery({
@@ -69,6 +75,44 @@ export default function DashboardBoard() {
         queryFn: getPortfolioOverview,
         refetchOnWindowFocus: false,
     });
+
+    const recentTradesQuery = useQuery({
+        queryKey: portfolioQueryKeys.recentTrades,
+        queryFn: () => getTrades({ limit: 5, offset: 0 }),
+        refetchOnWindowFocus: false,
+    });
+
+    const plansQuery = useQuery({
+        queryKey: planQueryKeys.plans,
+        queryFn: getPlans,
+        refetchOnWindowFocus: false,
+    });
+
+    const topInvestment = useMemo(() => {
+        const subscription = (
+            subscriptionsQuery.data?.subscriptions ?? []
+        )
+            .filter((entry) =>
+                ACTIVE_SUBSCRIPTION_STATUSES.includes(entry.status)
+            )
+            .reduce<SubscriptionResponse | null>(
+                (best, entry) =>
+                    best == null ||
+                    Number(entry.invested_amount) > Number(best.invested_amount)
+                        ? entry
+                        : best,
+                null
+            );
+
+        const plan =
+            subscription != null
+                ? plansQuery.data?.plans.find(
+                      (entry) => entry.id === subscription.plan_id
+                  ) ?? null
+                : null;
+
+        return { subscription, plan };
+    }, [subscriptionsQuery.data, plansQuery.data]);
 
     const stats: PortfolioStat[] = useMemo(() => {
         const available = balanceQuery.data ?? 0;
@@ -146,14 +190,32 @@ export default function DashboardBoard() {
 
                 <Grid container spacing={3}>
                     <Grid size={{ xs: 12, md: 6 }}>
-                        <ActiveStrategy data={activeStrategyData} />
+                        <TopInvestment
+                            subscription={topInvestment.subscription ?? undefined}
+                            plan={topInvestment.plan ?? undefined}
+                            loading={
+                                subscriptionsQuery.isLoading || plansQuery.isLoading
+                            }
+                            error={
+                                subscriptionsQuery.isError || plansQuery.isError
+                            }
+                            onRetry={() => {
+                                subscriptionsQuery.refetch();
+                                plansQuery.refetch();
+                            }}
+                        />
                     </Grid>
                     <Grid size={{ xs: 12, md: 6 }}>
                         <MarketSentiment data={marketSentimentData} />
                     </Grid>
                 </Grid>
 
-                <RecentTrades trades={recentTradesData} />
+                <RecentTrades
+                    trades={recentTradesQuery.data ?? NO_TRADES}
+                    loading={recentTradesQuery.isLoading}
+                    error={recentTradesQuery.isError}
+                    onRetry={() => recentTradesQuery.refetch()}
+                />
 
                 <FinancialFlow data={financialFlowData} />
 
