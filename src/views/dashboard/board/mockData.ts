@@ -1,8 +1,8 @@
 export type PortfolioStat = {
     label: string;
     value: number;
-    changePct: number;
-    trend: 'up' | 'down';
+    changePct?: number;
+    trend?: 'up' | 'down';
 };
 
 export type PortfolioTimeframe = '1D' | '1W' | '1M' | '1Y' | 'ALL';
@@ -50,13 +50,6 @@ export type FinancialFlowData = {
     inflow: FlowEntry[];
     outflow: FlowEntry[];
 };
-
-export const portfolioStatsData: PortfolioStat[] = [
-    { label: 'Total Balance', value: 24562, changePct: 4.6, trend: 'up' },
-    { label: 'Active Investment', value: 18500, changePct: 2.1, trend: 'up' },
-    { label: 'Profit / Loss', value: 4830, changePct: 18.7, trend: 'up' },
-    { label: 'Available Balance', value: 6062, changePct: 1.2, trend: 'down' },
-];
 
 const buildSeries = (labels: string[], base: number): PortfolioPoint[] =>
     labels.map((label, index) => ({

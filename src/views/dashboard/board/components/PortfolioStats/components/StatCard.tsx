@@ -21,26 +21,28 @@ export default function StatCard({ stat }: StatCardProps) {
 
                 <Typography variant="h6">{formatCurrency(stat.value, 0)}</Typography>
 
-                <Chip
-                    size="small"
-                    icon={
-                        isUp ? (
-                            <ArrowUpwardIcon sx={{ fontSize: 14 }} />
-                        ) : (
-                            <ArrowDownwardIcon sx={{ fontSize: 14 }} />
-                        )
-                    }
-                    label={formatPercent(stat.changePct)}
-                    sx={{
-                        alignSelf: 'flex-start',
-                        color: isUp ? 'success.main' : 'error.main',
-                        bgcolor: 'transparent',
-                        pl: 0,
-                        '& .MuiChip-icon': {
+                {stat.changePct != null && (
+                    <Chip
+                        size="small"
+                        icon={
+                            isUp ? (
+                                <ArrowUpwardIcon sx={{ fontSize: 14 }} />
+                            ) : (
+                                <ArrowDownwardIcon sx={{ fontSize: 14 }} />
+                            )
+                        }
+                        label={formatPercent(stat.changePct)}
+                        sx={{
+                            alignSelf: 'flex-start',
                             color: isUp ? 'success.main' : 'error.main',
-                        },
-                    }}
-                />
+                            bgcolor: 'transparent',
+                            pl: 0,
+                            '& .MuiChip-icon': {
+                                color: isUp ? 'success.main' : 'error.main',
+                            },
+                        }}
+                    />
+                )}
             </Stack>
         </Card>
     );
