@@ -95,8 +95,8 @@ export default function TradesToolbar({
                 exclusive
                 size="small"
                 value={tradeType ?? ""}
-                onChange={(_event, value: TradeType | null) =>
-                    onTradeTypeChange(value)
+                onChange={(_event, value: TradeType | "" | null) =>
+                    onTradeTypeChange(value === "" ? null : value)
                 }
                 aria-label={TRADES_CONTENT.typeLabel}
             >
