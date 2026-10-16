@@ -3,13 +3,10 @@
 import { ReactNode, useState } from 'react';
 import { Box } from '@mui/material';
 
-import { useMediaQuery } from '../hook/useMediaQueries';
-
 import DashboardSidebar from '../components/dashboard_comps/DashboardSidebar';
 import DashboardNavbar from '../components/dashboard_comps/DashboardNavbar';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
-    const isMobile = useMediaQuery("upToSm");
     const [mobileOpen, setMobileOpen] = useState(false);
 
     return (
@@ -18,7 +15,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <DashboardSidebar mobileOpenProp={mobileOpen} setMobileOpenProp={setMobileOpen} />
 
             {/* Main Area */}
-            <Box sx={{ flex: 1, display: 'flex', minWidth: 0, ml: isMobile ? 0 : "270px", flexDirection: 'column' }}>
+            <Box sx={{ flex: 1, display: 'flex', minWidth: 0, flexDirection: 'column' }}>
                 {/* Navbar */}
                 <DashboardNavbar setMobileOpen={setMobileOpen} />
 
