@@ -73,6 +73,23 @@ export const getCurrentUser = async (): Promise<User> => {
     return response.data;
 };
 
+export const logoutUser = async () => {
+    try {
+        const serverAxios = await getServerAxios()
+        const response = await serverAxios.post(
+            authConfig.logoutEndpoint
+        );
+
+        return response.data;
+    } catch (error) {
+        console.error(
+            "Error logging out user:",
+            error
+        );
+        throw error;
+    }
+};
+
 export const transformRegistrationData = (
     data: RegistrationData
 ): RegisterUserPayload => {

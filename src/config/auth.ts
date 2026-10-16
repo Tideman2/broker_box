@@ -4,6 +4,7 @@ export const authConfig = {
     refreshTokenEndpoint: "/auth/refresh-token",
     profileEndpoint: '/auth/user',
     loginEndpoint: '/auth/login',
+    logoutEndpoint: '/auth/logout',
     registerEndpoint: '/auth/register',
     resetPasswordEndpoint: '/user/reset-password',
     verifyResetPasswordEndpoint: '/user/reset-password/verify',

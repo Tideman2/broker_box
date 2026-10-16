@@ -1,6 +1,6 @@
 "use server";
 
-import { loginUser, registerUser } from "@/api/auth/server-side";
+import { loginUser, logoutUser, registerUser } from "@/api/auth/server-side";
 import { extractServerErrorMessage } from "@/api/utils/server-error";
 import { authConfig } from "@/config/auth";
 import { setCookie, removeCookie } from "@/api/utils/cookies";
@@ -58,6 +58,13 @@ export async function handleServerRegister(
 }
 
 export async function logout() {
-    await removeCookie(authConfig.sessionToken);
+    try {
+        await logoutUser();
+    } catch (error) {
+        console.error("Server Action Logout Failure:", error);
+    } finally {
+        await removeCookie(authConfig.sessionToken);
+        await removeCookie(authConfig.refreshToken);
+    }
     return { success: true };
 }
