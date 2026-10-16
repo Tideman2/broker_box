@@ -157,6 +157,14 @@ export default function Login() {
                     helperText={errors.password}
                 />
 
+                <Box display="flex" justifyContent="flex-end" mt={-1}>
+                    <Link href={PATHS.auth.resetPassword.root} style={{ textDecoration: 'underline' }}>
+                        <Typography variant="body2" color="primary">
+                            Forgot password?
+                        </Typography>
+                    </Link>
+                </Box>
+
                 <Button
                     type="submit"
                     variant="contained"
