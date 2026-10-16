@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Typography } from "@mui/material";
 
 import WithdrawalsTable from "./WithdrawalsTable";
 
@@ -22,11 +22,23 @@ export default function FullHistoryDialog({
     );
 
     return (
-        <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-            <DialogTitle>Withdrawal History</DialogTitle>
-            <DialogContent>
+        <Dialog open={open} onClose={onClose} fullWidth maxWidth="md" PaperProps={{ sx: { borderRadius: 3 } }}>
+            <DialogTitle sx={{ pb: 0.5 }}>
+                <Typography variant="h6" sx={{ fontWeight: 800 }}>
+                    Withdrawal History
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                    {sorted.length} transaction{sorted.length === 1 ? "" : "s"} · newest first
+                </Typography>
+            </DialogTitle>
+            <DialogContent sx={{ pt: 2 }}>
                 <WithdrawalsTable records={sorted} onRowClick={onRowClick} />
             </DialogContent>
+            <DialogActions sx={{ px: 3, pb: 2.5 }}>
+                <Button onClick={onClose} variant="outlined" sx={{ borderRadius: 2, fontWeight: 600 }}>
+                    Close
+                </Button>
+            </DialogActions>
         </Dialog>
     );
 }

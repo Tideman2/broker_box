@@ -1,5 +1,8 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { alpha } from "@mui/material/styles";
+
+import DashboardCard from "@/components/DashboardCard";
 
 import { COMING_SOON_MESSAGE, COMING_SOON_TITLE } from "./mockContent";
 
@@ -18,13 +21,38 @@ export default function PaymentMethodTabs({
     disabled,
 }: PaymentMethodTabsProps) {
     return (
-        <Box>
+        <DashboardCard
+            title="Payment Method"
+            sx={{ p: { xs: 2, md: 2.5 } }}
+        >
             <Tabs
                 value={method}
                 onChange={(_, value: number) => onChange(value)}
-                variant="scrollable"
+                variant="fullWidth"
                 textColor="primary"
                 indicatorColor="primary"
+                sx={{
+                    minHeight: 48,
+                    borderRadius: 2,
+                    backgroundColor: (theme) =>
+                        alpha(theme.palette.primary.main, 0.05),
+                    p: 0.5,
+                    "& .MuiTabs-indicator": {
+                        height: "100%",
+                        borderRadius: 1.5,
+                        zIndex: 0,
+                    },
+                    "& .MuiTab-root": {
+                        minHeight: 40,
+                        borderRadius: 1.5,
+                        zIndex: 1,
+                        fontWeight: 700,
+                        fontSize: "0.85rem",
+                        textTransform: "none",
+                        color: "text.secondary",
+                        "&.Mui-selected": { color: "primary.main" },
+                    },
+                }}
             >
                 <Tab value={METHOD_CRYPTO} label="Crypto Deposit" disabled={disabled} />
                 <Tab value={METHOD_BANK} label="Bank Transfer" disabled={disabled} />
@@ -37,17 +65,19 @@ export default function PaymentMethodTabs({
                         gap: 1.5,
                         alignItems: "flex-start",
                         p: 2,
+                        mt: 2,
                         borderRadius: 2,
-                        border: "1px solid",
+                        border: "1px dashed",
                         borderColor: "divider",
-                        backgroundColor: "background.paper",
+                        backgroundColor: (theme) =>
+                            alpha(theme.palette.info.main, 0.05),
                     }}
                 >
                     <InfoOutlinedIcon
                         sx={{ fontSize: 18, color: "info.main", mt: 0.25, flexShrink: 0 }}
                     />
                     <Box>
-                        <Typography variant="body2" sx={{ fontWeight: 600 }} mb={0.25}>
+                        <Typography variant="body2" sx={{ fontWeight: 700 }} mb={0.25}>
                             {COMING_SOON_TITLE}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
@@ -56,6 +86,6 @@ export default function PaymentMethodTabs({
                     </Box>
                 </Box>
             )}
-        </Box>
+        </DashboardCard>
     );
 }

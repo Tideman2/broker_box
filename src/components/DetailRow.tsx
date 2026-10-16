@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 
 type DetailRowProps = {
     label: string;
@@ -8,14 +8,42 @@ type DetailRowProps = {
 
 export default function DetailRow({ label, value, valueNode }: DetailRowProps) {
     return (
-        <Stack direction="row" justifyContent="space-between" spacing={2}>
-            <Typography variant="body2" color="text.secondary">
+        <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="flex-start"
+            spacing={2}
+            sx={{ py: 1 }}
+        >
+            <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ flexShrink: 0 }}
+            >
                 {label}
             </Typography>
-            {valueNode ?? (
+            {valueNode ? (
+                <Box
+                    sx={{
+                        display: "flex",
+                        flex: 1,
+                        justifyContent: "flex-end",
+                        minWidth: 0,
+                    }}
+                >
+                    {valueNode}
+                </Box>
+            ) : (
                 <Typography
                     variant="body2"
-                    sx={{ fontWeight: 600, textAlign: "right", wordBreak: "break-word" }}
+                    sx={{
+                        flex: 1,
+                        minWidth: 0,
+                        fontWeight: 600,
+                        textAlign: "right",
+                        wordBreak: "break-word",
+                        fontVariantNumeric: "tabular-nums",
+                    }}
                 >
                     {value || "—"}
                 </Typography>

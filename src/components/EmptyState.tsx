@@ -1,5 +1,5 @@
 import type { ElementType, ReactNode } from "react";
-import { Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 
 type EmptyStateProps = {
     icon?: ElementType;
@@ -18,13 +18,30 @@ export default function EmptyState({
         <Stack
             alignItems="center"
             justifyContent="center"
-            spacing={1}
-            sx={{ py: 6, textAlign: "center" }}
+            spacing={2}
+            sx={{ py: 5, px: 2, textAlign: "center" }}
         >
-            {Icon && <Icon sx={{ fontSize: 40, color: "text.disabled" }} />}
-            <Typography variant="body2">{title}</Typography>
+            {Icon && (
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: 48,
+                        height: 48,
+                        borderRadius: "16px",
+                        backgroundColor: "action.hover",
+                        color: "text.secondary",
+                    }}
+                >
+                    <Icon sx={{ fontSize: 24 }} />
+                </Box>
+            )}
+            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                {title}
+            </Typography>
             {description && (
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant="body2" color="text.secondary">
                     {description}
                 </Typography>
             )}

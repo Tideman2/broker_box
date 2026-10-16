@@ -20,14 +20,31 @@ export default function CheckoutHeader() {
             <Button
                 onClick={() => router.push(PATHS.dashboard.investmentplans)}
                 startIcon={<ArrowBackIcon />}
-                sx={{ alignSelf: "flex-start", px: 0, color: "text.secondary" }}
+                sx={{
+                    alignSelf: "flex-start",
+                    px: 1.5,
+                    py: 0.75,
+                    borderRadius: 2,
+                    color: "text.secondary",
+                    fontWeight: 600,
+                    "&:hover": { color: "primary.main" },
+                }}
             >
                 {BACK_LABEL}
             </Button>
 
             <Box>
-                <Typography variant="h4">{CHECKOUT_TITLE}</Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                    variant="overline"
+                    sx={{ letterSpacing: "0.14em", fontWeight: 700 }}
+                    color="primary.main"
+                >
+                    Step 2 of 2 · Confirm
+                </Typography>
+                <Typography variant="h4" sx={{ fontWeight: 800, letterSpacing: "-0.01em" }}>
+                    {CHECKOUT_TITLE}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
                     {CHECKOUT_DESCRIPTION}
                 </Typography>
             </Box>

@@ -18,6 +18,7 @@ import Link from 'next/link';
 import BrandLogo from '@/asset/logo';
 import { PATHS } from '@/routes/paths';
 import ThemeToggleButtonComponent from '@/components/ThemeToggleButton';
+import { useMediaQuery } from '@/layout/hook/useMediaQueries';
 
 import ContentWrapper from '../../ContentWrapper';
 import { NavbarItem } from './NavbarItem';
@@ -32,6 +33,7 @@ const NAV_ITEMS = [
 export default function Navbar() {
     const [open, setOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const isDesktop = useMediaQuery("fromMd");
 
     useEffect(() => {
         const handleScroll = () => {
@@ -49,41 +51,53 @@ export default function Navbar() {
 
     return (
         <AppBar position="sticky"
-            color={isScrolled ? "default" : "transparent"}
-            elevation={isScrolled ? 4 : 0}
+            color="transparent"
+            elevation={0}
             sx={{
                 top: 0,
-                transition: 'background-color 0.3s, box-shadow 0.3s',
+                bgcolor: isScrolled ? 'background.paper' : 'transparent',
+                backgroundImage: 'none',
+                borderBottom: '1px solid',
+                borderColor: isScrolled ? 'divider' : 'transparent',
+                boxShadow: isScrolled ? 1 : 0,
+                backdropFilter: isScrolled ? 'blur(12px)' : 'none',
+                transition: 'background-color 0.3s, box-shadow 0.3s, border-color 0.3s',
             }}>
             <ContentWrapper sx={{ paddingY: 1 }}>
-                <Toolbar>
+                <Toolbar disableGutters sx={{ gap: 2, minHeight: 64 }}>
                     {/* Logo */}
                     <BrandLogo width={40} height={40} />
-                    <Typography variant="h6" sx={{ flexGrow: 1, ml: 2 }}>
+                    <Typography variant="h6" fontWeight={700} sx={{ flexGrow: 1, ml: 2 }}>
                         Merchant Box
                     </Typography>
                     {/* Desktop Menu */}
-                    <Box
-                        sx={{
-                            display: { xs: 'none', md: 'flex' },
-                            gap: 2,
-                        }}
-                    >
-                        {NAV_ITEMS.map((item) => (
-                            <NavbarItem key={item.href} label={item.label} href={item.href} />
-                        ))}
-                        <ThemeToggleButtonComponent />
-                    </Box>
+                    {isDesktop && (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1,
+                            }}
+                        >
+                            {NAV_ITEMS.map((item) => (
+                                <NavbarItem key={item.href} label={item.label} href={item.href} />
+                            ))}
+                            <ThemeToggleButtonComponent />
+                        </Box>
+                    )}
 
                     {/* Mobile Menu Button */}
-                    <IconButton
-                        edge="end"
-                        color="inherit"
-                        onClick={toggleDrawer(true)}
-                        sx={{ display: { xs: 'block', md: 'none' }, mr: 5 }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+                    {!isDesktop && (
+                        <IconButton
+                            edge="end"
+                            color="inherit"
+                            aria-label="Open menu"
+                            onClick={toggleDrawer(true)}
+                            sx={{ mr: 1 }}
+                        >
+                            <MenuIcon sx={{ fontSize: 20 }} />
+                        </IconButton>
+                    )}
 
                     {/* Mobile Drawer */}
                     <Drawer
@@ -103,15 +117,22 @@ export default function Navbar() {
                             '& .MuiDrawer-paper': {
                                 width: 270,
                                 boxSizing: 'border-box',
+                                bgcolor: 'background.paper',
                                 backdropFilter: 'blur(12px)',
-                                borderRight: '1px solid',
+                                borderLeft: '1px solid',
                                 borderColor: 'divider',
+                                p: 2,
                             },
                         }}>
-                        <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-                            <List>
+                        <Box sx={{ width: '100%' }} role="presentation" onClick={toggleDrawer(false)}>
+                            <List sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                                 {NAV_ITEMS.map((item) => (
-                                    <ListItemButton key={item.href} component={Link} href={item.href}>
+                                    <ListItemButton
+                                        key={item.href}
+                                        component={Link}
+                                        href={item.href}
+                                        sx={{ borderRadius: 1.5, px: 2, py: 1 }}
+                                    >
                                         <ListItemText primary={item.label} />
                                     </ListItemButton>
                                 ))}

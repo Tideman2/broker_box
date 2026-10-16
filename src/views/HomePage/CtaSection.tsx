@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Box, Typography, Button, IconButton } from '@mui/material';
+import { Box, Typography, Button, IconButton, Stack, Chip } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import ContentWrapper from '@/layout/components/ContentWrapper';
@@ -33,7 +33,7 @@ const modalTextContent = () => {
                 does not provide tax advice; consult a tax advisor.
             </Typography>
             <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-                IRS contribution limit for 2025 is $7,000 ($8,000 if you're age 50 or older), and for 2026 is $7,500 ($8,600 if you’re age 50 or older).
+                IRS contribution limit for 2025 is $7,000 ($8,000 if you&apos;re age 50 or older), and for 2026 is $7,500 ($8,600 if you&apos;re age 50 or older).
                 Visit the IRS site for more information. The annual tax filing deadline typically is April 15th but may vary by year or individual taxpayer circumstances.
                 All IRA contributions count toward your annual limit.
             </Typography>
@@ -57,19 +57,35 @@ export default function CtaSection() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            height: isMobile ? 'auto' : 700,
+            minHeight: isMobile ? 'auto' : 700,
         }}>
-            <Box width={"100%"} pt={15} pl={{ xs: 2, md: 10 }}>
-                <Typography sx={{ fontSize: 'clamp(2rem, 6vw, 4.5rem)', lineHeight: "1.2" }} color="textSecondary" gutterBottom>
-                    Retirement blooms. <br /> $Earn up to $435.
+            <Box width="100%" pt={{ xs: 8, md: 15 }} pb={4} px={{ xs: 2, md: 10 }} maxWidth={880}>
+                <Chip
+                    label="Retirement investing"
+                    color="info"
+                    size="small"
+                    sx={{ mb: 2, borderRadius: 999 }}
+                />
+                <Typography
+                    variant="h1"
+                    color="textSecondary"
+                    gutterBottom
+                    sx={{
+                        fontSize: 'clamp(2rem, 6vw, 4.5rem)',
+                        lineHeight: 1.1,
+                        letterSpacing: '-0.02em',
+                        textWrap: 'balance',
+                    }}
+                >
+                    Retirement blooms. <br /> Earn up to $435.
                 </Typography>
-                <Typography variant="body1" color="textSecondary" gutterBottom>
+                <Typography variant="body1" color="textSecondary" gutterBottom sx={{ maxWidth: 560 }}>
                     A simple broker platform UI to manage your trades and portfolio.
                 </Typography>
 
                 {/* Info + text */}
                 <Box display="flex" onClick={() => setOpen(true)}
-                    alignItems="center" gap={1} mt={1} sx={{ cursor: "pointer", }}>
+                    alignItems="center" gap={1} mt={1} sx={{ cursor: "pointer", width: 'fit-content' }}>
                     <Typography variant="caption" color="textSecondary">
                         Subscription and limitations apply
                     </Typography>
@@ -77,24 +93,37 @@ export default function CtaSection() {
                     <IconButton
                         size="small"
                         sx={{ color: 'text.secondary' }}
+                        aria-label="Subscription details"
                     >
                         <InfoOutlinedIcon fontSize="small" />
                     </IconButton>
                 </Box>
 
-                <Button
-                    variant="contained"
-                    color="inherit"
-                    sx={{ mt: 3 }}
-                    onClick={() => router.push(PATHS.auth.register)}
-                >
-                    Get Started
-                </Button>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3, maxWidth: 480 }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        fullWidth={isMobile}
+                        onClick={() => router.push(PATHS.auth.register)}
+                    >
+                        Get Started
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        color="inherit"
+                        size="large"
+                        fullWidth={isMobile}
+                        onClick={() => router.push(PATHS.auth.login)}
+                    >
+                        Log in
+                    </Button>
+                </Stack>
             </Box>
 
             {/* second section texts and button */}
             <Box width={"100%"} p={{ xs: 2, md: 8 }}>
-                <Typography variant='caption' color="textSecondary" gutterBottom>
+                <Typography variant='caption' color="textSecondary" gutterBottom sx={{ fontVariantNumeric: 'tabular-nums' }}>
                     Non-Gold customers receive a 1% contribution match.<br />
                     Merchant Box Gold is a subscription-based membership program of premium services offered through merchant box Gold, LLC.
                 </Typography>

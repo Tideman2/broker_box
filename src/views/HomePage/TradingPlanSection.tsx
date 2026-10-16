@@ -1,7 +1,6 @@
 'use client'
 
-import { Typography, Stack, Box } from "@mui/material"
-import Handshake from "@mui/icons-material/Handshake"
+import { Typography, Stack, Box, Chip } from "@mui/material"
 
 import ContentWrapper from "@/layout/components/ContentWrapper"
 
@@ -12,19 +11,22 @@ const Tradingplan = [
         title: "Starter",
         feat: ["Great features", "Live api", "Crypto", "Advance tools"],
         btnText: "Choose plan",
-        onBtnClick: () => { console.log("clicked") }
+        onBtnClick: () => { console.log("clicked") },
+        recommended: false,
     },
     {
         title: "Pro",
         feat: ["Great features", "Live api", "Crypto", "Advance tools"],
         btnText: "Choose plan",
-        onBtnClick: () => { console.log("clicked") }
+        onBtnClick: () => { console.log("clicked") },
+        recommended: true,
     },
     {
         title: "Exclusive",
         feat: ["Great features", "Live api", "Crypto", "Advance tools"],
         btnText: "Choose plan",
-        onBtnClick: () => { console.log("clicked") }
+        onBtnClick: () => { console.log("clicked") },
+        recommended: false,
     },
 ]
 
@@ -35,30 +37,30 @@ export const TradingPlanSection = () => {
         <ContentWrapper sx={{
             display: "flex",
             flexDirection: "column",
-            gap: 3
+            gap: 4,
+            py: { xs: 6, md: 10 },
         }}>
-            <Stack justifyContent={"center"} spacing={1} alignItems={"center"}>
-                <Stack direction={"row"}
-                    bgcolor={"info.main"}
-                    width={"fit-content"}
-                    color="info.contrastText"
-                    padding={1}
-                    borderRadius={2}
-                    spacing={1}>
-                    <Handshake />
-                    <Typography variant="body2">
-                        Minimum Investment plan
-                    </Typography>
-                </Stack>
-                <Typography variant="h2" textAlign={"center"}>
-                    Our Best Minimum
+            <Stack justifyContent={"center"} spacing={2} alignItems={"center"}>
+                <Chip
+                    label="Investment plans"
+                    color="info"
+                    size="small"
+                    sx={{ borderRadius: 999 }}
+                />
+                <Typography variant="h2" textAlign={"center"} sx={{ textWrap: 'balance' }}>
+                    Our best minimum investment plans
                 </Typography>
-                <Typography variant="h2" color="info" textAlign={"center"}>
-                    Investment Plan
+                <Typography variant="body1" color="text.secondary" textAlign="center" sx={{ maxWidth: 560 }}>
+                    Pick the tier that fits how you trade. Upgrade or cancel anytime.
                 </Typography>
             </Stack>
 
-            <Box display={"flex"} gap={2} justifyContent={"space-around"} flexWrap={"wrap"}>
+            <Box
+                display="grid"
+                gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+                gap={3}
+                alignItems="stretch"
+            >
                 {
                     Tradingplan.map((plan, indx) => {
                         return (
@@ -67,7 +69,8 @@ export const TradingPlanSection = () => {
                                 title={plan.title}
                                 features={plan.feat}
                                 onClick={plan.onBtnClick}
-                                buttonText={plan.btnText} />
+                                buttonText={plan.btnText}
+                                recommended={plan.recommended} />
                         )
                     })
                 }

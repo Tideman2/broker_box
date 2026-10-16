@@ -5,6 +5,7 @@ import {
     Alert,
     Box,
     Button,
+    Chip,
     InputAdornment,
     Stack,
     TextField,
@@ -19,7 +20,7 @@ import DashboardCard from "@/components/DashboardCard";
 import WithdrawalProgress from "./WithdrawalProgress";
 import WalletSelector from "./WalletSelector";
 
-import { toNumber } from "./utils";
+import { formatAmount, toNumber } from "./utils";
 import { IMPORTANT_NOTE, MIN_WITHDRAW_AMOUNT } from "./mockContent";
 
 import type { DestinationResponse } from "@/api/withdraw/types";
@@ -87,12 +88,12 @@ export default function WithdrawalRequest({
 
     return (
         <DashboardCard title="Withdrawal Request">
-            <Stack spacing={3} sx={{ pt: 1 }}>
+            <Stack spacing={2.5} sx={{ pt: 0.5 }}>
                 <Box
                     sx={{
-                        px: { xs: 0, sm: 2 },
-                        py: 1,
-                        borderRadius: 3,
+                        px: { xs: 0.5, sm: 2 },
+                        py: 0.5,
+                        borderRadius: 2.5,
                         border: "1px solid",
                         borderColor: "divider",
                         backgroundColor: (theme) =>
@@ -102,12 +103,26 @@ export default function WithdrawalRequest({
                     <WithdrawalProgress activeStage={0} />
                 </Box>
 
-                <Box>
+                <Box
+                    sx={{
+                        p: { xs: 2, sm: 2.5 },
+                        borderRadius: 2.5,
+                        border: "1px solid",
+                        borderColor: "divider",
+                        backgroundColor: (theme) =>
+                            alpha(theme.palette.text.primary, 0.015),
+                    }}
+                >
                     <Stack direction="row" justifyContent="space-between" alignItems="baseline" mb={1}>
-                        <Typography variant="subtitle2">Amount to Withdraw</Typography>
-                        <Typography variant="caption" color="text.secondary">
-                            Min: ${MIN_WITHDRAW_AMOUNT.toLocaleString()}.00
+                        <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                            Amount to Withdraw
                         </Typography>
+                        <Chip
+                            size="small"
+                            label={`Min $${MIN_WITHDRAW_AMOUNT.toLocaleString()}`}
+                            variant="outlined"
+                            sx={{ fontWeight: 700, fontSize: "0.7rem", color: "text.secondary" }}
+                        />
                     </Stack>
 
                     <TextField
@@ -120,7 +135,7 @@ export default function WithdrawalRequest({
                             if (event.key === "Enter") handleSubmit();
                         }}
                         error={!!amountError}
-                        helperText={amountError}
+                        helperText={amountError || `Available: ${formatAmount(toNumber(balance))}`}
                         placeholder="0.00"
                         disabled={toNumber(balance) <= 0}
                         inputMode="decimal"
@@ -135,18 +150,25 @@ export default function WithdrawalRequest({
                                         size="small"
                                         onClick={handleMax}
                                         disabled={toNumber(balance) <= 0 || maxReached}
-                                        sx={{ color: "primary.main", minWidth: 48 }}
+                                        sx={{ fontWeight: 800, minWidth: 48 }}
                                     >
                                         MAX
                                     </Button>
                                 </InputAdornment>
                             ),
                         }}
+                        sx={{
+                            "& .MuiOutlinedInput-input": {
+                                fontSize: "1.15rem",
+                                fontWeight: 800,
+                                fontVariantNumeric: "tabular-nums",
+                            },
+                        }}
                     />
                 </Box>
 
                 <Box>
-                    <Typography variant="subtitle2" mb={1.5}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 700 }} mb={1.5}>
                         Select Destination Wallet
                     </Typography>
 
@@ -170,17 +192,18 @@ export default function WithdrawalRequest({
                         borderRadius: 2,
                         border: "1px solid",
                         borderColor: "divider",
-                        backgroundColor: "background.paper",
+                        backgroundColor: (theme) =>
+                            alpha(theme.palette.info.main, 0.05),
                     }}
                 >
                     <InfoOutlinedIcon
                         sx={{ fontSize: 18, color: "info.main", mt: 0.25, flexShrink: 0 }}
                     />
                     <Box>
-                        <Typography variant="body2" sx={{ fontWeight: 600 }} mb={0.25}>
+                        <Typography variant="body2" sx={{ fontWeight: 700 }} mb={0.25}>
                             Important Note
                         </Typography>
-                        <Typography variant="caption" color="text.secondary">
+                        <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.6 }}>
                             {IMPORTANT_NOTE}
                         </Typography>
                     </Box>
@@ -197,6 +220,7 @@ export default function WithdrawalRequest({
                         toNumber(balance) <= 0
                     }
                     startIcon={submitting ? undefined : <SendIcon />}
+                    sx={{ borderRadius: 2, fontWeight: 700, py: 1.5 }}
                 >
                     {submitting ? "Processing..." : "Confirm Withdrawal Request"}
                 </Button>

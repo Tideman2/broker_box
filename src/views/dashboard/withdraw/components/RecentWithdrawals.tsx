@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import HistoryIcon from "@mui/icons-material/History";
 
 import DashboardCard from "@/components/DashboardCard";
@@ -54,8 +54,22 @@ export default function RecentWithdrawals({
     }, [sorted, filter]);
 
     return (
-        <DashboardCard title="Recent Withdrawals" icon={HistoryIcon}>
-            <Stack direction={{ xs: "column", sm: "row" }} justifyContent="space-between" spacing={1.5} mb={2}>
+        <DashboardCard
+            title="Recent Withdrawals"
+            icon={HistoryIcon}
+            action={
+                pendingCount > 0 ? (
+                    <Chip
+                        size="small"
+                        label={`${pendingCount} pending`}
+                        color="warning"
+                        variant="outlined"
+                        sx={{ fontWeight: 700 }}
+                    />
+                ) : undefined
+            }
+        >
+            <Stack direction={{ xs: "column", sm: "row" }} justifyContent="space-between" alignItems={{ xs: "flex-start", sm: "center" }} spacing={1.5} mb={2}>
                 <Typography variant="caption" color="text.secondary">
                     Track the status of your last 5 transactions.
                 </Typography>
@@ -67,15 +81,16 @@ export default function RecentWithdrawals({
                                 key={value}
                                 size="small"
                                 onClick={() => setFilter(value)}
-                                variant={active ? "contained" : "text"}
+                                variant={active ? "contained" : "outlined"}
                                 sx={{
-                                    minWidth: 64,
+                                    minWidth: 72,
+                                    borderRadius: 999,
+                                    fontWeight: 700,
                                     textTransform: "capitalize",
                                     ...(active
                                         ? {}
                                         : {
                                               color: "text.secondary",
-                                              border: "1px solid",
                                               borderColor: "divider",
                                           }),
                                 }}

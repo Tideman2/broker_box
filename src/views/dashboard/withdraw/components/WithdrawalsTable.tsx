@@ -58,10 +58,14 @@ export default function WithdrawalsTable({
                         {HEAD_CELLS.map((cell) => (
                             <TableCell
                                 key={cell}
+                                align={cell === "Amount" ? "right" : "left"}
                                 sx={{
                                     color: "text.secondary",
-                                    fontSize: "0.75rem",
+                                    fontSize: "0.7rem",
+                                    fontWeight: 700,
+                                    letterSpacing: "0.08em",
                                     textTransform: "uppercase",
+                                    whiteSpace: "nowrap",
                                 }}
                             >
                                 {cell}
@@ -81,14 +85,17 @@ export default function WithdrawalsTable({
                                     : undefined
                             }
                         >
-                            <TableCell sx={{ whiteSpace: "nowrap", color: "text.secondary" }}>
+                            <TableCell sx={{ whiteSpace: "nowrap", color: "text.secondary", fontVariantNumeric: "tabular-nums" }}>
                                 #{record.id}
                             </TableCell>
                             <TableCell sx={{ whiteSpace: "nowrap", fontWeight: 600 }}>
                                 {record.asset_symbol} · {record.asset_name}
                             </TableCell>
-                            <TableCell sx={{ whiteSpace: "nowrap" }}>
-                                <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                            <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
+                                <Typography
+                                    variant="body2"
+                                    sx={{ fontWeight: 700, fontVariantNumeric: "tabular-nums" }}
+                                >
                                     {formatAmount(record.amount, 0)}
                                 </Typography>
                             </TableCell>

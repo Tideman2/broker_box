@@ -40,9 +40,19 @@ export default function HoldingsRow({ row }: HoldingsRowProps) {
         <TableRow hover>
             <TableCell>
                 <Stack direction="row" alignItems="center" spacing={1}>
-                    <Box sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: color }} />
+                    <Box
+                        sx={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: "50%",
+                            bgcolor: color,
+                            flexShrink: 0,
+                        }}
+                    />
                     <Box>
-                        <Typography variant="body2">{row.symbol}</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                            {row.symbol}
+                        </Typography>
                         <Typography variant="caption" color="text.secondary">
                             {row.name}
                         </Typography>
@@ -50,7 +60,7 @@ export default function HoldingsRow({ row }: HoldingsRowProps) {
                 </Stack>
             </TableCell>
 
-            <TableCell>
+            <TableCell align="right">
                 <Chip
                     size="small"
                     label={row.category}
@@ -59,36 +69,53 @@ export default function HoldingsRow({ row }: HoldingsRowProps) {
                         border: "1px solid",
                         borderColor: color,
                         bgcolor: "transparent",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.05em",
+                        fontWeight: 600,
+                        fontSize: "0.7rem",
                     }}
                 />
             </TableCell>
 
-            <TableCell>
-                <Typography variant="body2">{row.amount}</Typography>
+            <TableCell align="right">
+                <Typography
+                    variant="body2"
+                    sx={{ fontVariantNumeric: "tabular-nums" }}
+                >
+                    {row.amount}
+                </Typography>
             </TableCell>
 
-            <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
-                <Typography variant="body2">
+            <TableCell
+                align="right"
+                sx={{ display: { xs: "none", sm: "table-cell" } }}
+            >
+                <Typography
+                    variant="body2"
+                    sx={{ fontVariantNumeric: "tabular-nums" }}
+                >
                     {formatCurrency(row.current_price)}
                 </Typography>
             </TableCell>
 
-            <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>
-                <Typography variant="body2">
+            <TableCell
+                align="right"
+                sx={{ display: { xs: "none", md: "table-cell" } }}
+            >
+                <Typography
+                    variant="body2"
+                    sx={{ fontVariantNumeric: "tabular-nums" }}
+                >
                     {formatCurrency(row.instrument_value)}
                 </Typography>
             </TableCell>
 
-            <TableCell>
+            <TableCell align="right">
                 <Chip
                     size="small"
                     label={`${isUp ? "+" : ""}${row.performance.toFixed(2)}%`}
-                    sx={{
-                        color: isUp ? "success.main" : "error.main",
-                        border: "1px solid",
-                        borderColor: isUp ? "success.main" : "error.main",
-                        bgcolor: "transparent",
-                    }}
+                    color={isUp ? "success" : "error"}
+                    sx={{ fontWeight: 600, fontVariantNumeric: "tabular-nums" }}
                 />
             </TableCell>
 

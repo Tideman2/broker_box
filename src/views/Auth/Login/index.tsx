@@ -2,11 +2,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import {
     Box,
     TextField,
     Button,
     Typography,
+    Stack,
+    Alert,
 } from '@mui/material';
 import { CircularProgress } from '@mui/material';
 
@@ -99,24 +102,30 @@ export default function Login() {
         <Box
             component="form"
             onSubmit={handleSubmit}
-            width="100vw"
-            height="100vh"
+            width="100%"
             display="flex"
             flexDirection="column"
-            justifyContent="center"
             gap={2}
-            sx={{
-                px: 2,
-            }}
+            noValidate
         >
-            <ThemeToggleButtonComponent />
-            <Typography variant="h4">
-                Login
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
+                <Typography variant="h4">
+                    Welcome back
+                </Typography>
+                <ThemeToggleButtonComponent />
+            </Stack>
+            <Typography variant="body2" color="text.secondary">
+                Log in to manage your trades and portfolio.
             </Typography>
+
+            {errors.email && errors.email.startsWith('Login failed') && (
+                <Alert severity="error" variant="outlined">
+                    {errors.email}
+                </Alert>
+            )}
 
             <Box
                 width="100%"
-                maxWidth={400}
                 display="flex"
                 flexDirection="column"
                 gap={2}
@@ -126,6 +135,7 @@ export default function Login() {
                     label="Email"
                     type="email"
                     fullWidth
+                    autoComplete="email"
                     value={email}
                     onChange={(event) =>
                         setEmail(event.target.value)
@@ -138,6 +148,7 @@ export default function Login() {
                     label="Password"
                     type="password"
                     fullWidth
+                    autoComplete="current-password"
                     value={password}
                     onChange={(event) =>
                         setPassword(event.target.value)
@@ -150,6 +161,8 @@ export default function Login() {
                     type="submit"
                     variant="contained"
                     fullWidth
+                    size="large"
+                    disabled={loading}
                 >
                     {loading ? (
                         <CircularProgress
@@ -160,6 +173,13 @@ export default function Login() {
                         'Login'
                     )}
                 </Button>
+
+                <Typography variant="body2" color="text.secondary" textAlign="center">
+                    New here?{' '}
+                    <Link href={PATHS.auth.register} style={{ textDecoration: 'underline' }}>
+                        Create an account
+                    </Link>
+                </Typography>
 
             </Box>
 

@@ -3,16 +3,17 @@
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import {
-    Drawer, List
+    Drawer, List, Box, Typography, Divider
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShowChartIcon from '@mui/icons-material/ShowChart';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import MoneyIcon from '@mui/icons-material/Money';
 import TableChartIcon from '@mui/icons-material/TableChart';
+
+import BrandLogo from '@/asset/logo';
 
 import { PATHS } from '@/routes/paths';
 
@@ -30,6 +31,51 @@ const SIDEBAR_ITEMS = [
     { label: 'Withdraw', href: PATHS.dashboard.withdraw, icon: MoneyIcon },
     { label: 'Investment Plans', href: PATHS.dashboard.investmentplans, icon: TrendingUpIcon },
 ];
+
+const SIDEBAR_WIDTH = 270;
+
+const drawerPaperSx = {
+    width: SIDEBAR_WIDTH,
+    boxSizing: 'border-box',
+    bgcolor: 'background.paper',
+    borderRight: '1px solid',
+    borderColor: 'divider',
+};
+
+function SidebarContent() {
+    return (
+        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', py: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 2, pb: 2 }}>
+                <BrandLogo width="32px" height="32px" />
+                <Typography variant="subtitle1" fontWeight={700}>
+                    Merchant Box
+                </Typography>
+            </Box>
+            <Divider />
+            <Typography
+                variant="caption"
+                sx={{ px: 3, pt: 2, pb: 1, color: 'text.secondary', letterSpacing: 1 }}
+            >
+                MENU
+            </Typography>
+            <List sx={{ px: 2, py: 0, display: 'flex', flexDirection: 'column', gap: 0 }}>
+                {
+                    SIDEBAR_ITEMS.map((item) => (
+                        <SideBarItem
+                            key={item.href}
+                            label={item.label}
+                            href={item.href}
+                            icon={item.icon}
+                        />
+                    ))
+                }
+            </List>
+
+            {/* Elite plan card and log out button */}
+            <ElitePlanCardLogout />
+        </Box>
+    );
+}
 
 type props = {
     mobileOpenProp: boolean;
@@ -62,33 +108,17 @@ export default function DashboardSidebar({ mobileOpenProp, setMobileOpenProp }: 
                     BackdropProps={{
                         sx: {
                             backdropFilter: 'blur(6px)',
+                            backgroundColor: 'rgba(0, 0, 0, 0.4)',
                         },
                     }}
                     sx={{
                         '& .MuiDrawer-paper': {
-                            width: 270,
-                            boxSizing: 'border-box',
+                            ...drawerPaperSx,
                             backdropFilter: 'blur(12px)',
-                            borderRight: '1px solid',
-                            borderColor: 'divider',
                         },
                     }}
                 >
-                    <List sx={{ p: 2 }}>
-                        {
-                            SIDEBAR_ITEMS.map((item) => (
-                                <SideBarItem
-                                    key={item.href}
-                                    label={item.label}
-                                    href={item.href}
-                                    icon={item.icon}
-                                />
-                            ))
-                        }
-                    </List>
-
-                    {/* Elite plan card and log out button */}
-                    <ElitePlanCardLogout />
+                    <SidebarContent />
                 </Drawer>
             </>
         )
@@ -97,31 +127,13 @@ export default function DashboardSidebar({ mobileOpenProp, setMobileOpenProp }: 
     //desktop sidebar
     return (
         <Drawer sx={{
+            width: SIDEBAR_WIDTH,
+            flexShrink: 0,
             '& .MuiDrawer-paper': {
-                width: 270,
-                boxSizing: 'border-box',
+                ...drawerPaperSx,
             },
         }} variant="permanent" anchor="left">
-            {/* <Stack p={2} direction={"row"} alignItems="center" justifyContent="center">
-                <BrandLogo width={"50px"} height={"50px"} />
-                <Typography variant="caption">
-                    Merchant Box
-                </Typography>
-            </Stack> */}
-            <List sx={{ p: 2 }}>
-                {
-                    SIDEBAR_ITEMS.map((item) => (
-                        <SideBarItem
-                            key={item.href}
-                            label={item.label}
-                            href={item.href}
-                            icon={item.icon}
-                        />
-                    ))
-                }
-            </List>
-            {/* Elite plan card and log out button */}
-            <ElitePlanCardLogout />
+            <SidebarContent />
         </Drawer>
     );
 }

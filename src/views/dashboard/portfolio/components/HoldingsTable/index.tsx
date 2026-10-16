@@ -156,9 +156,18 @@ export default function HoldingsTable({
                                 {HEAD_CELLS.map((cell, index) => (
                                     <TableCell
                                         key={cell}
+                                        align={
+                                            index >= 2 && index <= 5
+                                                ? "right"
+                                                : index === 6
+                                                  ? "right"
+                                                  : "left"
+                                        }
                                         sx={{
                                             color: "text.secondary",
                                             fontSize: "0.75rem",
+                                            fontWeight: 600,
+                                            letterSpacing: "0.05em",
                                             textTransform: "uppercase",
                                             display:
                                                 index === 3

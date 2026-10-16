@@ -1,7 +1,9 @@
 "use client";
 
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { alpha } from "@mui/material/styles";
 
 import StatusPill from "@/components/StatusPill";
 import { PATHS } from "@/routes/paths";
@@ -36,7 +38,17 @@ export default function ActiveSubscriptionCard({
     const router = useRouter();
 
     return (
-        <Card sx={{ p: { xs: 2, md: 2.5 } }}>
+        <Card
+            sx={{
+                p: { xs: 2.5, md: 3 },
+                position: "relative",
+                overflow: "hidden",
+                border: "1.5px solid",
+                borderColor: "success.main",
+                background: (theme) =>
+                    `linear-gradient(120deg, ${alpha(theme.palette.success.main, 0.08)}, transparent 55%), ${theme.palette.background.paper}`,
+            }}
+        >
             <Stack
                 direction={{ xs: "column", sm: "row" }}
                 spacing={2}
@@ -44,13 +56,27 @@ export default function ActiveSubscriptionCard({
                 alignItems={{ xs: "flex-start", sm: "center" }}
             >
                 <Stack spacing={0.5}>
-                    <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                    <Typography
+                        variant="overline"
+                        sx={{ letterSpacing: "0.12em", fontWeight: 700 }}
+                        color="success.main"
+                    >
+                        Active subscription
+                    </Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 800 }}>
                         {subscription.plan_title}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {formatAmount(toNumber(subscription.invested_amount))}{" "}
-                        invested
-                    </Typography>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <Typography
+                            variant="h6"
+                            sx={{ fontWeight: 800, fontVariantNumeric: "tabular-nums" }}
+                        >
+                            {formatAmount(toNumber(subscription.invested_amount))}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                            invested
+                        </Typography>
+                    </Stack>
                 </Stack>
 
                 <Stack
@@ -72,6 +98,7 @@ export default function ActiveSubscriptionCard({
                                 `${PATHS.dashboard.investmentPlansCheckout}?planId=${subscription.plan_id}`
                             )
                         }
+                        sx={{ borderRadius: 2, fontWeight: 600 }}
                     >
                         {VIEW_DETAILS_LABEL}
                     </Button>
@@ -82,6 +109,7 @@ export default function ActiveSubscriptionCard({
                             variant="outlined"
                             onClick={() => onCancel(subscription)}
                             disabled={cancelling}
+                            sx={{ borderRadius: 2, fontWeight: 600 }}
                         >
                             {CANCEL_PLAN_LABEL}
                         </Button>
@@ -90,9 +118,13 @@ export default function ActiveSubscriptionCard({
             </Stack>
 
             <Box sx={{ mt: 2 }}>
-                <Typography variant="caption" color="text.secondary">
-                    Expires {formatDate(subscription.expiration_date)}
-                </Typography>
+                <Chip
+                    size="small"
+                    icon={<CalendarMonthIcon sx={{ fontSize: 15 }} />}
+                    label={`Expires ${formatDate(subscription.expiration_date)}`}
+                    variant="outlined"
+                    sx={{ fontWeight: 600, color: "text.secondary" }}
+                />
             </Box>
         </Card>
     );

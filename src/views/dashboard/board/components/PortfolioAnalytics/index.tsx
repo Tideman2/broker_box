@@ -86,17 +86,24 @@ export default function PortfolioAnalytics({
 
                         <XAxis
                             dataKey="date"
-                            tick={{ fill: theme.palette.text.secondary, fontSize: 12 }}
+                            tick={{
+                                fill: theme.palette.text.secondary,
+                                fontSize: 12,
+                            }}
                             axisLine={false}
                             tickLine={false}
+                            tickMargin={8}
                             minTickGap={28}
                         />
 
                         <YAxis
-                            tick={{ fill: theme.palette.text.secondary, fontSize: 12 }}
+                            tick={{
+                                fill: theme.palette.text.secondary,
+                                fontSize: 12,
+                            }}
                             axisLine={false}
                             tickLine={false}
-                            width={58}
+                            width={64}
                             tickFormatter={(value: number) =>
                                 formatCurrency(value, 0)
                             }
@@ -104,15 +111,25 @@ export default function PortfolioAnalytics({
 
                         <Tooltip
                             content={<ChartTooltip />}
-                            cursor={{ stroke: theme.palette.divider }}
+                            cursor={{
+                                stroke: theme.palette.primary.main,
+                                strokeOpacity: 0.4,
+                                strokeDasharray: '4 4',
+                            }}
                         />
 
                         <Area
                             type="monotone"
                             dataKey="value"
                             stroke={theme.palette.primary.main}
-                            strokeWidth={2}
+                            strokeWidth={2.5}
                             fill="url(#analyticsGradient)"
+                            dot={false}
+                            activeDot={{
+                                r: 4,
+                                strokeWidth: 2,
+                                stroke: theme.palette.background.paper,
+                            }}
                         />
                     </AreaChart>
                 </ResponsiveContainer>

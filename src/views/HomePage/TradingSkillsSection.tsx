@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Box, Typography, Stack, Button, IconButton } from '@mui/material';
+import { Box, Typography, Stack, Button, IconButton, Chip } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import ContentWrapper from '@/layout/components/ContentWrapper';
@@ -12,7 +12,7 @@ const modalOfferRangesContent = () => {
     return (
         <Box p={2}>
             <Typography variant="h6" gutterBottom>
-                Offer Tiers & Trading Tools
+                Offer Tiers &amp; Trading Tools
             </Typography>
 
             <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
@@ -53,20 +53,27 @@ export default function TradingSkillsSection() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            height: { xs: 'auto', md: 700 },
+            minHeight: { xs: 'auto', md: 700 },
+            py: { xs: 8, md: 10 },
         }}>
-            <Stack height={"100%"} spacing={1} pt={15} pl={{ xs: 2, md: 10 }}
+            <Stack minHeight={{ md: 560 }} spacing={2} pt={{ xs: 4, md: 8 }} pl={{ xs: 2, md: 10 }}
                 alignItems={"end"} justifyContent={"space-around"}>
-                <Box>
-                    <Typography variant="h4" color="info" gutterBottom>
+                <Box maxWidth={560}>
+                    <Chip
+                        label="Trading tools"
+                        color="info"
+                        size="small"
+                        sx={{ mb: 2, borderRadius: 999 }}
+                    />
+                    <Typography variant="h2" color="info" gutterBottom>
                         Intuitive trading tools.
                     </Typography>
-                    <Typography variant="h4" color="textSecondary" gutterBottom>
+                    <Typography variant="h2" color="textSecondary" gutterBottom sx={{ textWrap: 'balance' }}>
                         Build your strategy<br />
                         and track market <br />
                         trends, seamlessly
                     </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
+                    <Typography variant="body1" color="textSecondary" gutterBottom sx={{ maxWidth: 480 }}>
                         Manage your trades, track your portfolio <br />
                         and stay ahead in the market.
                     </Typography>
@@ -83,11 +90,11 @@ export default function TradingSkillsSection() {
                 {/* second section texts and button */}
                 <Stack>
                     <Typography variant='caption' color="textSecondary" gutterBottom>
-                        Stocks & funds offered through Merchant box Financial.
+                        Stocks &amp; funds offered through Merchant box Financial.
                     </Typography>
 
                     <Box display="flex" onClick={() => setOpen(true)}
-                        alignItems="center" gap={1} mt={1} sx={{ cursor: "pointer", textDecoration: "underline" }}>
+                        alignItems="center" gap={1} mt={1} sx={{ cursor: "pointer", textDecoration: "underline", width: 'fit-content' }}>
                         <Typography variant="caption" color="textSecondary">
                             About offer tiers and trading tools
                         </Typography>
@@ -95,6 +102,7 @@ export default function TradingSkillsSection() {
                         <IconButton
                             size="small"
                             sx={{ color: 'text.secondary' }}
+                            aria-label="About offer tiers"
                         >
                             <InfoOutlinedIcon fontSize="small" />
                         </IconButton>

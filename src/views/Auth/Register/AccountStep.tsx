@@ -45,12 +45,18 @@ export default function AccountStep() {
     };
 
     return (
-        <Stack spacing={3}>
-            <Typography variant="h4">Account Info</Typography>
+        <Stack spacing={2.5}>
+            <Stack spacing={0.5}>
+                <Typography variant="h6">Account info</Typography>
+                <Typography variant="body2" color="text.secondary">
+                    This is how you will log in to Merchant Box.
+                </Typography>
+            </Stack>
 
             <TextField
                 label="Full Name"
                 value={data.fullName}
+                autoComplete="name"
                 onChange={(e) =>
                     addAccountInfo(data.email, data.password, data.confirmPassword, e.target.value)
                 }
@@ -61,7 +67,9 @@ export default function AccountStep() {
 
             <TextField
                 label="Email"
+                type="email"
                 value={data.email}
+                autoComplete="email"
                 onChange={(e) =>
                     addAccountInfo(e.target.value, data.password, data.confirmPassword, data.fullName)
                 }
@@ -74,6 +82,7 @@ export default function AccountStep() {
                 label="Password"
                 type="password"
                 value={data.password}
+                autoComplete="new-password"
                 onChange={(e) =>
                     addAccountInfo(data.email, e.target.value, data.confirmPassword, data.fullName)
                 }
@@ -86,6 +95,7 @@ export default function AccountStep() {
                 label="Confirm Password"
                 type="password"
                 value={data.confirmPassword}
+                autoComplete="new-password"
                 onChange={(e) =>
                     addAccountInfo(data.email, data.password, e.target.value, data.fullName)
                 }
@@ -95,8 +105,8 @@ export default function AccountStep() {
             />
 
             <Stack direction="row" spacing={2}>
-                <Button onClick={goToPreviousStep}>Back</Button>
-                <Button variant="contained" onClick={handleSubmit}>
+                <Button onClick={goToPreviousStep} color="inherit">Back</Button>
+                <Button variant="contained" fullWidth size="large" onClick={handleSubmit}>
                     Continue
                 </Button>
             </Stack>

@@ -17,9 +17,7 @@ export default function SideBarItem({
     icon: Icon,
 }: SideBarItemProps) {
     const pathname = usePathname();
-    console.log(pathname, href)
-    const isActive =
-        pathname === href
+    const isActive = pathname === href;
     //  || pathname.startsWith(href + '/');
 
     return (
@@ -28,24 +26,49 @@ export default function SideBarItem({
             href={href}
             selected={isActive}
             sx={{
-                borderRadius: 2,
-                mb: 0.5,
-
-                '&.Mui-selected': {
+                position: 'relative',
+                borderRadius: 1.5,
+                mb: 1,
+                px: 2,
+                py: 1,
+                color: 'text.secondary',
+                '& .MuiListItemText-primary': {
+                    fontSize: '0.875rem',
+                    fontWeight: isActive ? 600 : 500,
+                },
+                '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    left: 0,
+                    top: 8,
+                    bottom: 8,
+                    width: 3,
+                    borderRadius: 999,
                     bgcolor: 'primary.main',
-                    color: 'primary.contrastText',
-                    boxShadow: '0 0 10px rgba(0,214,255,0.5)',
+                    opacity: isActive ? 1 : 0,
+                    transition: 'opacity 0.2s',
+                },
+                '&:hover': {
+                    bgcolor: 'action.hover',
+                },
+                '&.Mui-selected': {
+                    bgcolor: 'action.selected',
+                    color: 'primary.main',
+                    '&:hover': {
+                        bgcolor: 'action.selected',
+                    },
                 },
             }}
         >
             {Icon && (
                 <ListItemIcon
                     sx={{
-                        color: isActive ? 'inherit' : 'text.secondary',
+                        color: isActive ? 'primary.main' : 'text.secondary',
                         minWidth: 36,
+                        '& .MuiSvgIcon-root': { fontSize: 20 },
                     }}
                 >
-                    <Icon />
+                    <Icon fontSize="inherit" />
                 </ListItemIcon>
             )}
 

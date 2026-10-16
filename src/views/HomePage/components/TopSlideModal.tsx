@@ -20,6 +20,7 @@ export default function TopSlideModal({ open, onClose, children }: Props) {
         height: '100%',
         zIndex: 1300,
         pointerEvents: open ? 'auto' : 'none',
+        visibility: open ? 'visible' : 'hidden',
       }}
     >
       {/* Overlay */}
@@ -30,17 +31,22 @@ export default function TopSlideModal({ open, onClose, children }: Props) {
           width: '100%',
           height: '100%',
           backgroundColor: open ? 'rgba(0,0,0,0.5)' : 'transparent',
-          transition: '0.3s',
+          transition: 'background-color 0.3s',
         }}
       />
 
       {/* Sliding Panel */}
       <Box
+        role="dialog"
+        aria-modal="true"
         sx={{
           position: 'relative',
           backgroundColor: 'background.paper',
           color: 'text.primary',
-          p: 4,
+          p: { xs: 3, sm: 4 },
+          mx: 'auto',
+          mt: 0,
+          maxWidth: 720,
           maxHeight: '80vh',
           overflowY: 'auto',
           transform: open ? 'translateY(0%)' : 'translateY(-100%)',
@@ -48,11 +54,16 @@ export default function TopSlideModal({ open, onClose, children }: Props) {
           boxShadow: 6,
           borderBottomLeftRadius: 16,
           borderBottomRightRadius: 16,
+          '@media (prefers-reduced-motion: reduce)': {
+            transition: 'none',
+            transform: 'none',
+          },
         }}
       >
         {/* Close button */}
         <IconButton
           onClick={onClose}
+          aria-label="Close"
           sx={{ position: 'absolute', top: 10, right: 10 }}
         >
           <CloseIcon />

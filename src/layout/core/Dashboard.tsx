@@ -13,17 +13,26 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
             {/* Sidebar */}
             <DashboardSidebar mobileOpenProp={mobileOpen} setMobileOpenProp={setMobileOpen} />
 
             {/* Main Area */}
-            <Box sx={{ flex: 1, display: 'flex', ml: isMobile ? 0 : "270px", flexDirection: 'column' }}>
+            <Box sx={{ flex: 1, display: 'flex', minWidth: 0, ml: isMobile ? 0 : "270px", flexDirection: 'column' }}>
                 {/* Navbar */}
                 <DashboardNavbar setMobileOpen={setMobileOpen} />
 
                 {/* Page Content */}
-                <Box sx={{ p: 3 }}>
+                <Box
+                    component="main"
+                    sx={{
+                        flex: 1,
+                        width: '100%',
+                        maxWidth: 1280,
+                        mx: 'auto',
+                        p: { xs: 2, md: 3 },
+                    }}
+                >
                     {children}
                 </Box>
             </Box>

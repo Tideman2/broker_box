@@ -16,7 +16,9 @@ export default function PortfolioHeader() {
             spacing={2}
         >
             <Box>
-                <Typography variant="h4">Portfolio Analysis</Typography>
+                <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                    Portfolio Analysis
+                </Typography>
                 <Typography variant="body2" color="text.secondary">
                     Analyze your asset distribution, risk profile, and real-time
                     performance across all linked trading strategies.
