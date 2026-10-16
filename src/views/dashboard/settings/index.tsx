@@ -168,7 +168,7 @@ export default function Settings() {
                             <DashboardCard
                                 title="Preferences"
                                 icon={TuneOutlinedIcon}
-                                sx={{ position: { lg: "sticky" }, top: { lg: 88 } }}
+                                sx={{ position: { lg: "sticky" }, top: { lg: 88 }, zIndex: { lg: 1 } }}
                             >
                                 <Stack spacing={2}>
                                     <TextField

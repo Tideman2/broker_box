@@ -33,6 +33,7 @@ export default function DepositSummary({
             sx={{
                 position: { lg: "sticky" },
                 top: { lg: 88 },
+                zIndex: { lg: 1 },
             }}
         >
             <Stack spacing={1.5}>

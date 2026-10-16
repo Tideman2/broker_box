@@ -50,7 +50,7 @@ export default function PaymentMethodTabs({
                         fontSize: "0.85rem",
                         textTransform: "none",
                         color: "text.secondary",
-                        "&.Mui-selected": { color: "primary.main" },
+                        "&.Mui-selected": { color: "primary.contrastText" },
                     },
                 }}
             >

@@ -39,7 +39,7 @@ export default function OrderSummary({
     return (
         <DashboardCard
             title={ORDER_SUMMARY_LABEL}
-            sx={{ position: { lg: "sticky" }, top: { lg: 88 } }}
+            sx={{ position: { lg: "sticky" }, top: { lg: 88 }, zIndex: { lg: 1 } }}
         >
             <Stack spacing={1.25}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>

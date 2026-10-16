@@ -11,7 +11,7 @@ export default function NetworkFees() {
         <DashboardCard
             title="Network Fees"
             icon={ReceiptLongIcon}
-            sx={{ position: { lg: "sticky" }, top: { lg: 88 } }}
+            sx={{ position: { lg: "sticky" }, top: { lg: 88 }, zIndex: { lg: 1 } }}
         >
             <Stack spacing={1.25} divider={<Divider sx={{ borderColor: "divider" }} />}>
                 {NETWORK_FEES.map((fee) => (
