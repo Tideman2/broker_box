@@ -8,7 +8,6 @@ import {
     IconButton,
     Avatar,
     Typography,
-    Badge,
     Stack
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -18,6 +17,8 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 import { useMediaQuery } from '@/layout/hook/useMediaQueries';
 import { useThemeMode } from '@/contexts/theme/hooks';
+import { useAuthSession } from '@/contexts/authSession/hooks';
+import { formatInitials } from '@/utils/format';
 
 type props = {
     setMobileOpen: (open: boolean) => void;
@@ -26,6 +27,11 @@ type props = {
 export default function DashboardNavbar({ setMobileOpen }: props) {
     const isMobile = useMediaQuery("upToSm");
     const { toggleTheme } = useThemeMode();
+    const { user, loading } = useAuthSession();
+
+    // The session has no avatar, so the chip falls back to the user's initials.
+    const displayName = user?.full_name?.trim() || user?.email || '';
+    const initials = formatInitials(displayName) || '?';
 
     return (
         <AppBar
@@ -93,9 +99,7 @@ export default function DashboardNavbar({ setMobileOpen }: props) {
 
                     {/* Notifications */}
                     <IconButton aria-label="Notifications" sx={{ color: 'text.secondary' }}>
-                        <Badge badgeContent={3} color="error">
-                            <NotificationsIcon sx={{ fontSize: 20 }} />
-                        </Badge>
+                        <NotificationsIcon sx={{ fontSize: 20 }} />
                     </IconButton>
 
                     {/* User */}
@@ -112,12 +116,19 @@ export default function DashboardNavbar({ setMobileOpen }: props) {
                         }}
                     >
                         <Avatar
-                            src="/avatar.png" // replace with real
-                            sx={{ width: 32, height: 32 }}
-                        />
+                            sx={{
+                                width: 32,
+                                height: 32,
+                                bgcolor: 'primary.main',
+                                fontSize: '0.8125rem',
+                                fontWeight: 700,
+                            }}
+                        >
+                            {loading ? '' : initials}
+                        </Avatar>
                         {!isMobile && (
                             <Typography variant="body2" fontWeight={600} sx={{ pr: 0.5 }}>
-                                Isaac
+                                {loading ? '' : displayName}
                             </Typography>
                         )}
                     </Stack>
