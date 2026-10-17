@@ -2,7 +2,12 @@ import { authConfig } from "@/config/auth";
 import { getServerAxios } from "../server-axios";
 
 import type { RegistrationData } from "@/contexts/register/types";
-import type { User } from "./types";
+import type {
+    ChangePasswordPayload,
+    ChangePasswordResponse,
+    UpdateProfilePayload,
+    User,
+} from "./types";
 
 export type LoginUserPayload = {
     email: string;
@@ -151,6 +156,44 @@ export const getCurrentUser = async (): Promise<User> => {
     );
 
     return response.data;
+};
+
+export const updateProfile = async (
+    data: UpdateProfilePayload
+): Promise<User> => {
+    try {
+        const serverAxios = await getServerAxios();
+        const response = await serverAxios.patch<User>(
+            authConfig.profileEndpoint,
+            data
+        );
+
+        return response.data;
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        throw error;
+    }
+};
+
+/**
+ * Changes the password and revokes every session on the server, including the
+ * token used to make this call. The caller must clear the session afterwards.
+ */
+export const changePassword = async (
+    data: ChangePasswordPayload
+): Promise<ChangePasswordResponse> => {
+    try {
+        const serverAxios = await getServerAxios();
+        const response = await serverAxios.post<ChangePasswordResponse>(
+            authConfig.changePasswordEndpoint,
+            data
+        );
+
+        return response.data;
+    } catch (error) {
+        console.error("Error changing password:", error);
+        throw error;
+    }
 };
 
 export const logoutUser = async () => {

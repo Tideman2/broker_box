@@ -30,6 +30,11 @@ export const subscriptionQueryKeys = {
     subscriptions: ["subscription", "subscriptions"] as const,
 };
 
+export const settingsQueryKeys = {
+    profile: ["settings", "profile"] as const,
+    preferences: ["settings", "preferences"] as const,
+};
+
 /**
  * The available balance is served once by GET /wallet/available but is cached
  * under a separate key per feature. After any mutation that moves money, use
