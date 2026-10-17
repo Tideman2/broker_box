@@ -10,15 +10,16 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import DashboardCard from '@/components/DashboardCard';
 
 import type { FinancialFlowData } from '@/views/dashboard/board/mockData';
-import { formatCurrency } from '@/views/dashboard/board/utils';
 
 import FlowItem from './components/FlowItem';
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type FinancialFlowProps = {
     data: FinancialFlowData;
 };
 
 export default function FinancialFlow({ data }: FinancialFlowProps) {
+    const { formatCurrency } = useFormatCurrency();
     return (
         <DashboardCard title="Financial Flow" icon={AccountBalanceWalletIcon}>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={4} mb={2}>

@@ -4,9 +4,8 @@ import { Box, Button, Skeleton, Stack, Typography } from "@mui/material";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { alpha } from "@mui/material/styles";
 
-import { formatAmount } from "@/utils/format";
-
 import { BALANCE_LABEL } from "../mockContent";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type AvailableBalanceBannerProps = {
     balance?: number;
@@ -29,6 +28,7 @@ export default function AvailableBalanceBanner({
     errorDescription,
     loadingLabel,
 }: AvailableBalanceBannerProps) {
+    const { formatAmount } = useFormatCurrency();
     return (
         <Box
             sx={{

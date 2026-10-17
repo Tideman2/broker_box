@@ -20,10 +20,10 @@ import type {
     PortfolioAnalyticsData,
     PortfolioTimeframe,
 } from '@/views/dashboard/board/mockData';
-import { formatCurrency } from '@/views/dashboard/board/utils';
 
 import TimeframeSelector from './components/TimeframeSelector';
 import ChartTooltip from './components/ChartTooltip';
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type PortfolioAnalyticsProps = {
     data: PortfolioAnalyticsData;
@@ -34,6 +34,7 @@ export default function PortfolioAnalytics({
     data,
     defaultTimeframe = '1M',
 }: PortfolioAnalyticsProps) {
+    const { formatCurrency } = useFormatCurrency();
     const theme = useTheme();
     const [timeframe, setTimeframe] =
         useState<PortfolioTimeframe>(defaultTimeframe);

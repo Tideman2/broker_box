@@ -7,9 +7,10 @@ import LoadingState from "@/components/LoadingState";
 import StatusPill from "@/components/StatusPill";
 
 import { formatDate } from "@/utils/display";
-import { formatAmount, toNumber } from "@/utils/format";
+import { toNumber } from "@/utils/format";
 
 import type { DepositResponse } from "@/api/deposit/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 const HEAD_CELLS = ["ID", "Method", "Amount", "Asset", "Status", "Date"];
 
@@ -34,6 +35,7 @@ export default function RecentDeposits({
     onLoadMore,
     onRowClick,
 }: RecentDepositsProps) {
+    const { formatAmount } = useFormatCurrency();
     if (loading) return <LoadingState height={40} lines={5} />;
 
     if (error) {

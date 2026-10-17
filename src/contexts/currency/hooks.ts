@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 
 import { CurrencyContext } from './context';
 import { formatAmount, formatCurrency } from '@/utils/format';
@@ -12,14 +12,28 @@ export const useCurrency = (): CurrencyDisplay =>
  * Amount formatting bound to the active display currency. Every component that
  * renders money should use this rather than importing `formatAmount` directly,
  * otherwise its figures ignore the user's currency preference.
+ *
+ * Both functions are memoized, so a component that formats inside a `useMemo`
+ * only has to list them as dependencies — the identity only changes when the
+ * currency itself changes.
  */
 export const useFormatCurrency = () => {
     const currency = useCurrency();
 
-    return {
-        formatCurrency: (value: number, fractionDigits = 2) =>
+    const formatCurrencyValue = useCallback(
+        (value: number, fractionDigits = 2) =>
             formatCurrency(value, fractionDigits, currency),
-        formatAmount: (value: unknown, fractionDigits = 2) =>
+        [currency]
+    );
+
+    const formatAmountValue = useCallback(
+        (value: unknown, fractionDigits = 2) =>
             formatAmount(value, fractionDigits, currency),
+        [currency]
+    );
+
+    return {
+        formatCurrency: formatCurrencyValue,
+        formatAmount: formatAmountValue,
     };
 };

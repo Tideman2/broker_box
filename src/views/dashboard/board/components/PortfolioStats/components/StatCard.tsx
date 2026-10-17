@@ -3,13 +3,15 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 import type { PortfolioStat } from '@/views/dashboard/board/mockData';
-import { formatCurrency, formatPercent } from '@/views/dashboard/board/utils';
+import { formatPercent } from '@/views/dashboard/board/utils';
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type StatCardProps = {
     stat: PortfolioStat;
 };
 
 export default function StatCard({ stat }: StatCardProps) {
+    const { formatCurrency } = useFormatCurrency();
     const isUp = stat.trend === 'up';
 
     return (

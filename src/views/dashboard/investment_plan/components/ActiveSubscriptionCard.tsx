@@ -8,7 +8,7 @@ import { alpha } from "@mui/material/styles";
 import StatusPill from "@/components/StatusPill";
 import { PATHS } from "@/routes/paths";
 import { formatDate } from "@/utils/display";
-import { formatAmount, toNumber } from "@/utils/format";
+import { toNumber } from "@/utils/format";
 import { useRouter } from "next/navigation";
 
 import {
@@ -21,6 +21,7 @@ import {
 } from "../constants";
 
 import type { SubscriptionResponse } from "@/api/subscription/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type ActiveSubscriptionCardProps = {
     subscription: SubscriptionResponse;
@@ -35,6 +36,7 @@ export default function ActiveSubscriptionCard({
     showCancel,
     cancelling,
 }: ActiveSubscriptionCardProps) {
+    const { formatAmount } = useFormatCurrency();
     const router = useRouter();
 
     return (

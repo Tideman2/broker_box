@@ -5,7 +5,7 @@ import Card from "@mui/material/Card";
 import { alpha } from "@mui/material/styles";
 
 import DetailRow from "@/components/DetailRow";
-import { formatAmount, toNumber } from "@/utils/format";
+import { toNumber } from "@/utils/format";
 
 import {
     INVESTMENT_AMOUNT_LABEL,
@@ -17,12 +17,14 @@ import {
 import { formatDuration, formatRoi, RISK_LABELS } from "../../constants";
 
 import type { PlanResponse } from "@/api/plan/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type SelectedPlanCardProps = {
     plan: PlanResponse;
 };
 
 export default function SelectedPlanCard({ plan }: SelectedPlanCardProps) {
+    const { formatAmount } = useFormatCurrency();
     return (
         <Card sx={{ p: { xs: 2.5, md: 3 }, borderRadius: 3 }}>
             <Stack spacing={0.5}>

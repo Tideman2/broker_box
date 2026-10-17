@@ -5,10 +5,11 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DetailRow from "@/components/DetailRow";
 import StatusPill from "@/components/StatusPill";
 
-import { formatAmount, formatDate, truncateAddress } from "./utils";
+import { formatDate, truncateAddress } from "./utils";
 import { SUCCESS_MODAL_CAPTION, SUCCESS_MODAL_TITLE } from "./mockContent";
 
 import type { WithdrawFundsResponse } from "@/api/withdraw/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type WithdrawSuccessModalProps = {
     data: WithdrawFundsResponse | null;
@@ -16,6 +17,7 @@ type WithdrawSuccessModalProps = {
 };
 
 export default function WithdrawSuccessModal({ data, onDone }: WithdrawSuccessModalProps) {
+    const { formatAmount } = useFormatCurrency();
     const open = data != null;
 
     return (

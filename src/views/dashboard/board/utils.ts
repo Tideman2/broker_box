@@ -1,1 +1,1 @@
-export { formatCurrency, formatPercent } from "@/utils/format";
+export { formatPercent } from "@/utils/format";

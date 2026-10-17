@@ -6,11 +6,11 @@ import DetailRow from "@/components/DetailRow";
 import StatusPill from "@/components/StatusPill";
 
 import { formatDate } from "@/utils/display";
-import { formatAmount } from "@/utils/format";
 
 import { SUCCESS_MODAL_CAPTION, SUCCESS_MODAL_TITLE } from "./mockContent";
 
 import type { DepositFundsResponse } from "@/api/deposit/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type DepositSuccessModalProps = {
     data: DepositFundsResponse | null;
@@ -18,6 +18,7 @@ type DepositSuccessModalProps = {
 };
 
 export default function DepositSuccessModal({ data, onDone }: DepositSuccessModalProps) {
+    const { formatAmount } = useFormatCurrency();
     const open = data != null;
 
     return (

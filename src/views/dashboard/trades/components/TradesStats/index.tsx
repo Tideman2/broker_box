@@ -7,7 +7,7 @@ import PercentIcon from "@mui/icons-material/Percent";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 
-import { formatAmount, toNumber } from "@/utils/format";
+import { toNumber } from "@/utils/format";
 import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
 
@@ -15,6 +15,7 @@ import { TRADES_CONTENT } from "../../mockContent";
 import { winRatePercent } from "../../utils";
 
 import type { TradeOverviewResponse } from "@/api/portfolio/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type TradeStat = {
     id: string;
@@ -38,6 +39,7 @@ export default function TradesStats({
     error,
     onRetry,
 }: TradesStatsProps) {
+    const { formatAmount } = useFormatCurrency();
     if (loading) {
         return (
             <Grid container spacing={3}>

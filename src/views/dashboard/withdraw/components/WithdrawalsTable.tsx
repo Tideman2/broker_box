@@ -5,9 +5,10 @@ import LoadingState from "@/components/LoadingState";
 
 import StatusPill from "@/components/StatusPill";
 
-import { formatAmount, formatDate } from "./utils";
+import { formatDate } from "./utils";
 
 import type { UserWithdrawalRecordsResponse } from "@/api/withdraw/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 const HEAD_CELLS = ["ID", "Asset", "Amount", "Status", "Date"];
 
@@ -30,6 +31,7 @@ export default function WithdrawalsTable({
     emptyDescription = "Your withdrawal requests will appear here.",
     onRowClick,
 }: WithdrawalsTableProps) {
+    const { formatAmount } = useFormatCurrency();
     if (loading) return <LoadingState height={40} lines={5} />;
 
     if (error) {

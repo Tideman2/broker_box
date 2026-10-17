@@ -7,7 +7,7 @@ import { alpha } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
 
 import { PATHS } from "@/routes/paths";
-import { formatAmount } from "@/utils/format";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 import {
     CONFIRM_LABEL,
@@ -33,6 +33,7 @@ export default function ConfirmSubscription({
     error,
     onConfirm,
 }: ConfirmSubscriptionProps) {
+    const { formatAmount } = useFormatCurrency();
     const router = useRouter();
 
     if (!sufficient) {

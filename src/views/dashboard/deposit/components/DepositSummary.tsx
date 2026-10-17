@@ -5,11 +5,12 @@ import DashboardCard from "@/components/DashboardCard";
 import DetailRow from "@/components/DetailRow";
 
 import { truncateAddress } from "@/utils/display";
-import { formatAmount } from "@/utils/format";
+
 import { PAYMENT_METHOD_LABELS } from "./mockContent";
 import { METHOD_CRYPTO } from "./PaymentMethodTabs";
 
 import type { AssetResponse } from "@/api/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type DepositSummaryProps = {
     asset: AssetResponse | null;
@@ -26,6 +27,7 @@ export default function DepositSummary({
     balanceError,
     onBalanceRetry,
 }: DepositSummaryProps) {
+    const { formatAmount } = useFormatCurrency();
     return (
         <DashboardCard
             title="Deposit Summary"

@@ -1,6 +1,5 @@
 import { Box, Typography } from '@mui/material';
-
-import { formatCurrency } from '@/views/dashboard/board/utils';
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type ChartTooltipProps = {
     active?: boolean;
@@ -13,6 +12,7 @@ export default function ChartTooltip({
     payload,
     label,
 }: ChartTooltipProps) {
+    const { formatCurrency } = useFormatCurrency();
     if (!active || !payload?.length) {
         return null;
     }

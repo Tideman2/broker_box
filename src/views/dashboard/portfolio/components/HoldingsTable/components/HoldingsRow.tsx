@@ -11,9 +11,8 @@ import {
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
-import { formatCurrency } from "@/utils/format";
-
 import type { HoldingsRow as HoldingsRowData } from "@/views/dashboard/portfolio/utils";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 const CATEGORY_COLOR: Record<string, string> = {
     FOREX: "primary.main",
@@ -33,6 +32,7 @@ type HoldingsRowProps = {
 };
 
 export default function HoldingsRow({ row }: HoldingsRowProps) {
+    const { formatCurrency } = useFormatCurrency();
     const isUp = row.performance >= 0;
     const color = categoryColor(row.category);
 

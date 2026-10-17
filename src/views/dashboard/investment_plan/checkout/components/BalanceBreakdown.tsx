@@ -4,7 +4,7 @@ import { Alert, Box, Skeleton, Stack, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 
 import DetailRow from "@/components/DetailRow";
-import { formatAmount } from "@/utils/format";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 import {
     BALANCE_AFTER_LABEL,
@@ -29,6 +29,7 @@ export default function BalanceBreakdown({
     loading,
     stale,
 }: BalanceBreakdownProps) {
+    const { formatAmount } = useFormatCurrency();
 
     if (loading) {
         return (

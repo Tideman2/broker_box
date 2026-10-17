@@ -6,7 +6,7 @@ import EmptyState from '@/components/EmptyState';
 import LoadingState from '@/components/LoadingState';
 import StatusPill from '@/components/StatusPill';
 import { formatDate } from '@/utils/display';
-import { formatAmount, toNumber } from '@/utils/format';
+import { toNumber } from '@/utils/format';
 
 import {
     RISK_LABELS,
@@ -18,6 +18,7 @@ import {
 
 import type { PlanResponse } from '@/api/plan/types';
 import type { SubscriptionResponse } from '@/api/subscription/types';
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type TopInvestmentProps = {
     subscription?: SubscriptionResponse;
@@ -50,6 +51,8 @@ export default function TopInvestment({
     error,
     onRetry,
 }: TopInvestmentProps) {
+    const { formatAmount } = useFormatCurrency();
+
     return (
         <DashboardCard title="Top Investment" icon={TrendingUpIcon}>
             {loading ? (

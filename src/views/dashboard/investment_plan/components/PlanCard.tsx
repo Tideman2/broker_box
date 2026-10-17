@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import StatusPill from "@/components/StatusPill";
 
 import { PATHS } from "@/routes/paths";
-import { formatAmount, toNumber } from "@/utils/format";
+import { toNumber } from "@/utils/format";
 
 import {
     DURATION_LABEL,
@@ -24,6 +24,7 @@ import {
 import { formatDuration, formatRoi, RISK_LABELS } from "../constants";
 
 import type { PlanResponse } from "@/api/plan/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type PlanCardProps = {
     plan: PlanResponse;
@@ -97,6 +98,7 @@ export default function PlanCard({
     disabled,
 }: PlanCardProps) {
     const router = useRouter();
+    const { formatAmount } = useFormatCurrency();
     const recommended = plan.is_recommended === true;
     const active = activePlanIds?.includes(plan.id) === true;
     const hasBadges = recommended || active;

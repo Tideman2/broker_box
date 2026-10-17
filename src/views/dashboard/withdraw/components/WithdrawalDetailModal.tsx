@@ -10,7 +10,8 @@ import LoadingState from "@/components/LoadingState";
 import DetailRow from "@/components/DetailRow";
 import StatusPill from "@/components/StatusPill";
 
-import { formatAmount, formatDate, truncateAddress } from "./utils";
+import { formatDate, truncateAddress } from "./utils";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type WithdrawalDetailModalProps = {
     recordId: number | null;
@@ -21,6 +22,7 @@ export default function WithdrawalDetailModal({
     recordId,
     onClose,
 }: WithdrawalDetailModalProps) {
+    const { formatAmount } = useFormatCurrency();
     const open = recordId != null;
 
     const detailQuery = useQuery({

@@ -3,12 +3,11 @@
 import {
     createContext,
     useCallback,
-    useEffect,
     useMemo,
-    useState,
+    useSyncExternalStore,
     type ReactNode,
 } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { getPreferences } from '@/app/actions/settings-actions';
 import { settingsQueryKeys } from '@/api/react-query-keys';
@@ -23,13 +22,23 @@ const isCurrencyDisplay = (value: unknown): value is CurrencyDisplay =>
     value === 'usd' || value === 'eur' || value === 'gbp';
 
 /**
- * The stored preference is applied in an effect rather than read during render,
- * because the server and the first client render have to produce the same
- * markup for hydration to match.
+ * The stored preference is exposed as an external store instead of component
+ * state, because it only exists in the browser: the server and the first client
+ * render have to produce the same markup. `useSyncExternalStore` is the
+ * supported shape for that — React renders the server value during hydration
+ * and swaps in the stored one immediately afterwards, with no effect that has to
+ * set state.
  */
-const readStoredCurrency = (): CurrencyDisplay => {
-    if (typeof window === 'undefined') return DEFAULT_CURRENCY;
+const listeners = new Set<() => void>();
 
+const subscribeToCurrency = (onChange: () => void): (() => void) => {
+    listeners.add(onChange);
+    return () => {
+        listeners.delete(onChange);
+    };
+};
+
+const getStoredCurrency = (): CurrencyDisplay => {
     try {
         const stored = window.localStorage.getItem(STORAGE_KEY);
         return isCurrencyDisplay(stored) ? stored : DEFAULT_CURRENCY;
@@ -39,14 +48,16 @@ const readStoredCurrency = (): CurrencyDisplay => {
     }
 };
 
-const writeStoredCurrency = (value: CurrencyDisplay): void => {
-    if (typeof window === 'undefined') return;
+const getServerCurrency = (): CurrencyDisplay => DEFAULT_CURRENCY;
 
+const rememberCurrency = (value: CurrencyDisplay): void => {
     try {
         window.localStorage.setItem(STORAGE_KEY, value);
     } catch {
-        // Storage can be blocked; nothing depends on this write succeeding.
+        // Storage can be blocked; nothing depends on the write succeeding.
     }
+
+    listeners.forEach((notify) => notify());
 };
 
 type CurrencyContextValue = {
@@ -67,32 +78,34 @@ export const CurrencyContext = createContext<CurrencyContextValue>({
 });
 
 export function CurrencyProvider({ children }: { children: ReactNode }) {
-    const [currency, setCurrencyState] = useState<CurrencyDisplay>(DEFAULT_CURRENCY);
+    const queryClient = useQueryClient();
+
+    const storedCurrency = useSyncExternalStore(
+        subscribeToCurrency,
+        getStoredCurrency,
+        getServerCurrency
+    );
 
     const preferencesQuery = useQuery({
         queryKey: settingsQueryKeys.preferences,
-        queryFn: getPreferences,
+        queryFn: async () => {
+            const preferences = await getPreferences();
+            // The server answer wins, and is remembered so the next visit
+            // renders the right currency before the request comes back.
+            rememberCurrency(preferences.currency_display);
+            return preferences;
+        },
         refetchOnWindowFocus: false,
     });
 
-    // Fast path: show the remembered value while the request is still in flight.
-    useEffect(() => {
-        setCurrencyState(readStoredCurrency());
-    }, []);
-
-    // Source of truth: whatever the server reports once it answers.
-    useEffect(() => {
-        const serverValue = preferencesQuery.data?.currency_display;
-        if (serverValue) {
-            setCurrencyState(serverValue);
-            writeStoredCurrency(serverValue);
-        }
-    }, [preferencesQuery.data]);
+    const currency = preferencesQuery.data?.currency_display ?? storedCurrency;
 
     const setCurrency = useCallback((value: CurrencyDisplay) => {
-        setCurrencyState(value);
-        writeStoredCurrency(value);
-    }, []);
+        rememberCurrency(value);
+        queryClient.setQueryData(settingsQueryKeys.preferences, {
+            currency_display: value,
+        });
+    }, [queryClient]);
 
     const value = useMemo(
         () => ({ currency, setCurrency }),

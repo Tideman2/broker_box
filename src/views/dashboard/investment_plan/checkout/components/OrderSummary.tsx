@@ -5,7 +5,6 @@ import { alpha } from "@mui/material/styles";
 
 import DashboardCard from "@/components/DashboardCard";
 import DetailRow from "@/components/DetailRow";
-import { formatAmount } from "@/utils/format";
 
 import {
     AFTER_SUBSCRIPTION_LABEL,
@@ -19,6 +18,7 @@ import {
 import { formatDuration, formatRoi } from "../../constants";
 
 import type { PlanResponse } from "@/api/plan/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type OrderSummaryProps = {
     plan: PlanResponse;
@@ -33,6 +33,7 @@ export default function OrderSummary({
     availableBalance,
     loading,
 }: OrderSummaryProps) {
+    const { formatAmount } = useFormatCurrency();
     const remaining = (availableBalance ?? 0) - planCost;
     const sufficient = remaining >= 0;
 

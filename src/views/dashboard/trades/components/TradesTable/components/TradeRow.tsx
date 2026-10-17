@@ -1,10 +1,9 @@
 import { Chip, Stack, TableCell, TableRow, Typography } from "@mui/material";
 
-import { formatAmount } from "@/utils/format";
-
 import { executedAtParts } from "../../../utils";
 
 import type { TradeResponse, TradeType } from "@/api/portfolio/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 const TYPE_COLOR: Record<TradeType, string> = {
     BUY: "primary.main",
@@ -19,6 +18,7 @@ type TradeRowProps = {
 };
 
 export default function TradeRow({ trade }: TradeRowProps) {
+    const { formatAmount } = useFormatCurrency();
     const color = tradeTypeColor(trade.type);
     const executed = executedAtParts(trade.executed_at);
 

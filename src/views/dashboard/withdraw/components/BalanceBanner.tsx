@@ -2,8 +2,9 @@ import { Box, Button, Stack, Skeleton, Typography } from "@mui/material";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { alpha } from "@mui/material/styles";
 
-import { formatAmount, toNumber } from "./utils";
+import { toNumber } from "./utils";
 import { BALANCE_CAPTION, BALANCE_CHANGE_PERCENT } from "./mockContent";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type BalanceBannerProps = {
     balance?: number;
@@ -18,6 +19,7 @@ export default function BalanceBanner({
     error,
     onRetry,
 }: BalanceBannerProps) {
+    const { formatAmount } = useFormatCurrency();
     const value = toNumber(balance);
 
     return (

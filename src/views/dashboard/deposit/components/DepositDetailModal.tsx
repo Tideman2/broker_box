@@ -10,7 +10,7 @@ import LoadingState from "@/components/LoadingState";
 import StatusPill from "@/components/StatusPill";
 
 import { formatDate } from "@/utils/display";
-import { formatAmount } from "@/utils/format";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type DepositDetailModalProps = {
     depositId: number | null;
@@ -21,6 +21,7 @@ export default function DepositDetailModal({
     depositId,
     onClose,
 }: DepositDetailModalProps) {
+    const { formatAmount } = useFormatCurrency();
     const open = depositId != null;
 
     const detailQuery = useQuery({

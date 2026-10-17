@@ -6,7 +6,7 @@ import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
 import DashboardCard from "@/components/DashboardCard";
-import { formatCurrency } from "@/utils/format";
+
 import { allocationItemsWithPercent } from "../../utils";
 import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
@@ -14,6 +14,7 @@ import LoadingState from "@/components/LoadingState";
 import AllocationLegend from "./components/AllocationLegend";
 
 import type { AssetAllocationItem } from "@/api/portfolio/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type AssetAllocationProps = {
     items?: AssetAllocationItem[];
@@ -30,6 +31,7 @@ export default function AssetAllocation({
     error,
     onRetry,
 }: AssetAllocationProps) {
+    const { formatCurrency } = useFormatCurrency();
     const theme = useTheme();
 
     const categoryColor = (category: string): string => {

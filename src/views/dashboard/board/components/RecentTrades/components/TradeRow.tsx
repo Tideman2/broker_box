@@ -1,16 +1,17 @@
 import { Chip, Stack, TableCell, TableRow, Typography } from '@mui/material';
 
-import { formatAmount } from '@/utils/format';
 import { executedAtParts } from '@/views/dashboard/trades/utils';
 import { tradeTypeColor } from '@/views/dashboard/trades/components/TradesTable/components/TradeRow';
 
 import type { TradeResponse } from '@/api/portfolio/types';
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type TradeRowProps = {
     trade: TradeResponse;
 };
 
 export default function TradeRow({ trade }: TradeRowProps) {
+    const { formatAmount } = useFormatCurrency();
     const color = tradeTypeColor(trade.type);
     const executed = executedAtParts(trade.executed_at);
 

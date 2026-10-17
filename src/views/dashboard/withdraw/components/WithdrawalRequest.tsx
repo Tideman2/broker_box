@@ -20,10 +20,11 @@ import DashboardCard from "@/components/DashboardCard";
 import WithdrawalProgress from "./WithdrawalProgress";
 import WalletSelector from "./WalletSelector";
 
-import { formatAmount, toNumber } from "./utils";
+import { toNumber } from "./utils";
 import { IMPORTANT_NOTE, MIN_WITHDRAW_AMOUNT } from "./mockContent";
 
 import type { DestinationResponse } from "@/api/withdraw/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type WithdrawalRequestProps = {
     balance?: number;
@@ -50,6 +51,7 @@ export default function WithdrawalRequest({
     submitting,
     onSubmit,
 }: WithdrawalRequestProps) {
+    const { formatAmount } = useFormatCurrency();
     const [amount, setAmount] = useState("");
     const [amountError, setAmountError] = useState<string>("");
 

@@ -7,8 +7,9 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DetailRow from "@/components/DetailRow";
 
 import { PATHS } from "@/routes/paths";
-import { formatAmount } from "@/utils/format";
+
 import { useRouter } from "next/navigation";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 import {
     BACK_LABEL,
@@ -30,6 +31,7 @@ export default function SubscriptionSuccess({
     investedAmount,
     remainingBalance,
 }: SubscriptionSuccessProps) {
+    const { formatAmount } = useFormatCurrency();
     const router = useRouter();
 
     return (

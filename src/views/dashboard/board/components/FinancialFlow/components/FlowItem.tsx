@@ -3,7 +3,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 import type { FlowEntry } from '@/views/dashboard/board/mockData';
-import { formatCurrency } from '@/views/dashboard/board/utils';
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type FlowItemProps = {
     entry: FlowEntry;
@@ -11,6 +11,7 @@ type FlowItemProps = {
 };
 
 export default function FlowItem({ entry, type }: FlowItemProps) {
+    const { formatCurrency } = useFormatCurrency();
     const isIn = type === 'in';
 
     return (
