@@ -1,121 +1,115 @@
 'use client';
-import { useState } from 'react';
-import { Box, Typography, Stack, Button, IconButton, Chip } from '@mui/material';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+
+import { Box, Card, CardContent, Stack, Typography, Chip } from '@mui/material';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
 
 import ContentWrapper from '@/layout/components/ContentWrapper';
-import { investing_laptop } from '@/components/exports';
+import Reveal from '@/components/Reveal';
+import SectionHeading from '@/components/SectionHeading';
 
-import TopSlideModal from './components/TopSlideModal';
+const BENEFIT_GROUPS = [
+    {
+        icon: PersonOutlineOutlinedIcon,
+        label: 'For investors',
+        title: 'Structured exposure without running the strategy yourself',
+        points: [
+            'Choose from plans published by traders, each with its own stated approach.',
+            'Read the duration, minimum investment and profit-sharing terms before you commit.',
+            'Track subscription performance alongside the rest of your portfolio.',
+            'Keep deposits, withdrawals and trade history in one account.',
+        ],
+    },
+    {
+        icon: AccountBalanceOutlinedIcon,
+        label: 'For traders',
+        title: 'Publish a strategy and reach investors looking for one',
+        points: [
+            'Describe your approach, risk limits and intended duration in your own words.',
+            'Set the profit-sharing terms that govern how you are compensated.',
+            'Manage the trading activity for your subscribers from one place.',
+            'Build a track record that investors can review over time.',
+        ],
+    },
+];
 
-const modalOfferRangesContent = () => {
-    return (
-        <Box p={2}>
-            <Typography variant="h6" gutterBottom>
-                Offer Tiers &amp; Trading Tools
-            </Typography>
-
-            <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-                Merchant Box provides multiple offer tiers designed to match different trading needs and experience levels.
-                Each tier gives users access to a specific range of trading tools, signals, and automation capabilities.
-                Basic offers include standard trading signals, limited analytics, and manual execution tools to help users make informed decisions.
-            </Typography>
-
-            <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-                Mid-tier offers expand on this by providing enhanced analytics, faster signal updates, and access to semi-automated trading tools.
-                These tools assist users in executing trades more efficiently while still allowing for manual control and customization.
-            </Typography>
-
-            <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-                Premium and high-end offers unlock the full potential of the Merchant Box platform.
-                These include advanced AI-driven trading insights, predictive analytics, and automated trading bots that can execute trades based on real-time market conditions.
-                AI-powered tools analyze patterns, trends, and historical data to provide smarter and faster trading decisions.
-            </Typography>
-
-            <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-                Higher-tier subscriptions also include priority access to new features, improved execution speeds, and enhanced risk management tools.
-                The performance and behavior of trading tools may vary depending on the selected offer tier.
-                Users are encouraged to review each tier carefully to choose the one that best fits their trading goals.
-            </Typography>
-        </Box>
-    );
-};
-
+/**
+ * Benefits section. Reframed from the old "trading tools" pitch to describe
+ * what each side of the platform actually gets.
+ */
 export default function TradingSkillsSection() {
-    const [open, setOpen] = useState(false);
-
     return (
-        <ContentWrapper sx={{
-            padding: 0,
-            paddingRight: { md: 30 },
-            width: "100%",
-            backgroundImage: `url(${investing_laptop.src})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            minHeight: { xs: 'auto', md: 700 },
-            py: { xs: 8, md: 10 },
-        }}>
-            <Stack minHeight={{ md: 560 }} spacing={2} pt={{ xs: 4, md: 8 }} pl={{ xs: 2, md: 10 }}
-                alignItems={"end"} justifyContent={"space-around"}>
-                <Box maxWidth={560}>
-                    <Chip
-                        label="Trading tools"
-                        color="info"
-                        size="small"
-                        sx={{ mb: 2, borderRadius: 999 }}
+        <Box component="section" aria-label="Benefits" sx={{ bgcolor: 'background.paper' }}>
+            <ContentWrapper sx={{ py: { xs: 6, md: 10 } }}>
+                <Stack spacing={5}>
+                    <SectionHeading
+                        eyebrow="Benefits"
+                        title="Two sides, one platform"
+                        description="Investors get structured access to trader-managed strategies. Traders get a way to publish those strategies and be compensated for them."
                     />
-                    <Typography variant="h2" color="info" gutterBottom>
-                        Intuitive trading tools.
-                    </Typography>
-                    <Typography variant="h2" color="textSecondary" gutterBottom sx={{ textWrap: 'balance' }}>
-                        Build your strategy<br />
-                        and track market <br />
-                        trends, seamlessly
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom sx={{ maxWidth: 480 }}>
-                        Manage your trades, track your portfolio <br />
-                        and stay ahead in the market.
-                    </Typography>
 
-                    <Button
-                        variant="outlined"
-                        color="inherit"
-                        sx={{ mt: 3 }}
+                    <Box
+                        display="grid"
+                        gridTemplateColumns={{ xs: '1fr', md: 'repeat(2, 1fr)' }}
+                        gap={3}
+                        alignItems="stretch"
                     >
-                        Learn more
-                    </Button>
-                </Box>
+                        {BENEFIT_GROUPS.map((group, index) => (
+                            <Reveal key={group.label} delay={index * 90}>
+                                <Card sx={{ height: '100%' }}>
+                                    <CardContent sx={{ p: { xs: 3, md: 4 } }}>
+                                        <Stack spacing={3}>
+                                            <Stack direction="row" spacing={2} alignItems="center">
+                                                <Box
+                                                    sx={{
+                                                        width: 44,
+                                                        height: 44,
+                                                        borderRadius: 3,
+                                                        display: 'grid',
+                                                        placeItems: 'center',
+                                                        color: 'primary.main',
+                                                        bgcolor: 'action.hover',
+                                                        border: '1px solid',
+                                                        borderColor: 'divider',
+                                                    }}
+                                                >
+                                                    <group.icon fontSize="small" />
+                                                </Box>
+                                                <Chip
+                                                    label={group.label}
+                                                    color="info"
+                                                    size="small"
+                                                    sx={{ borderRadius: 999 }}
+                                                />
+                                            </Stack>
 
-                {/* second section texts and button */}
-                <Stack>
-                    <Typography variant='caption' color="textSecondary" gutterBottom>
-                        Stocks &amp; funds offered through Merchant box Financial.
-                    </Typography>
+                                            <Typography variant="h5" sx={{ textWrap: 'balance' }}>
+                                                {group.title}
+                                            </Typography>
 
-                    <Box display="flex" onClick={() => setOpen(true)}
-                        alignItems="center" gap={1} mt={1} sx={{ cursor: "pointer", textDecoration: "underline", width: 'fit-content' }}>
-                        <Typography variant="caption" color="textSecondary">
-                            About offer tiers and trading tools
-                        </Typography>
-
-                        <IconButton
-                            size="small"
-                            sx={{ color: 'text.secondary' }}
-                            aria-label="About offer tiers"
-                        >
-                            <InfoOutlinedIcon fontSize="small" />
-                        </IconButton>
+                                            <Stack spacing={2}>
+                                                {group.points.map((point) => (
+                                                    <Stack key={point} direction="row" spacing={1.5} alignItems="flex-start">
+                                                        <Typography
+                                                            component="span"
+                                                            sx={{ color: 'primary.main', lineHeight: 1.7 }}
+                                                        >
+                                                            &mdash;
+                                                        </Typography>
+                                                        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+                                                            {point}
+                                                        </Typography>
+                                                    </Stack>
+                                                ))}
+                                            </Stack>
+                                        </Stack>
+                                    </CardContent>
+                                </Card>
+                            </Reveal>
+                        ))}
                     </Box>
-                    <Typography variant='caption' color="textSecondary" gutterBottom>
-                        Crypto offered through Merchant box. See our Fee Schedule for more details.
-                    </Typography>
                 </Stack>
-            </Stack>
-
-            <TopSlideModal open={open} onClose={() => { setOpen(false); }}>
-                {modalOfferRangesContent()}
-            </TopSlideModal>
-        </ContentWrapper >
+            </ContentWrapper>
+        </Box>
     );
 }
