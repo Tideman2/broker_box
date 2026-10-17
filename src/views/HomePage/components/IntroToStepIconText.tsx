@@ -1,15 +1,16 @@
 'use client';
 
-import { Card, CardContent, Stack, Typography, Box, Chip } from '@mui/material';
+import { Card, CardContent, Stack, Typography, Box, Chip, type ElementType } from '@mui/material';
 
 type Props = {
-    image: string;
+    icon: ElementType;
     title: string;
     description: string;
     step?: string;
 };
 
-export default function IntroToStepIconText({ image, title, description, step }: Props) {
+/** One numbered step card in the "How It Works" grid. */
+export default function IntroToStepIconText({ icon: Icon, title, description, step }: Props) {
     return (
         <Card
             sx={{
@@ -21,33 +22,34 @@ export default function IntroToStepIconText({ image, title, description, step }:
             }}
         >
             <CardContent sx={{ flex: 1, display: 'flex', p: 1 }}>
-                <Stack spacing={2} alignItems="center" textAlign="center" sx={{ flex: 1 }}>
+                <Stack spacing={2} alignItems="flex-start" sx={{ flex: 1 }}>
                     {step && (
                         <Chip label={step} size="small" color="info" sx={{ borderRadius: 999 }} />
                     )}
 
-                    {/* Image */}
                     <Box
-                        component="img"
-                        src={image}
-                        alt={title}
                         sx={{
-                            width: 64,
-                            height: 64,
-                            objectFit: 'contain',
+                            width: 48,
+                            height: 48,
+                            borderRadius: 3,
+                            display: 'grid',
+                            placeItems: 'center',
+                            color: 'primary.main',
+                            bgcolor: 'action.hover',
+                            border: '1px solid',
+                            borderColor: 'divider',
                         }}
-                    />
+                    >
+                        <Icon fontSize="small" />
+                    </Box>
 
-                    {/* Title */}
-                    <Typography variant="h6">
+                    <Typography variant="h6" sx={{ textWrap: 'balance' }}>
                         {title}
                     </Typography>
 
-                    {/* Description */}
                     <Typography variant="body2" color="text.secondary">
                         {description}
                     </Typography>
-
                 </Stack>
             </CardContent>
         </Card>
