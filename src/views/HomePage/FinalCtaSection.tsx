@@ -36,16 +36,17 @@ export default function FinalCTASection() {
                     sx={{ position: 'relative', zIndex: 1, maxWidth: 640 }}
                 >
                     <Chip
-                        label="Get started today"
+                        label="Get started"
                         color="info"
                         size="small"
                         sx={{ borderRadius: 999 }}
                     />
                     <Typography variant="h2" sx={{ textWrap: 'balance' }}>
-                        Join a new generation of investors
+                        Discover trading plans built by traders
                     </Typography>
                     <Typography variant="body1" color="text.secondary">
-                        Open an account in minutes, fund it, and place your first trade.
+                        Create an account to browse available plans, review their terms, and
+                        track your subscriptions from one dashboard.
                     </Typography>
 
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ pt: 1 }}>
@@ -55,7 +56,7 @@ export default function FinalCTASection() {
                             color="primary"
                             onClick={() => router.push(PATHS.auth.register)}
                         >
-                            Get Started
+                            Create an account
                         </Button>
                         <Button
                             size="large"
