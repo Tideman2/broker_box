@@ -5,7 +5,6 @@ import { PATHS } from '@/routes/paths';
 
 const links = [
     { label: 'Home', href: PATHS.home.root },
-    { label: 'Packages', href: PATHS.home.packages },
     { label: 'About', href: PATHS.home.about },
     { label: 'Contact', href: PATHS.home.contact },
     { label: 'Login', href: PATHS.auth.login },

@@ -17,6 +17,7 @@ import Link from 'next/link';
 
 import BrandLogo from '@/asset/logo';
 import { PATHS } from '@/routes/paths';
+import { GLOBAL_CONFIG } from '@/config/global';
 import ThemeToggleButtonComponent from '@/components/ThemeToggleButton';
 import { useMediaQuery } from '@/layout/hook/useMediaQueries';
 
@@ -24,7 +25,6 @@ import ContentWrapper from '../../ContentWrapper';
 import { NavbarItem } from './NavbarItem';
 
 const NAV_ITEMS = [
-    { label: 'Packages', href: PATHS.home.packages },
     { label: 'About', href: PATHS.home.about },
     { label: 'Contact', href: PATHS.home.contact },
     { label: 'Login', href: PATHS.auth.login },
@@ -68,7 +68,7 @@ export default function Navbar() {
                     {/* Logo */}
                     <BrandLogo width={40} height={40} />
                     <Typography variant="h6" fontWeight={700} sx={{ flexGrow: 1, ml: 2 }}>
-                        Merchant Box
+                        {GLOBAL_CONFIG.site.name}
                     </Typography>
                     {/* Desktop Menu */}
                     {isDesktop && (
