@@ -51,12 +51,30 @@ const schema = z
         path: ["new_password"],
     });
 
-type FieldErrors = Partial<Record<keyof z.infer<typeof schema>, string>>;
+type FieldErrors = Partial<
+    Record<keyof z.infer<typeof schema> | 'form', string>
+>;
 
 const fieldErrorsFrom = (issues: z.ZodIssue[]): FieldErrors =>
     Object.fromEntries(
         issues.map((issue) => [issue.path[0] as string, issue.message])
     ) as FieldErrors;
+
+/**
+ * The API prefixes `422` details with the offending field
+ * (`"new_password: String should have at least 8 characters"`), so that one is
+ * attached to the field it names. Anything else — `"Current password is
+ * incorrect."`, `"Not authenticated"` — is shown on the whole form, because it
+ * is not about one input.
+ */
+const SERVER_FIELD_PREFIX = /^(current_password|new_password):\s*/;
+
+const serverErrorToField = (message: string): FieldErrors => {
+    const match = SERVER_FIELD_PREFIX.exec(message);
+    if (match) return { [match[1]]: message.replace(SERVER_FIELD_PREFIX, "") };
+
+    return { form: message };
+};
 
 /**
  * Changing the password revokes every session server-side, including this one,
@@ -75,9 +93,7 @@ export default function SecurityCard() {
             changePassword(payload),
         onSuccess: (result) => {
             if (!result.success) {
-                setFieldErrors({
-                    current_password: result.error,
-                });
+                setFieldErrors(serverErrorToField(result.error));
                 return;
             }
 
@@ -116,6 +132,8 @@ export default function SecurityCard() {
 
                 <Box component="form" onSubmit={handleSubmit} noValidate>
                     <Stack spacing={2}>
+                        {fieldErrors.form && <Alert severity="error">{fieldErrors.form}</Alert>}
+
                         <Grid container spacing={2}>
                             <Grid size={{ xs: 12, sm: 6 }}>
                                 <TextField
