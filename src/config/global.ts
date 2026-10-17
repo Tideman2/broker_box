@@ -1,6 +1,6 @@
 export const GLOBAL_CONFIG = {
     site: {
-        name: 'Test Broker',
+        name: 'Merchant Box',
         tagLine: '',
         description: 'A web application for trading and managing financial assets.',
     },
