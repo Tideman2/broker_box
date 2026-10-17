@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, type MouseEvent } from 'react';
+import { type MouseEvent } from 'react';
 import { Box, Button, Chip, Link, Stack, Typography } from '@mui/material';
 
 import ContentWrapper from '@/layout/components/ContentWrapper';

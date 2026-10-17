@@ -1,6 +1,7 @@
 'use client';
 
-import { Card, CardContent, Stack, Typography, Box, Chip, type ElementType } from '@mui/material';
+import type { ElementType } from 'react';
+import { Card, CardContent, Stack, Typography, Box, Chip } from '@mui/material';
 
 type Props = {
     icon: ElementType;

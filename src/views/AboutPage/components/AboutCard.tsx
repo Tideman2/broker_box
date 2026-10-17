@@ -1,6 +1,7 @@
 'use client';
 
-import { Box, Card, CardContent, Stack, Typography, type ElementType } from '@mui/material';
+import type { ElementType } from 'react';
+import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 
 type AboutCardProps = {
     icon: ElementType;
