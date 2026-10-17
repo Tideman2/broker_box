@@ -22,7 +22,9 @@ export default function TradesHeader({
             spacing={2}
         >
             <Box>
-                <Typography variant="h4">{TRADES_CONTENT.title}</Typography>
+                <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                    {TRADES_CONTENT.title}
+                </Typography>
                 <Typography variant="body2" color="text.secondary">
                     {TRADES_CONTENT.subtitle}
                 </Typography>

@@ -1,4 +1,5 @@
 import { Box, Button, Dialog, DialogContent, Divider, Stack, Typography } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 import DetailRow from "@/components/DetailRow";
@@ -18,15 +19,28 @@ export default function WithdrawSuccessModal({ data, onDone }: WithdrawSuccessMo
     const open = data != null;
 
     return (
-        <Dialog open={open} onClose={onDone} fullWidth maxWidth="sm">
-            <DialogContent sx={{ px: { xs: 3, sm: 4 }, py: { xs: 3, sm: 4 } }}>
-                <Stack spacing={2} alignItems="center">
-                    <CheckCircleIcon sx={{ fontSize: 56, color: "success.main" }} />
+        <Dialog open={open} onClose={onDone} fullWidth maxWidth="sm" PaperProps={{ sx: { borderRadius: 3 } }}>
+            <DialogContent sx={{ px: { xs: 3, sm: 4 }, py: { xs: 3.5, sm: 4 } }}>
+                <Stack spacing={2.5} alignItems="center">
+                    <Box
+                        sx={{
+                            width: 88,
+                            height: 88,
+                            borderRadius: "50%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: (theme) =>
+                                alpha(theme.palette.success.main, 0.12),
+                        }}
+                    >
+                        <CheckCircleIcon sx={{ fontSize: 52, color: "success.main" }} />
+                    </Box>
                     <Box textAlign="center">
-                        <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                        <Typography variant="h6" sx={{ fontWeight: 800 }}>
                             {SUCCESS_MODAL_TITLE}
                         </Typography>
-                        <Typography variant="caption" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
                             {SUCCESS_MODAL_CAPTION}
                         </Typography>
                     </Box>
@@ -36,9 +50,11 @@ export default function WithdrawSuccessModal({ data, onDone }: WithdrawSuccessMo
                         width="100%"
                         sx={{
                             p: { xs: 2, sm: 2.5 },
-                            borderRadius: 2,
+                            borderRadius: 2.5,
                             border: "1px solid",
                             borderColor: "divider",
+                            backgroundColor: (theme) =>
+                                alpha(theme.palette.text.primary, 0.015),
                         }}
                         divider={<Divider sx={{ borderColor: "divider" }} />}
                     >
@@ -83,7 +99,13 @@ export default function WithdrawSuccessModal({ data, onDone }: WithdrawSuccessMo
                         )}
                     </Stack>
 
-                    <Button variant="contained" size="large" fullWidth onClick={onDone}>
+                    <Button
+                        variant="contained"
+                        size="large"
+                        fullWidth
+                        onClick={onDone}
+                        sx={{ borderRadius: 2, fontWeight: 700, py: 1.5 }}
+                    >
                         Done
                     </Button>
                 </Stack>

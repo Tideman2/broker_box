@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
     Box,
     Button,
+    Chip,
     InputAdornment,
     Stack,
     TextField,
@@ -76,8 +77,27 @@ export default function PaymentDetails({
     };
 
     return (
-        <DashboardCard title="2. Payment Details">
-            <Stack spacing={3}>
+        <DashboardCard
+            title="2. Payment Details"
+            action={
+                asset ? (
+                    <Chip
+                        size="small"
+                        label={asset.symbol}
+                        sx={{
+                            fontWeight: 800,
+                            color: "primary.main",
+                            borderColor: (theme) =>
+                                alpha(theme.palette.primary.main, 0.3),
+                            backgroundColor: (theme) =>
+                                alpha(theme.palette.primary.main, 0.08),
+                        }}
+                        variant="outlined"
+                    />
+                ) : undefined
+            }
+        >
+            <Stack spacing={2.5}>
                 <Box>
                     <Stack
                         direction="row"
@@ -85,13 +105,18 @@ export default function PaymentDetails({
                         alignItems="center"
                         mb={1}
                     >
-                        <Typography variant="subtitle2">Deposit Address</Typography>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                            Deposit Address
+                        </Typography>
                         {hasAddress && (
                             <Button
                                 size="small"
                                 onClick={handleCopy}
                                 startIcon={copied ? <CheckIcon /> : <ContentCopyIcon />}
-                                sx={{ color: copied ? "success.main" : "primary.main" }}
+                                sx={{
+                                    fontWeight: 700,
+                                    color: copied ? "success.main" : "primary.main",
+                                }}
                             >
                                 {copied ? COPY_ADDRESS_SUCCESS : "Copy"}
                             </Button>
@@ -101,11 +126,14 @@ export default function PaymentDetails({
                     <Box
                         sx={{
                             px: 2,
-                            py: 1.5,
+                            py: 1.75,
                             borderRadius: 2,
-                            border: "1px solid",
-                            borderColor: "divider",
-                            backgroundColor: "background.paper",
+                            border: "1px dashed",
+                            borderColor: hasAddress ? "primary.main" : "divider",
+                            backgroundColor: (theme) =>
+                                hasAddress
+                                    ? alpha(theme.palette.primary.main, 0.04)
+                                    : alpha(theme.palette.text.primary, 0.02),
                         }}
                     >
                         {asset ? (
@@ -114,6 +142,7 @@ export default function PaymentDetails({
                                     variant="body2"
                                     sx={{
                                         fontFamily: "monospace",
+                                        fontSize: "0.82rem",
                                         wordBreak: "break-all",
                                     }}
                                 >
@@ -142,21 +171,31 @@ export default function PaymentDetails({
                         border: "1px solid",
                         borderColor: "divider",
                         backgroundColor: (theme) =>
-                            alpha(theme.palette.info.main, 0.04),
+                            alpha(theme.palette.info.main, 0.05),
                     }}
                 >
                     <InfoOutlinedIcon
                         sx={{ fontSize: 18, color: "info.main", mt: 0.25, flexShrink: 0 }}
                     />
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.6 }}>
                         {DEPOSIT_NOTE}
                     </Typography>
                 </Box>
 
                 <Box>
-                    <Typography variant="subtitle2" mb={1}>
-                        Deposit Amount
-                    </Typography>
+                    <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="baseline"
+                        mb={1}
+                    >
+                        <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                            Deposit Amount
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                            USD
+                        </Typography>
+                    </Stack>
                     <TextField
                         value={amount}
                         onChange={(event) => {
@@ -176,6 +215,13 @@ export default function PaymentDetails({
                                 <InputAdornment position="start">$</InputAdornment>
                             ),
                         }}
+                        sx={{
+                            "& .MuiOutlinedInput-input": {
+                                fontSize: "1.1rem",
+                                fontWeight: 700,
+                                fontVariantNumeric: "tabular-nums",
+                            },
+                        }}
                     />
                 </Box>
 
@@ -186,6 +232,7 @@ export default function PaymentDetails({
                     onClick={handleSubmit}
                     disabled={submitting || !asset || !hasAddress}
                     startIcon={submitting ? undefined : <SendIcon />}
+                    sx={{ borderRadius: 2, fontWeight: 700, py: 1.5 }}
                 >
                     {submitting ? "Processing..." : "Confirm Deposit Request"}
                 </Button>

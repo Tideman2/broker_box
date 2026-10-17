@@ -1,68 +1,92 @@
-'use client'
+'use client';
 
-import { Typography, Stack } from "@mui/material"
-import Handshake from "@mui/icons-material/Handshake"
+import { Typography, Stack, Box } from "@mui/material";
+import TravelExploreOutlinedIcon from '@mui/icons-material/TravelExploreOutlined';
+import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
+import ShowChartOutlinedIcon from '@mui/icons-material/ShowChartOutlined';
+import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 
-import { tradehand, spindollar, bookmark } from "@/components/exports"
 import ContentWrapper from "@/layout/components/ContentWrapper"
+import Reveal from "@/components/Reveal";
+import SectionHeading from "@/components/SectionHeading";
 
 import IntroToStepIconText from "./components/IntroToStepIconText"
 
+const HOW_IT_WORKS_ANCHOR = 'how-it-works';
+
 const IntroToStepImgAndTexts = [
     {
-        img: bookmark.src,
-        title: "Open an account",
-        description: "Our user-friendly registration process ensures that you can open your trading account quickly and hassle-free."
+        icon: TravelExploreOutlinedIcon,
+        title: "Explore available traders and their plans",
+        description: "Browse the plans traders have published and narrow them down by the approach you are comfortable with."
     },
     {
-        img: tradehand.src,
-        title: "Deposit amount",
-        description: "Your deposit amount is the foundation of your trading endeavors. it's the fuel that powers your trades and positions you for potential profits."
+        icon: FactCheckOutlinedIcon,
+        title: "Review the strategy, duration, fees, risks, and profit-sharing terms",
+        description: "Each plan sets out its own terms before you commit, so you can read how it operates and how profits are shared."
     },
     {
-        img: spindollar.src,
-        title: "Start trading",
-        description: "Our intuitive and user-friendly trading platform is designed with you in mind. seamlessly navigate the markets, execute trades, and monitor your progress effortlessly."
+        icon: ShowChartOutlinedIcon,
+        title: "Subscribe and monitor the plan's performance",
+        description: "Allocate funds to a plan you have chosen and follow how it performs alongside the rest of your portfolio."
+    },
+    {
+        icon: AccountBalanceWalletOutlinedIcon,
+        title: "Review the settlement of eligible funds and realized profits",
+        description: "When a plan reaches the end of its term, the eligible funds and realized profits are settled according to that plan's terms."
     }
 ]
 
-export const IntroToStepsToBegin = () => {
+export default function IntroToStepsToBegin() {
 
     return (
-        <ContentWrapper sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 3
-        }}>
-            <Stack justifyContent={"center"} spacing={2} alignItems={"center"}>
-                <Stack direction={"row"}
-                    bgcolor={"info.main"}
-                    width={"fit-content"}
-                    color="info.contrastText"
-                    padding={1}
-                    borderRadius={2}
-                    spacing={1}>
-                    <Handshake />
-                    <Typography variant="body2">
-                        How it works
+        <Box
+            id={HOW_IT_WORKS_ANCHOR}
+            component="section"
+            aria-label="How it works"
+            sx={{ scrollMarginTop: 10 }}
+        >
+            <ContentWrapper sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 4,
+                py: { xs: 6, md: 10 },
+            }}>
+                <SectionHeading
+                    eyebrow="How it works"
+                    title="From discovery to settlement, in four steps."
+                    description="Trader-managed plans follow the same lifecycle every time, so you always know what comes next."
+                />
+
+                <Box
+                    display="grid"
+                    gridTemplateColumns={{ xs: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }}
+                    gap={3}
+                    alignItems="stretch"
+                >
+                    {
+                        IntroToStepImgAndTexts.map((step, index) => {
+                            return (
+                                <Reveal key={step.title} delay={index * 90}>
+                                    <IntroToStepIconText
+                                        icon={step.icon}
+                                        title={step.title}
+                                        description={step.description}
+                                        step={`Step ${index + 1}`}
+                                    />
+                                </Reveal>
+                            )
+                        })
+                    }
+                </Box>
+
+                <Stack>
+                    <Typography variant="caption" color="text.secondary">
+                        Step descriptions describe how the plan lifecycle works in general. Each plan
+                        publishes its own terms, which govern that specific plan.
                     </Typography>
                 </Stack>
-                <Typography variant="h2" textAlign={"center"}>
-                    Start Trading <span>With</span> <br />
-                    <span>Merchant Box</span>
-                </Typography>
-            </Stack>
-            <Stack direction={{ sm: "column", md: "row" }}
-                height={{ sm: "auto", md: "270px" }}
-                spacing={3}>
-                {
-                    IntroToStepImgAndTexts.map((step, index) => {
-                        return (
-                            <IntroToStepIconText key={index} image={step.img} title={step.title} description={step.description} />
-                        )
-                    })
-                }
-            </Stack>
-        </ContentWrapper>
+            </ContentWrapper>
+        </Box>
     )
 }

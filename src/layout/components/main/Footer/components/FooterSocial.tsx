@@ -13,9 +13,9 @@ const FooterSocial = () => {
     return (
         <Stack
             direction="row"
-            spacing={1.5}
+            spacing={1}
             justifyContent="center"
-            sx={{ mb: { xs: 3, md: 5 } }}
+            sx={{ mb: 4 }}
         >
             {socialLinks.map((social, index) => (
                 <IconButton
@@ -24,11 +24,15 @@ const FooterSocial = () => {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    color="primary"
+                    aria-label="Social link"
                     sx={{
+                        width: 40,
+                        height: 40,
+                        color: 'text.secondary',
                         border: '1px solid',
                         borderColor: 'divider',
-                        '&:hover': { color: 'secondary.main', borderColor: 'secondary.main' },
+                        '& .MuiSvgIcon-root': { fontSize: 20 },
+                        '&:hover': { color: 'primary.main', borderColor: 'primary.main', bgcolor: 'action.hover' },
                     }}
                 >
                     {social.icon}

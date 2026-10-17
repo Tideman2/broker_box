@@ -9,8 +9,7 @@ import {
     Avatar,
     Typography,
     Badge,
-    Stack,
-    Button
+    Stack
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -42,15 +41,20 @@ export default function DashboardNavbar({ setMobileOpen }: props) {
                 sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
+                    alignItems: 'center',
                     gap: 2,
+                    minHeight: 64,
+                    px: { xs: 2, md: 3 },
                 }}
             >
                 {isMobile && (
-                    <Button
+                    <IconButton
                         onClick={() => setMobileOpen(true)}
+                        aria-label="Open navigation menu"
+                        sx={{ color: 'text.secondary' }}
                     >
-                        {<MenuIcon />}
-                    </Button>
+                        <MenuIcon sx={{ fontSize: 20 }} />
+                    </IconButton>
                 )}
                 {/* Search (LEFT) */}
                 <Box
@@ -58,47 +62,64 @@ export default function DashboardNavbar({ setMobileOpen }: props) {
                         display: 'flex',
                         alignItems: 'center',
                         bgcolor: 'background.default',
+                        border: '1px solid',
+                        borderColor: 'divider',
                         px: 2,
                         py: 0.5,
-                        borderRadius: 2,
+                        borderRadius: 999,
                         width: '100%',
                         maxWidth: 400,
                     }}
                 >
-                    <SearchIcon sx={{ color: 'text.secondary', mr: 1 }} />
+                    <SearchIcon sx={{ color: 'text.secondary', mr: 1, fontSize: 20 }} />
 
                     <InputBase
                         placeholder="Search…"
+                        inputProps={{ 'aria-label': 'Search' }}
                         sx={{
                             flex: 1,
                             color: 'text.primary',
+                            fontSize: '0.875rem',
                         }}
                     />
                 </Box>
 
                 {/* Right side */}
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={1} alignItems="center">
                     {/* Theme toggle */}
-                    <IconButton onClick={toggleTheme}>
-                        <Brightness7Icon />
+                    <IconButton onClick={toggleTheme} aria-label="Toggle theme" sx={{ color: 'text.secondary' }}>
+                        <Brightness7Icon sx={{ fontSize: 20 }} />
                     </IconButton>
 
                     {/* Notifications */}
-                    <IconButton>
+                    <IconButton aria-label="Notifications" sx={{ color: 'text.secondary' }}>
                         <Badge badgeContent={3} color="error">
-                            <NotificationsIcon />
+                            <NotificationsIcon sx={{ fontSize: 20 }} />
                         </Badge>
                     </IconButton>
 
                     {/* User */}
-                    <Stack direction="row" spacing={1} p={1} alignItems="center">
+                    <Stack
+                        direction="row"
+                        spacing={1}
+                        px={1}
+                        py={0.5}
+                        alignItems="center"
+                        sx={{
+                            border: '1px solid',
+                            borderColor: 'divider',
+                            borderRadius: 999,
+                        }}
+                    >
                         <Avatar
                             src="/avatar.png" // replace with real
-                            sx={{ width: 36, height: 36 }}
+                            sx={{ width: 32, height: 32 }}
                         />
-                        <Typography variant="body2">
-                            Isaac
-                        </Typography>
+                        {!isMobile && (
+                            <Typography variant="body2" fontWeight={600} sx={{ pr: 0.5 }}>
+                                Isaac
+                            </Typography>
+                        )}
                     </Stack>
                 </Stack>
             </Toolbar>

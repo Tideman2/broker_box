@@ -1,25 +1,36 @@
 'use client';
-import { Grid, Link } from '@mui/material';
+import { Stack, Link } from '@mui/material';
+
+import { PATHS } from '@/routes/paths';
 
 const links = [
-    { label: 'Home', href: '#' },
-    { label: 'About', href: '#' },
-    { label: 'Services', href: '#' },
-    { label: 'Contact', href: '#' },
-    { label: 'Blog', href: '#' },
+    { label: 'Home', href: PATHS.home.root },
+    { label: 'About', href: PATHS.home.about },
+    { label: 'Contact', href: PATHS.home.contact },
+    { label: 'Login', href: PATHS.auth.login },
 ];
 
 const FooterLinks = () => {
     return (
-        <Grid container spacing={2} justifyContent="center" sx={{ mb: 4 }}>
+        <Stack
+            direction="row"
+            flexWrap="wrap"
+            justifyContent="center"
+            gap={3}
+            sx={{ mb: 4 }}
+        >
             {links.map((link) => (
-                <Grid key={link.label}>
-                    <Link href={link.href} underline="hover" variant="subtitle1">
-                        {link.label}
-                    </Link>
-                </Grid>
+                <Link
+                    key={link.label}
+                    href={link.href}
+                    underline="hover"
+                    variant="subtitle2"
+                    sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}
+                >
+                    {link.label}
+                </Link>
             ))}
-        </Grid>
+        </Stack>
     );
 };
 

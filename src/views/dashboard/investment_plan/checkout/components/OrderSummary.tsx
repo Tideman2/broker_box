@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, Divider, Skeleton, Stack, Typography } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 
 import DashboardCard from "@/components/DashboardCard";
 import DetailRow from "@/components/DetailRow";
@@ -33,13 +34,22 @@ export default function OrderSummary({
     loading,
 }: OrderSummaryProps) {
     const remaining = (availableBalance ?? 0) - planCost;
+    const sufficient = remaining >= 0;
 
     return (
-        <DashboardCard title={ORDER_SUMMARY_LABEL}>
+        <DashboardCard
+            title={ORDER_SUMMARY_LABEL}
+            sx={{ position: { lg: "sticky" }, top: { lg: 88 }, zIndex: { lg: 1 } }}
+        >
             <Stack spacing={1.25}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
                     {plan.title}
                 </Typography>
+                <Typography variant="caption" color="text.secondary">
+                    {formatDuration(plan.duration)} · {formatRoi(plan.roi)} expected return
+                </Typography>
+
+                <Divider sx={{ borderColor: "divider", my: 0.5 }} />
 
                 <DetailRow
                     label={INITIAL_INVESTMENT_LABEL}
@@ -69,9 +79,10 @@ export default function OrderSummary({
                             <Box
                                 component="span"
                                 sx={{
-                                    fontWeight: 600,
+                                    fontWeight: 700,
                                     textAlign: "right",
                                     wordBreak: "break-word",
+                                    fontVariantNumeric: "tabular-nums",
                                 }}
                             >
                                 {formatAmount(availableBalance ?? 0)}
@@ -79,10 +90,24 @@ export default function OrderSummary({
                         )
                     }
                 />
-                <DetailRow
-                    label={AFTER_SUBSCRIPTION_LABEL}
-                    value={loading ? "—" : formatAmount(remaining)}
-                />
+                <Box
+                    sx={{
+                        mt: 0.5,
+                        p: 1.5,
+                        borderRadius: 2,
+                        backgroundColor: (theme) =>
+                            loading
+                                ? "transparent"
+                                : sufficient
+                                  ? alpha(theme.palette.success.main, 0.08)
+                                  : alpha(theme.palette.warning.main, 0.1),
+                    }}
+                >
+                    <DetailRow
+                        label={AFTER_SUBSCRIPTION_LABEL}
+                        value={loading ? "—" : formatAmount(remaining)}
+                    />
+                </Box>
             </Stack>
         </DashboardCard>
     );

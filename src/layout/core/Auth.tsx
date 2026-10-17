@@ -64,20 +64,28 @@ export default function AuthLayout({ children }: Props) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    px: 3,
-                    py: 6,
+                    px: { xs: 2, sm: 4 },
+                    py: { xs: 4, md: 6 },
                 }}
             >
-                {/* Content Wrapper */}
-                <Stack
-                    spacing={3}
+                {/* Centered card */}
+                <Box
                     sx={{
                         width: '100%',
-                        maxWidth: 420, // keeps form nice and tight
+                        maxWidth: 440,
+                        bgcolor: 'background.paper',
+                        border: 1,
+                        borderColor: 'divider',
+                        borderRadius: 3,
+                        px: { xs: 3, sm: 4 },
+                        py: 4,
+                        boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
                     }}
                 >
-                    {children}
-                </Stack>
+                    <Stack spacing={2.5} sx={{ width: '100%' }}>
+                        {children}
+                    </Stack>
+                </Box>
             </Box>
         </Box>
     );

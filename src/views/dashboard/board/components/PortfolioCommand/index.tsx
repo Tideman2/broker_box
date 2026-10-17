@@ -16,7 +16,9 @@ export default function PortfolioCommand() {
             spacing={2}
         >
             <Box>
-                <Typography variant="h4">Portfolio Command</Typography>
+                <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                    Portfolio Command
+                </Typography>
                 <Typography variant="body2" color="text.secondary">
                     Overview of your portfolio, strategies and market activity.
                 </Typography>

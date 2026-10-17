@@ -25,99 +25,101 @@ export default function BalanceBanner({
             sx={{
                 position: "relative",
                 overflow: "hidden",
-                p: { xs: 3, md: 4 },
+                p: { xs: 3, md: 3.5 },
                 borderRadius: 3,
                 border: "1px solid",
                 borderColor: "divider",
-                backgroundColor: "background.paper",
+                background: (theme) =>
+                    `linear-gradient(120deg, ${alpha(theme.palette.primary.main, 0.12)}, ${alpha(theme.palette.primary.main, 0.02)} 60%), ${theme.palette.background.paper}`,
             }}
         >
             <Box
                 sx={{
                     position: "absolute",
-                    top: -60,
-                    right: -60,
-                    width: 180,
-                    height: 180,
+                    top: -70,
+                    right: -70,
+                    width: 200,
+                    height: 200,
                     borderRadius: "50%",
                     background: (theme) =>
-                        `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.22)}, transparent 70%)`,
+                        `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.25)}, transparent 70%)`,
                 }}
             />
-            <AccountBalanceWalletIcon
-                sx={{
-                    position: "absolute",
-                    top: 24,
-                    right: 24,
-                    fontSize: 48,
-                    color: (theme) => alpha(theme.palette.primary.main, 0.35),
-                }}
-            />
-
             <Box
                 sx={{
                     position: "absolute",
-                    left: 16,
-                    bottom: 12,
-                    display: "grid",
-                    gridTemplateColumns: "repeat(4, 4px)",
-                    gap: "4px",
-                    opacity: 0.35,
+                    top: 22,
+                    right: 22,
+                    width: 56,
+                    height: 56,
+                    borderRadius: 2.5,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: (theme) =>
+                        alpha(theme.palette.primary.main, 0.12),
                 }}
             >
-                {Array.from({ length: 8 }).map((_, index) => (
-                    <Box
-                        key={index}
-                        sx={{
-                            width: 4,
-                            height: 4,
-                            borderRadius: "50%",
-                            backgroundColor: (theme) =>
-                                alpha(theme.palette.secondary.main, 0.6),
-                        }}
-                    />
-                ))}
+                <AccountBalanceWalletIcon sx={{ fontSize: 30, color: "primary.main" }} />
             </Box>
 
-            <Stack spacing={1} sx={{ position: "relative" }}>
-                <Typography variant="overline" sx={{ letterSpacing: "0.14em" }}>
-                    TOTAL AVAILABLE BALANCE
+            <Stack spacing={1} sx={{ position: "relative", maxWidth: { sm: "75%" } }}>
+                <Typography
+                    variant="overline"
+                    sx={{ letterSpacing: "0.14em", fontWeight: 700 }}
+                    color="text.secondary"
+                >
+                    Total Available Balance
                 </Typography>
 
                 <Stack
-                    direction={{ xs: "column", sm: "row" }}
-                    alignItems={{ xs: "flex-start", sm: "center" }}
+                    direction="row"
+                    alignItems="center"
                     spacing={1.5}
+                    sx={{ flexWrap: "wrap", rowGap: 1 }}
                 >
                     {loading ? (
-                        <Skeleton width={220} height={48} />
+                        <Skeleton width={220} height={52} sx={{ borderRadius: 1.5 }} />
                     ) : error ? (
                         <Stack direction="row" spacing={1.5} alignItems="center">
                             <Typography variant="body2" color="text.secondary">
                                 Balance unavailable.
                             </Typography>
-                            <Button size="small" variant="outlined" onClick={onRetry}>
+                            <Button
+                                size="small"
+                                variant="outlined"
+                                onClick={onRetry}
+                                sx={{ borderRadius: 2, fontWeight: 600 }}
+                            >
                                 Retry
                             </Button>
                         </Stack>
                     ) : (
                         <>
-                            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                            <Typography
+                                variant="h3"
+                                sx={{
+                                    fontWeight: 800,
+                                    letterSpacing: "-0.02em",
+                                    fontVariantNumeric: "tabular-nums",
+                                }}
+                            >
                                 {formatAmount(value, 0)}
                             </Typography>
                             <Box
                                 component="span"
                                 sx={{
                                     px: 1.25,
-                                    py: 0.25,
+                                    py: 0.35,
                                     borderRadius: 999,
-                                    border: "1px solid",
-                                    borderColor: "success.main",
+                                    backgroundColor: (theme) =>
+                                        alpha(theme.palette.success.main, 0.12),
                                     color: "success.main",
                                     fontSize: "0.75rem",
-                                    fontWeight: 600,
+                                    fontWeight: 700,
                                     display: "inline-flex",
                                     alignItems: "center",
+                                    fontVariantNumeric: "tabular-nums",
                                 }}
                             >
                                 ↗ +{BALANCE_CHANGE_PERCENT}%
@@ -126,7 +128,7 @@ export default function BalanceBanner({
                     )}
                 </Stack>
 
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.6 }}>
                     {BALANCE_CAPTION}
                 </Typography>
             </Stack>

@@ -16,13 +16,24 @@ export default function WithdrawHeader({ onViewHistory }: WithdrawHeaderProps) {
             spacing={2}
         >
             <Box>
-                <Typography variant="h4">Withdraw Funds</Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                    variant="h4"
+                    sx={{ fontWeight: 800, letterSpacing: "-0.01em" }}
+                >
+                    Withdraw Funds
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
                     Safely transfer your profits to your external wallets.
                 </Typography>
             </Box>
 
-            <Button variant="outlined" startIcon={<HistoryIcon />} onClick={onViewHistory}>
+            <Button
+                variant="outlined"
+                size="medium"
+                startIcon={<HistoryIcon />}
+                onClick={onViewHistory}
+                sx={{ borderRadius: 2, fontWeight: 600 }}
+            >
                 View Full History
             </Button>
         </Stack>

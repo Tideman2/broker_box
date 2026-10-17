@@ -108,12 +108,26 @@ export default function TradesStats({
                                     fontSize: 22,
                                 }}
                             />
-                            <Typography variant="caption" color="text.secondary">
+                            <Typography
+                                variant="caption"
+                                color="text.secondary"
+                                sx={{
+                                    textTransform: "uppercase",
+                                    letterSpacing: "0.06em",
+                                    fontWeight: 600,
+                                }}
+                            >
                                 {stat.label}
                             </Typography>
                             <Typography
                                 variant="h6"
-                                sx={stat.color ? { color: stat.color } : undefined}
+                                sx={{
+                                    fontWeight: 700,
+                                    fontVariantNumeric: "tabular-nums",
+                                    ...(stat.color
+                                        ? { color: stat.color }
+                                        : undefined),
+                                }}
                             >
                                 {stat.value}
                             </Typography>

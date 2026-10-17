@@ -27,14 +27,24 @@ export default function ChartTooltip({
                 borderColor: 'divider',
                 borderRadius: 2,
                 px: 2,
-                py: 1.5,
+                py: 1.25,
                 boxShadow: 4,
+                minWidth: 132,
             }}
         >
-            <Typography variant="caption" color="text.secondary">
+            <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ textTransform: 'uppercase', letterSpacing: '0.06em' }}
+            >
                 {label}
             </Typography>
-            <Typography variant="body2" color="primary.main" fontWeight={600}>
+            <Typography
+                variant="body2"
+                color="primary.main"
+                fontWeight={700}
+                sx={{ fontVariantNumeric: 'tabular-nums' }}
+            >
                 {formatCurrency(value, 0)}
             </Typography>
         </Box>

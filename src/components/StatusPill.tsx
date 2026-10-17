@@ -1,4 +1,5 @@
 import { Box, useTheme, type BoxProps } from "@mui/material";
+import { CheckCircleOutline, ErrorOutline, InfoOutlined } from "@mui/icons-material";
 
 import { statusLabel, statusTone } from "@/utils/display";
 
@@ -15,6 +16,12 @@ type StatusPillProps = {
     sx?: BoxProps["sx"];
 };
 
+const TONE_ICONS = {
+    success: CheckCircleOutline,
+    error: ErrorOutline,
+    info: InfoOutlined,
+} as const;
+
 export default function StatusPill({
     status,
     label,
@@ -24,19 +31,23 @@ export default function StatusPill({
     const theme = useTheme();
     const resolved = (tone ?? statusTone(status)) as "success" | "error" | "info";
     const color = theme.palette[resolved] as { main: string };
+    const ToneIcon = TONE_ICONS[resolved];
 
     return (
         <Box
             component="span"
+            role="status"
             sx={{
                 display: "inline-flex",
                 alignItems: "center",
-                px: 1,
-                py: 0.25,
+                gap: "6px",
+                px: 1.5,
+                py: 0.5,
                 borderRadius: 999,
-                fontSize: "0.7rem",
+                fontSize: "0.75rem",
                 fontWeight: 600,
-                lineHeight: 1.4,
+                lineHeight: 1.5,
+                letterSpacing: "0.01em",
                 color: color.main,
                 border: `1px solid ${color.main}33`,
                 backgroundColor: `${color.main}1A`,
@@ -44,6 +55,7 @@ export default function StatusPill({
                 ...sx,
             }}
         >
+            <ToneIcon sx={{ fontSize: 14 }} aria-hidden="true" />
             {label ?? statusLabel(status)}
         </Box>
     );

@@ -22,15 +22,23 @@ export const ElitePlanCardLogout = () => {
     };
 
     return (
-        <Stack alignItems="center" justifyContent="center" spacing={2} mt={"auto"} mb={2}>
-            <Card sx={{ width: "200px", height: "auto", p: 2, }}>
-                <Typography variant="body2" color="secondary">
+        <Stack alignItems="stretch" justifyContent="center" spacing={1} mt="auto" px={2} pb={2} pt={2}>
+            <Card
+                sx={{
+                    p: 2,
+                    borderRadius: 2,
+                    bgcolor: 'background.default',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                }}
+            >
+                <Typography variant="body2" fontWeight={700}>
                     Elite plan
                 </Typography>
-                <Typography variant="caption">
+                <Typography variant="caption" color="text.secondary">
                     Upgrade for 2x Trade execution
                 </Typography>
-                <Button sx={{ mt: 2 }}>
+                <Button variant="contained" size="small" fullWidth sx={{ mt: 2, borderRadius: 1.5 }}>
                     Upgrade now
                 </Button>
             </Card>
@@ -38,23 +46,26 @@ export const ElitePlanCardLogout = () => {
             <ListItemButton
                 onClick={handleLogout}
                 sx={{
-                    borderRadius: 2,
-                    p: 2,
-                    '&.Mui-selected': {
-                        bgcolor: 'primary.main',
-                        color: 'primary.contrastText',
-                        boxShadow: '0 0 10px rgba(0,214,255,0.5)',
-                    },
+                    borderRadius: 1.5,
+                    px: 2,
+                    py: 1,
+                    color: 'text.secondary',
+                    '&:hover': { bgcolor: 'action.hover' },
                 }}
             >
                 <ListItemIcon
                     sx={{
                         minWidth: 36,
+                        color: 'text.secondary',
+                        '& .MuiSvgIcon-root': { fontSize: 20 },
                     }}
                 >
-                    <LogoutIcon />
+                    <LogoutIcon fontSize="inherit" />
                 </ListItemIcon>
-                <ListItemText primary={"Log out"} />
+                <ListItemText
+                    primary="Log out"
+                    primaryTypographyProps={{ fontSize: '0.875rem', fontWeight: 500 }}
+                />
             </ListItemButton>
         </Stack>
     )

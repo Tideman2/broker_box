@@ -23,19 +23,36 @@ export default function FinancialFlow({ data }: FinancialFlowProps) {
         <DashboardCard title="Financial Flow" icon={AccountBalanceWalletIcon}>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={4} mb={2}>
                 <Box>
-                    <Typography variant="caption" color="text.secondary" display="block">
+                    <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        display="block"
+                        sx={{ textTransform: 'uppercase', letterSpacing: '0.06em' }}
+                    >
                         Current Balance
                     </Typography>
-                    <Typography variant="h5">
+                    <Typography
+                        variant="h5"
+                        sx={{ fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}
+                    >
                         {formatCurrency(data.balance)}
                     </Typography>
                 </Box>
 
                 <Box>
-                    <Typography variant="caption" color="text.secondary" display="block">
+                    <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        display="block"
+                        sx={{ textTransform: 'uppercase', letterSpacing: '0.06em' }}
+                    >
                         Available Balance
                     </Typography>
-                    <Typography variant="h6" color="text.secondary">
+                    <Typography
+                        variant="h6"
+                        color="text.secondary"
+                        sx={{ fontVariantNumeric: 'tabular-nums' }}
+                    >
                         {formatCurrency(data.availableBalance)}
                     </Typography>
                 </Box>
@@ -45,7 +62,17 @@ export default function FinancialFlow({ data }: FinancialFlowProps) {
 
             <Grid container spacing={{ xs: 0, sm: 4 }}>
                 <Grid size={{ xs: 12, sm: 6 }}>
-                    <Typography variant="subtitle2" color="success.main" mt={2} mb={1}>
+                    <Typography
+                        variant="subtitle2"
+                        color="success.main"
+                        mt={2}
+                        mb={1}
+                        sx={{
+                            textTransform: 'uppercase',
+                            fontSize: '0.75rem',
+                            letterSpacing: '0.06em',
+                        }}
+                    >
                         Money In
                     </Typography>
                     <Stack divider={<Divider flexItem />}>
@@ -56,7 +83,17 @@ export default function FinancialFlow({ data }: FinancialFlowProps) {
                 </Grid>
 
                 <Grid size={{ xs: 12, sm: 6 }}>
-                    <Typography variant="subtitle2" color="error.main" mt={2} mb={1}>
+                    <Typography
+                        variant="subtitle2"
+                        color="error.main"
+                        mt={2}
+                        mb={1}
+                        sx={{
+                            textTransform: 'uppercase',
+                            fontSize: '0.75rem',
+                            letterSpacing: '0.06em',
+                        }}
+                    >
                         Money Out
                     </Typography>
                     <Stack divider={<Divider flexItem />}>

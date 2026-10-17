@@ -26,6 +26,35 @@ export type RegisterUserPayload = {
     marketing_opt_in?: boolean;
 };
 
+export type ForgotPasswordPayload = {
+    email: string;
+};
+
+export type ForgotPasswordResponse = {
+    message: string;
+    timeout: number;
+};
+
+export type VerifyOtpPayload = {
+    email: string;
+    otp: string;
+};
+
+export type VerifyOtpResponse = {
+    message: string;
+    password_reset_token: string;
+};
+
+export type ResetPasswordPayload = {
+    email: string;
+    new_password: string;
+    reset_token: string;
+};
+
+export type ResetPasswordResponse = {
+    message: string;
+};
+
 export const loginUser = async (data: LoginUserPayload) => {
     try {
         const serverAxios = await getServerAxios()
@@ -60,6 +89,57 @@ export const registerUser = async (
             "Error registering user:",
             error
         );
+        throw error;
+    }
+};
+
+export const requestPasswordReset = async (
+    data: ForgotPasswordPayload
+): Promise<ForgotPasswordResponse> => {
+    try {
+        const serverAxios = await getServerAxios();
+        const response = await serverAxios.post<ForgotPasswordResponse>(
+            authConfig.resetPasswordEndpoint,
+            data
+        );
+
+        return response.data;
+    } catch (error) {
+        console.error("Error requesting password reset:", error);
+        throw error;
+    }
+};
+
+export const verifyOtp = async (
+    data: VerifyOtpPayload
+): Promise<VerifyOtpResponse> => {
+    try {
+        const serverAxios = await getServerAxios();
+        const response = await serverAxios.post<VerifyOtpResponse>(
+            authConfig.verifyResetPasswordEndpoint,
+            data
+        );
+
+        return response.data;
+    } catch (error) {
+        console.error("Error verifying OTP:", error);
+        throw error;
+    }
+};
+
+export const resetPassword = async (
+    data: ResetPasswordPayload
+): Promise<ResetPasswordResponse> => {
+    try {
+        const serverAxios = await getServerAxios();
+        const response = await serverAxios.post<ResetPasswordResponse>(
+            authConfig.completeResetPasswordEndpoint,
+            data
+        );
+
+        return response.data;
+    } catch (error) {
+        console.error("Error resetting password:", error);
         throw error;
     }
 };

@@ -43,8 +43,13 @@ export default function TermsStep() {
     }
 
     return (
-        <Stack spacing={3}>
-            <Typography variant="h4">Terms & Conditions</Typography>
+        <Stack spacing={2.5}>
+            <Stack spacing={0.5}>
+                <Typography variant="h6">Terms &amp; conditions</Typography>
+                <Typography variant="body2" color="text.secondary">
+                    Last step — review and confirm to create your account.
+                </Typography>
+            </Stack>
 
             <FormControlLabel
                 control={
@@ -67,8 +72,8 @@ export default function TermsStep() {
             />
 
             <Stack direction="row" spacing={2}>
-                <Button onClick={goToPreviousStep}>Back</Button>
-                <Button variant="contained" onClick={handleFinish}>
+                <Button onClick={goToPreviousStep} color="inherit">Back</Button>
+                <Button variant="contained" fullWidth size="large" onClick={handleFinish} disabled={state.loading}>
                     {state.loading ? (
                         <CircularProgress
                             size={24}

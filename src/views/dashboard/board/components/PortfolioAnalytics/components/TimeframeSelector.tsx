@@ -27,6 +27,7 @@ export default function TimeframeSelector({
                     py: 0.5,
                     textTransform: 'none',
                     fontSize: '0.8rem',
+                    fontWeight: 600,
                     color: 'text.secondary',
                 },
                 '& .MuiTab-root.Mui-selected': {
@@ -35,6 +36,7 @@ export default function TimeframeSelector({
                 '& .MuiTabs-indicator': {
                     backgroundColor: 'primary.main',
                     height: 2,
+                    borderRadius: 2,
                 },
             }}
         >

@@ -14,6 +14,7 @@ import {
     Tab,
     Tabs,
     TextField,
+    Typography,
 } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
@@ -188,16 +189,35 @@ export default function AddDestinationModal({
             onClose={submitting ? undefined : onClose}
             fullWidth
             maxWidth="sm"
+            PaperProps={{ sx: { borderRadius: 3 } }}
         >
-            <DialogTitle>Add New Wallet Destination</DialogTitle>
+            <DialogTitle sx={{ pb: 0.5 }}>
+                <Typography variant="h6" sx={{ fontWeight: 800 }}>
+                    Add New Wallet Destination
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                    Save a bank account or crypto wallet for future withdrawals.
+                </Typography>
+            </DialogTitle>
 
-            <Tabs value={tab} onChange={handleTabChange} sx={{ px: 3 }}>
+            <Tabs
+                value={tab}
+                onChange={handleTabChange}
+                sx={{
+                    px: 3,
+                    mt: 1,
+                    "& .MuiTab-root": {
+                        fontWeight: 700,
+                        textTransform: "none",
+                    },
+                }}
+            >
                 <Tab value="BANK" label="Bank" />
                 <Tab value="CRYPTO" label="Crypto" />
             </Tabs>
 
-            <DialogContent>
-                <Stack spacing={2.5} sx={{ pt: 1 }}>
+            <DialogContent sx={{ pt: 2 }}>
+                <Stack spacing={2.5} sx={{ pt: 1.5 }}>
                     <TextField
                         label="Label"
                         placeholder="e.g. My savings account"
@@ -284,14 +304,15 @@ export default function AddDestinationModal({
                 </Stack>
             </DialogContent>
 
-            <DialogActions sx={{ px: 3, pb: 2.5 }}>
-                <Button onClick={onClose} disabled={submitting} variant="outlined">
+            <DialogActions sx={{ px: 3, pb: 2.5, pt: 1 }}>
+                <Button onClick={onClose} disabled={submitting} variant="outlined" sx={{ borderRadius: 2, fontWeight: 600 }}>
                     Cancel
                 </Button>
                 <Button
                     onClick={handleSubmit}
                     disabled={submitting}
                     variant="contained"
+                    sx={{ borderRadius: 2, fontWeight: 700 }}
                     startIcon={
                         submitting ? (
                             <CircularProgress size={16} color="inherit" />

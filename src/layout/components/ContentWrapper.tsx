@@ -13,9 +13,12 @@ export default function ContentWrapper({ children, sx }: ContentWrapperProps) {
 
     return (
         <Box
-            px={isMobile ? 0 : 8}
+            px={isMobile ? 2 : 8}
             py={4}
             sx={{
+                width: '100%',
+                maxWidth: 1280,
+                mx: 'auto',
                 ...sx, // merge passed sx with default styles
             }}
         >
