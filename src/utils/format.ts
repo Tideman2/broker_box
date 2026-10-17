@@ -29,5 +29,15 @@ export const formatAmount = (
     currency = "USD"
 ): string => formatCurrency(toNumber(value), fractionDigits, currency);
 
+/** Up to two initials from a display name, e.g. "Jane Doe" -> "JD". */
+export const formatInitials = (name: string): string =>
+    name
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part.charAt(0).toUpperCase())
+        .join("");
+
 export const formatPercent = (value: number): string =>
     `${value > 0 ? "+" : ""}${value.toFixed(1)}%`;

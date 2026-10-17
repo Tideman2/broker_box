@@ -3,10 +3,10 @@ import { useCallback, useContext } from 'react';
 import { CurrencyContext } from './context';
 import { formatAmount, formatCurrency } from '@/utils/format';
 
-import type { CurrencyDisplay } from '@/api/auth/types';
+import type { CurrencyContextValue } from './context';
 
-export const useCurrency = (): CurrencyDisplay =>
-    useContext(CurrencyContext).currency;
+export const useCurrency = (): CurrencyContextValue =>
+    useContext(CurrencyContext);
 
 /**
  * Amount formatting bound to the active display currency. Every component that
@@ -18,7 +18,7 @@ export const useCurrency = (): CurrencyDisplay =>
  * currency itself changes.
  */
 export const useFormatCurrency = () => {
-    const currency = useCurrency();
+    const { currency } = useCurrency();
 
     const formatCurrencyValue = useCallback(
         (value: number, fractionDigits = 2) =>

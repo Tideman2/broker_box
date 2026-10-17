@@ -21,7 +21,7 @@ const STORAGE_KEY = 'currencyDisplay';
 const isCurrencyDisplay = (value: unknown): value is CurrencyDisplay =>
     value === 'usd' || value === 'eur' || value === 'gbp';
 
-type CurrencyContextValue = {
+export type CurrencyContextValue = {
     /** The currency every amount on the dashboard is displayed in. */
     currency: CurrencyDisplay;
 
