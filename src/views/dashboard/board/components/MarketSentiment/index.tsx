@@ -35,15 +35,24 @@ export default function MarketSentiment({ data }: MarketSentimentProps) {
                 >
                     <Chip
                         label={data.sentiment}
+                        size="small"
                         sx={{
                             color: SENTIMENT_COLOR[data.sentiment],
                             border: '1px solid',
                             borderColor: SENTIMENT_COLOR[data.sentiment],
                             bgcolor: 'transparent',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.06em',
+                            fontWeight: 600,
                         }}
                     />
                     <Stack direction="row" alignItems="baseline" spacing={0.5}>
-                        <Typography variant="h4">{data.score}</Typography>
+                        <Typography
+                            variant="h4"
+                            sx={{ fontVariantNumeric: 'tabular-nums' }}
+                        >
+                            {data.score}
+                        </Typography>
                         <Typography variant="caption" color="text.secondary">
                             /100
                         </Typography>
@@ -58,10 +67,20 @@ export default function MarketSentiment({ data }: MarketSentimentProps) {
                                 justifyContent="space-between"
                                 mb={0.5}
                             >
-                                <Typography variant="caption" color="text.secondary">
+                                <Typography
+                                    variant="caption"
+                                    color="text.secondary"
+                                    sx={{
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.05em',
+                                    }}
+                                >
                                     {item.label}
                                 </Typography>
-                                <Typography variant="caption">
+                                <Typography
+                                    variant="caption"
+                                    sx={{ fontVariantNumeric: 'tabular-nums' }}
+                                >
                                     {item.value}%
                                 </Typography>
                             </Stack>
@@ -69,11 +88,11 @@ export default function MarketSentiment({ data }: MarketSentimentProps) {
                                 variant="determinate"
                                 value={item.value}
                                 sx={{
-                                    height: 4,
-                                    borderRadius: 2,
-                                    bgcolor: 'divider',
+                                    height: 6,
+                                    borderRadius: 3,
+                                    bgcolor: 'action.hover',
                                     '& .MuiLinearProgress-bar': {
-                                        borderRadius: 2,
+                                        borderRadius: 3,
                                         backgroundColor: BREAKDOWN_COLOR(item.label),
                                     },
                                 }}

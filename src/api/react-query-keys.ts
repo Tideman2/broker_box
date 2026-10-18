@@ -28,6 +28,12 @@ export const planQueryKeys = {
 
 export const subscriptionQueryKeys = {
     subscriptions: ["subscription", "subscriptions"] as const,
+    summary: ["subscription", "summary"] as const,
+};
+
+export const settingsQueryKeys = {
+    profile: ["settings", "profile"] as const,
+    preferences: ["settings", "preferences"] as const,
 };
 
 /**

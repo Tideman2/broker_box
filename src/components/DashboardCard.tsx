@@ -1,5 +1,5 @@
 import type { ElementType, ReactNode } from 'react';
-import { Card, Stack, Typography } from '@mui/material';
+import { Box, Card, Stack, Typography } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material/styles';
 
 type DashboardCardProps = {
@@ -18,18 +18,49 @@ export default function DashboardCard({
     sx,
 }: DashboardCardProps) {
     return (
-        <Card sx={{ height: '100%', p: { xs: 2, md: 3 }, ...sx }}>
+        <Card
+            sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                p: 2,
+                gap: 2,
+                ...sx,
+            }}
+        >
             {(title || action) && (
                 <Stack
                     direction="row"
                     alignItems="center"
                     justifyContent="space-between"
                     spacing={2}
-                    mb={2}
                 >
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                        {Icon && <Icon sx={{ color: 'primary.main', fontSize: 22 }} />}
-                        {title && <Typography variant="h6">{title}</Typography>}
+                    <Stack direction="row" alignItems="center" spacing={1.5} sx={{ minWidth: 0 }}>
+                        {Icon && (
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: 32,
+                                    height: 32,
+                                    flexShrink: 0,
+                                    borderRadius: '12px',
+                                    backgroundColor: 'action.hover',
+                                    color: 'primary.main',
+                                }}
+                            >
+                                <Icon sx={{ fontSize: 20 }} />
+                            </Box>
+                        )}
+                        {title && (
+                            <Typography
+                                variant="subtitle1"
+                                sx={{ fontWeight: 600, lineHeight: 1.4 }}
+                            >
+                                {title}
+                            </Typography>
+                        )}
                     </Stack>
                     {action}
                 </Stack>

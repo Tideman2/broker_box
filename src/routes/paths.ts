@@ -8,7 +8,6 @@ export const PATHS = {
     home: {
         root: '/',
         about: '/about',
-        packages: '/packages',
         contact: '/contact',
     },
 

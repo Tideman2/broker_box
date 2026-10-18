@@ -144,7 +144,7 @@ export default function HoldingsTable({
                     title={rows.length === 0 ? "No holdings yet" : "No matching holdings"}
                     description={
                         rows.length === 0
-                            ? "Buy an instrument to start building your portfolio."
+                            ? "Your holdings will appear here once instruments are added to your portfolio."
                             : "Try a different search term."
                     }
                 />
@@ -156,9 +156,18 @@ export default function HoldingsTable({
                                 {HEAD_CELLS.map((cell, index) => (
                                     <TableCell
                                         key={cell}
+                                        align={
+                                            index >= 2 && index <= 5
+                                                ? "right"
+                                                : index === 6
+                                                  ? "right"
+                                                  : "left"
+                                        }
                                         sx={{
                                             color: "text.secondary",
                                             fontSize: "0.75rem",
+                                            fontWeight: 600,
+                                            letterSpacing: "0.05em",
                                             textTransform: "uppercase",
                                             display:
                                                 index === 3

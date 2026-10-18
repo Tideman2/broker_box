@@ -12,8 +12,10 @@ const FooterMain = () => {
             sx={{
                 width: '100%',
                 py: { xs: 6, md: 8 },
-                backgroundColor: 'background.paper',
-                borderTop: (theme) => `1px solid ${theme.palette.divider}`,
+                px: 2,
+                bgcolor: 'background.paper',
+                borderTop: '1px solid',
+                borderColor: 'divider',
             }}
         >
             <Container maxWidth="lg">

@@ -5,6 +5,7 @@ import type {
     SubscribeRequest,
     SubscriptionResponse,
     SubscriptionsResponse,
+    SubscriptionSummary,
 } from "./types";
 
 export const getSubscriptions = async (): Promise<SubscriptionsResponse> => {
@@ -47,6 +48,26 @@ export const cancelSubscription = async (
         return response.data;
     } catch (error) {
         console.error("Error cancelling subscription:", error);
+        throw error;
+    }
+};
+
+/**
+ * Returns one row per ACTIVE subscription and is empty for a user with none.
+ * Kept separate from `getSubscriptions` because it is only meaningful for
+ * subscriptions that are already active.
+ */
+export const getSubscriptionSummary = async (): Promise<
+    SubscriptionSummary[]
+> => {
+    try {
+        const server = await getServerAxios();
+        const response = await server.get<SubscriptionSummary[]>(
+            subscriptionConfig.summaryEndpoint
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching subscription summary:", error);
         throw error;
     }
 };

@@ -1,9 +1,10 @@
 "use client";
 
 import { Alert, Box, Skeleton, Stack, Typography } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 
 import DetailRow from "@/components/DetailRow";
-import { formatAmount } from "@/utils/format";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 import {
     BALANCE_AFTER_LABEL,
@@ -28,20 +29,21 @@ export default function BalanceBreakdown({
     loading,
     stale,
 }: BalanceBreakdownProps) {
+    const { formatAmount } = useFormatCurrency();
 
     if (loading) {
         return (
             <Box
                 sx={{
-                    p: { xs: 2, md: 2.5 },
+                    p: { xs: 2.5, md: 3 },
                     borderRadius: 3,
                     border: "1px solid",
                     borderColor: "divider",
                 }}
             >
-                <Skeleton variant="rounded" height={20} sx={{ mb: 1 }} />
-                <Skeleton variant="rounded" height={20} sx={{ mb: 1 }} />
-                <Skeleton variant="rounded" height={20} />
+                <Skeleton variant="rounded" height={20} sx={{ mb: 1, borderRadius: 1 }} />
+                <Skeleton variant="rounded" height={20} sx={{ mb: 1, borderRadius: 1 }} />
+                <Skeleton variant="rounded" height={20} sx={{ borderRadius: 1 }} />
             </Box>
         );
     }
@@ -53,13 +55,24 @@ export default function BalanceBreakdown({
         <Stack spacing={2}>
             <Box
                 sx={{
-                    p: { xs: 2, md: 2.5 },
+                    p: { xs: 2.5, md: 3 },
                     borderRadius: 3,
-                    border: "1px solid",
-                    borderColor: "divider",
+                    border: "1.5px solid",
+                    borderColor: insufficient ? "warning.main" : "divider",
+                    backgroundColor: (theme) =>
+                        insufficient
+                            ? alpha(theme.palette.warning.main, 0.05)
+                            : "background.paper",
                 }}
             >
-                <Stack spacing={1.25}>
+                <Typography
+                    variant="overline"
+                    sx={{ letterSpacing: "0.12em", fontWeight: 700 }}
+                    color="text.secondary"
+                >
+                    Cost vs balance
+                </Typography>
+                <Stack spacing={1.25} sx={{ mt: 1.5 }}>
                     <DetailRow
                         label={PLAN_COST_LABEL}
                         value={formatAmount(planCost)}
@@ -70,16 +83,27 @@ export default function BalanceBreakdown({
                     />
                     <Box
                         sx={{
-                            pt: 1.25,
+                            pt: 1.5,
                             mt: 0.25,
                             borderTop: "1px solid",
                             borderColor: "divider",
                         }}
                     >
-                        <DetailRow
-                            label={BALANCE_AFTER_LABEL}
-                            value={formatAmount(remaining)}
-                        />
+                        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+                            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
+                                {BALANCE_AFTER_LABEL}
+                            </Typography>
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    fontWeight: 800,
+                                    fontVariantNumeric: "tabular-nums",
+                                    color: insufficient ? "warning.main" : "success.main",
+                                }}
+                            >
+                                {formatAmount(remaining)}
+                            </Typography>
+                        </Stack>
                     </Box>
                 </Stack>
             </Box>

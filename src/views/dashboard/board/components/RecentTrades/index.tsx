@@ -76,9 +76,14 @@ export default function RecentTrades({
                                 {HEAD_CELLS.map((cell, index) => (
                                     <TableCell
                                         key={cell}
+                                        align={
+                                            index >= 2 ? 'right' : 'left'
+                                        }
                                         sx={{
                                             color: 'text.secondary',
                                             fontSize: '0.75rem',
+                                            fontWeight: 600,
+                                            letterSpacing: '0.05em',
                                             textTransform: 'uppercase',
                                             display:
                                                 index === 3

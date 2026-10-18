@@ -50,7 +50,7 @@ export default function WalletSelector({
     }
 
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={1.5}>
             {destinations.map((destination) => {
                 const Icon =
                     destination.type === "BANK"
@@ -59,7 +59,7 @@ export default function WalletSelector({
                 const selected = destination.id === selectedId;
 
                 return (
-                    <Grid key={destination.id} size={{ xs: 12, sm: 6, md: 4 }}>
+                    <Grid key={destination.id} size={{ xs: 12, sm: 6 }}>
                         <Box
                             role="button"
                             tabIndex={0}
@@ -73,35 +73,50 @@ export default function WalletSelector({
                             sx={{
                                 position: "relative",
                                 height: "100%",
-                                p: 1.5,
-                                borderRadius: 2,
-                                border: "1px solid",
+                                p: 1.75,
+                                borderRadius: 2.5,
+                                border: "1.5px solid",
                                 borderColor: selected ? "primary.main" : "divider",
                                 backgroundColor: selected
-                                    ? (theme) => alpha(theme.palette.primary.main, 0.08)
+                                    ? (theme) => alpha(theme.palette.primary.main, 0.07)
                                     : "background.paper",
+                                boxShadow: selected
+                                    ? (theme) =>
+                                          `0 4px 16px ${alpha(theme.palette.primary.main, 0.16)}`
+                                    : "none",
                                 cursor: "pointer",
-                                transition: "border-color 0.2s ease, background-color 0.2s ease",
+                                transition: "border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease",
                                 "&:hover": {
-                                    borderColor: selected ? "primary.main" : (theme) => alpha(theme.palette.primary.main, 0.4),
+                                    borderColor: "primary.main",
+                                    transform: "translateY(-1px)",
+                                },
+                                "&:focus-visible": {
+                                    outline: "2px solid",
+                                    outlineColor: "primary.main",
+                                    outlineOffset: 2,
                                 },
                             }}
                         >
-                            <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+                            <Stack direction="row" justifyContent="space-between" alignItems="center">
                                 <Chip
                                     size="small"
-                                    icon={<Icon sx={{ fontSize: 14, mb: "2px" }} />}
+                                    icon={<Icon sx={{ fontSize: 14 }} />}
                                     label={destination.type}
                                     sx={{
-                                        height: 22,
+                                        height: 24,
                                         fontSize: "0.65rem",
-                                        color: "primary.main",
-                                        borderColor: (theme) => alpha(theme.palette.primary.main, 0.25),
-                                        backgroundColor: "transparent",
+                                        fontWeight: 800,
+                                        letterSpacing: "0.06em",
+                                        color: selected ? "primary.contrastText" : "primary.main",
+                                        backgroundColor: selected
+                                            ? "primary.main"
+                                            : (theme) => alpha(theme.palette.primary.main, 0.1),
+                                        "& .MuiChip-icon": {
+                                            color: "inherit",
+                                        },
                                     }}
-                                    variant="outlined"
                                 />
-                                <Stack direction="row" spacing={0.5}>
+                                <Stack direction="row" spacing={0}>
                                     <Tooltip title="Coming soon">
                                         <span>
                                             <IconButton
@@ -109,7 +124,7 @@ export default function WalletSelector({
                                                 disabled
                                                 aria-label="Edit destination"
                                             >
-                                                <EditIcon sx={{ fontSize: 16 }} />
+                                                <EditIcon sx={{ fontSize: 15 }} />
                                             </IconButton>
                                         </span>
                                     </Tooltip>
@@ -120,7 +135,7 @@ export default function WalletSelector({
                                                 disabled
                                                 aria-label="Delete destination"
                                             >
-                                                <DeleteIcon sx={{ fontSize: 16 }} />
+                                                <DeleteIcon sx={{ fontSize: 15 }} />
                                             </IconButton>
                                         </span>
                                     </Tooltip>
@@ -129,13 +144,14 @@ export default function WalletSelector({
 
                             <Typography
                                 variant="body2"
-                                sx={{ fontWeight: 600, mt: 1, mb: 0.25 }}
+                                sx={{ fontWeight: 700, mt: 1, mb: 0.25 }}
+                                noWrap
                             >
                                 {destination.label}
                             </Typography>
                             <Typography
                                 variant="caption"
-                                sx={{ color: "text.secondary", wordBreak: "break-word" }}
+                                sx={{ color: "text.secondary", wordBreak: "break-word", pr: 3 }}
                             >
                                 {destinationSubtitle(destination)}
                             </Typography>
@@ -144,9 +160,9 @@ export default function WalletSelector({
                                 <CheckCircleIcon
                                     sx={{
                                         position: "absolute",
-                                        bottom: 8,
-                                        right: 8,
-                                        fontSize: 18,
+                                        bottom: 10,
+                                        right: 10,
+                                        fontSize: 20,
                                         color: "primary.main",
                                     }}
                                 />
@@ -156,7 +172,7 @@ export default function WalletSelector({
                 );
             })}
 
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+            <Grid size={{ xs: 12, sm: 6 }}>
                 <Box
                     role="button"
                     tabIndex={0}
@@ -169,27 +185,49 @@ export default function WalletSelector({
                     }}
                     sx={{
                         height: "100%",
-                        minHeight: 96,
+                        minHeight: 108,
                         p: 1.5,
-                        borderRadius: 2,
+                        borderRadius: 2.5,
                         border: "1.5px dashed",
                         borderColor: "divider",
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: 0.5,
+                        gap: 0.75,
                         color: "text.secondary",
                         cursor: "pointer",
-                        transition: "border-color 0.2s ease, color 0.2s ease",
+                        transition: "border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease",
                         "&:hover": {
                             borderColor: "primary.main",
                             color: "primary.main",
+                            backgroundColor: (theme) =>
+                                alpha(theme.palette.primary.main, 0.04),
+                        },
+                        "&:focus-visible": {
+                            outline: "2px solid",
+                            outlineColor: "primary.main",
+                            outlineOffset: 2,
                         },
                     }}
                 >
-                    <AddIcon />
-                    <Typography variant="body2">Add New Wallet</Typography>
+                    <Box
+                        sx={{
+                            width: 36,
+                            height: 36,
+                            borderRadius: "50%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: (theme) =>
+                                alpha(theme.palette.primary.main, 0.1),
+                        }}
+                    >
+                        <AddIcon sx={{ color: "primary.main" }} />
+                    </Box>
+                    <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                        Add New Wallet
+                    </Typography>
                 </Box>
             </Grid>
         </Grid>

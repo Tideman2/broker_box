@@ -7,13 +7,13 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 import SpeedIcon from "@mui/icons-material/Speed";
 
-import { formatCurrency } from "@/utils/format";
 import { diversificationStatusColor, riskLabelFromScore } from "../../utils";
 import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
 
 import StatCard from "./components/StatCard";
 import type { KpiStat } from "./components/StatCard";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 import type {
     PortfolioOverviewResponse,
@@ -35,6 +35,7 @@ export default function PortfolioStats({
     error,
     onRetry,
 }: PortfolioStatsProps) {
+    const { formatCurrency } = useFormatCurrency();
     const stats: KpiStat[] = useMemo(() => {
         const portfolioValue = overview?.portfolio_value ?? 0;
         const realized = profitLoss?.portfolio_realized_profit ?? 0;
@@ -90,7 +91,7 @@ export default function PortfolioStats({
                 caption: `Risk score ${riskScore.toFixed(2)}`,
             },
         ];
-    }, [overview, profitLoss]);
+    }, [overview, profitLoss, formatCurrency]);
 
     if (loading) {
         return (

@@ -34,11 +34,23 @@ export const SUBSCRIPTIONS_ERROR_LABEL =
 export const VIEW_DETAILS_LABEL = "View Details";
 export const CANCEL_PLAN_LABEL = "Cancel Plan";
 
+export const POOL_LABEL = "Subscription balance";
+export const PERFORMANCE_LABEL = "Performance";
+export const CURRENT_VALUE_LABEL = "Current value";
+export const PROFIT_LABEL = "Profit / loss";
+export const ROI_METRIC_LABEL = "Return";
+/** Shown for a live subscription that has not started, so no summary exists yet. */
+export const SUMMARY_PENDING_LABEL =
+    "Performance appears once the plan is active.";
+export const SUMMARY_UNAVAILABLE_LABEL = "Performance is unavailable right now.";
+export const SUMMARY_ERROR_LABEL =
+    "We could not load performance for this plan.";
+
 export const CANCEL_TITLE = "Cancel Investment Plan?";
 export const CANCEL_DESCRIPTION =
     "Are you sure you want to cancel your {title}?";
 export const CANCEL_FOOTER_NOTE =
-    "Your current investment and cancellation terms will apply.";
+    "Open positions are sold at the current price and any remaining balance is returned to your available balance. This cannot be undone.";
 export const KEEP_PLAN_LABEL = "Keep Plan";
 export const CANCEL_CONFIRM_LABEL = "Cancel Plan";
 export const CANCELLING_LABEL = "Cancelling...";

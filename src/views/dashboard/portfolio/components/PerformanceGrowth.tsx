@@ -35,6 +35,7 @@ export default function PerformanceGrowth(_props: PerformanceGrowthProps) {
                             py: 0.5,
                             textTransform: "none",
                             fontSize: "0.8rem",
+                            fontWeight: 600,
                             color: "text.secondary",
                         },
                         "& .MuiTab-root.Mui-selected": {
@@ -43,6 +44,7 @@ export default function PerformanceGrowth(_props: PerformanceGrowthProps) {
                         "& .MuiTabs-indicator": {
                             backgroundColor: "primary.main",
                             height: 2,
+                            borderRadius: 2,
                         },
                     }}
                 >

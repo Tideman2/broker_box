@@ -14,7 +14,7 @@ export default function RegisterStepper() {
     );
 
     return (
-        <Box sx={{ width: '100%', mb: 4 }}>
+        <Box sx={{ width: '100%', py: 1 }}>
             <Stepper
                 activeStep={activeStep}
                 alternativeLabel
@@ -25,7 +25,6 @@ export default function RegisterStepper() {
 
                     '& .MuiStepIcon-root.Mui-active': {
                         color: 'primary.main',
-                        filter: 'drop-shadow(0 0 6px rgba(0,214,255,0.6))',
                     },
 
                     '& .MuiStepIcon-root.Mui-completed': {
@@ -34,7 +33,7 @@ export default function RegisterStepper() {
 
                     '& .MuiStepLabel-label': {
                         color: 'text.secondary',
-                        fontSize: '0.85rem',
+                        fontSize: '0.75rem',
                     },
 
                     '& .MuiStepLabel-label.Mui-active': {

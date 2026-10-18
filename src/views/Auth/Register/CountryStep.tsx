@@ -17,8 +17,13 @@ export default function CountryStep() {
     const { state, addCountryInfo, goToNextStep } = ctx;
 
     return (
-        <Stack spacing={3}>
-            <Typography variant="h4">Select Country</Typography>
+        <Stack spacing={2.5}>
+            <Stack spacing={0.5}>
+                <Typography variant="h6">Select country</Typography>
+                <Typography variant="body2" color="text.secondary">
+                    Choose where you live so we can show the right options.
+                </Typography>
+            </Stack>
 
             <TextField
                 select
@@ -34,7 +39,7 @@ export default function CountryStep() {
                 ))}
             </TextField>
 
-            <Button variant="contained" onClick={goToNextStep}>
+            <Button variant="contained" fullWidth size="large" onClick={goToNextStep}>
                 Continue
             </Button>
         </Stack>

@@ -99,6 +99,18 @@ export default function TradesToolbar({
                     onTradeTypeChange(value === "" ? null : value)
                 }
                 aria-label={TRADES_CONTENT.typeLabel}
+                sx={{
+                    "& .MuiToggleButton-root": {
+                        textTransform: "uppercase",
+                        fontSize: "0.75rem",
+                        fontWeight: 600,
+                        letterSpacing: "0.04em",
+                        px: 1.75,
+                    },
+                    "& .MuiToggleButton-root.Mui-selected": {
+                        color: "primary.main",
+                    },
+                }}
             >
                 <ToggleButton value="">{TRADES_CONTENT.typeAll}</ToggleButton>
                 {TRADE_TYPE_OPTIONS.map((option) => (

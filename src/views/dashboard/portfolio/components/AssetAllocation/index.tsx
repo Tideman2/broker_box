@@ -6,7 +6,7 @@ import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
 import DashboardCard from "@/components/DashboardCard";
-import { formatCurrency } from "@/utils/format";
+
 import { allocationItemsWithPercent } from "../../utils";
 import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
@@ -14,6 +14,7 @@ import LoadingState from "@/components/LoadingState";
 import AllocationLegend from "./components/AllocationLegend";
 
 import type { AssetAllocationItem } from "@/api/portfolio/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type AssetAllocationProps = {
     items?: AssetAllocationItem[];
@@ -30,6 +31,7 @@ export default function AssetAllocation({
     error,
     onRetry,
 }: AssetAllocationProps) {
+    const { formatCurrency } = useFormatCurrency();
     const theme = useTheme();
 
     const categoryColor = (category: string): string => {
@@ -47,7 +49,20 @@ export default function AssetAllocation({
         <DashboardCard
             title="Asset Allocation"
             icon={DonutSmallIcon}
-            action={<Chip size="small" label="Live Data" color="primary" variant="outlined" />}
+            action={
+                <Chip
+                    size="small"
+                    label="Live Data"
+                    color="primary"
+                    variant="outlined"
+                    sx={{
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        fontWeight: 600,
+                        fontSize: '0.7rem',
+                    }}
+                />
+            }
         >
             {loading ? (
                 <LoadingState height={28} lines={6} />
@@ -111,13 +126,30 @@ export default function AssetAllocation({
                                 pointerEvents: "none",
                             }}
                         >
-                            <Typography variant="caption" color="text.secondary">
-                                TOTAL
+                            <Typography
+                                variant="caption"
+                                color="text.secondary"
+                                sx={{
+                                    textTransform: "uppercase",
+                                    letterSpacing: "0.06em",
+                                }}
+                            >
+                                Total
                             </Typography>
-                            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                            <Typography
+                                variant="subtitle2"
+                                sx={{
+                                    fontWeight: 700,
+                                    fontVariantNumeric: "tabular-nums",
+                                }}
+                            >
                                 {formatCurrency(totalValue, 0)}
                             </Typography>
-                            <Typography variant="caption" color="text.secondary">
+                            <Typography
+                                variant="caption"
+                                color="text.secondary"
+                                sx={{ fontVariantNumeric: "tabular-nums" }}
+                            >
                                 100%
                             </Typography>
                         </Stack>

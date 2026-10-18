@@ -21,32 +21,51 @@ export default function AllocationLegend({ items }: AllocationLegendProps) {
                 const percentage = Number(item.allocation_percentage ?? 0).toFixed(1);
 
                 return (
-                    <Stack key={item.symbol} direction="row" spacing={1}>
+                    <Stack key={item.symbol} direction="row" spacing={1} alignItems="flex-start">
                         <Box
                             sx={{
-                                width: 10,
-                                height: 10,
+                                width: 8,
+                                height: 8,
                                 borderRadius: "50%",
                                 bgcolor: item.color,
                                 flexShrink: 0,
                                 mt: 0.5,
                             }}
                         />
-                        <Stack flex={1}>
+                        <Stack flex={1} spacing={0.25}>
                             <Stack
                                 direction="row"
                                 justifyContent="space-between"
+                                alignItems="baseline"
                             >
-                                <Typography variant="caption" color="text.secondary">
+                                <Typography
+                                    variant="caption"
+                                    color="text.secondary"
+                                    sx={{
+                                        textTransform: "uppercase",
+                                        letterSpacing: "0.05em",
+                                        fontWeight: 600,
+                                    }}
+                                >
                                     {item.symbol}
                                 </Typography>
-                                <Typography variant="caption">
+                                <Typography
+                                    variant="caption"
+                                    sx={{
+                                        fontWeight: 700,
+                                        fontVariantNumeric: "tabular-nums",
+                                    }}
+                                >
                                     {percentage}%
                                 </Typography>
                             </Stack>
                             <Typography
                                 variant="caption"
-                                sx={{ color: "text.secondary", opacity: 0.7 }}
+                                sx={{
+                                    color: "text.secondary",
+                                    opacity: 0.7,
+                                    fontVariantNumeric: "tabular-nums",
+                                }}
                             >
                                 {item.value.toLocaleString("en-US", {
                                     style: "currency",

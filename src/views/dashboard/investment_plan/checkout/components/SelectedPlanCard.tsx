@@ -2,8 +2,10 @@
 
 import { Box, Stack, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
+import { alpha } from "@mui/material/styles";
 
-import { formatAmount, toNumber } from "@/utils/format";
+import DetailRow from "@/components/DetailRow";
+import { toNumber } from "@/utils/format";
 
 import {
     INVESTMENT_AMOUNT_LABEL,
@@ -15,68 +17,69 @@ import {
 import { formatDuration, formatRoi, RISK_LABELS } from "../../constants";
 
 import type { PlanResponse } from "@/api/plan/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type SelectedPlanCardProps = {
     plan: PlanResponse;
 };
 
-function Row({ label, value }: { label: string; value: string }) {
-    return (
-        <Stack direction="row" justifyContent="space-between" spacing={2}>
-            <Typography variant="body2" color="text.secondary">
-                {label}
-            </Typography>
-            <Typography
-                variant="body2"
-                sx={{ fontWeight: 600, textAlign: "right" }}
-            >
-                {value}
-            </Typography>
-        </Stack>
-    );
-}
-
 export default function SelectedPlanCard({ plan }: SelectedPlanCardProps) {
+    const { formatAmount } = useFormatCurrency();
     return (
-        <Card sx={{ p: { xs: 2, md: 2.5 } }}>
+        <Card sx={{ p: { xs: 2.5, md: 3 }, borderRadius: 3 }}>
             <Stack spacing={0.5}>
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                    variant="overline"
+                    sx={{ letterSpacing: "0.12em", fontWeight: 700 }}
+                    color="primary.main"
+                >
                     {SELECTED_PLAN_LABEL}
                 </Typography>
-                <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                <Typography variant="h5" sx={{ fontWeight: 800 }}>
                     {plan.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
                     {plan.description}
                 </Typography>
             </Stack>
 
-            <Stack spacing={1.25} sx={{ mt: 2 }}>
+            <Stack spacing={1.5} sx={{ mt: 2.5 }}>
                 <Box
                     sx={{
-                        p: 1.5,
-                        borderRadius: 2,
+                        p: 2,
+                        borderRadius: 2.5,
                         border: "1px solid",
-                        borderColor: "divider",
+                        borderColor: "primary.main",
+                        background: (theme) =>
+                            `linear-gradient(120deg, ${alpha(theme.palette.primary.main, 0.12)}, ${alpha(theme.palette.primary.main, 0.03)})`,
                     }}
                 >
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{ letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 700 }}
+                    >
                         {INVESTMENT_AMOUNT_LABEL}
                     </Typography>
-                    <Typography variant="h5" sx={{ fontWeight: 700, mt: 0.25 }}>
+                    <Typography
+                        variant="h4"
+                        sx={{ fontWeight: 800, mt: 0.5, fontVariantNumeric: "tabular-nums" }}
+                    >
                         {formatAmount(toNumber(plan.min_amount))}
                     </Typography>
                 </Box>
 
-                <Row
-                    label={DURATION_LABEL}
-                    value={formatDuration(plan.duration)}
-                />
-                <Row label={ROI_LABEL} value={formatRoi(plan.roi)} />
-                <Row
-                    label={RISK_LABEL}
-                    value={RISK_LABELS[plan.risk_management] ?? plan.risk_management}
-                />
+                <Stack spacing={1.25} divider={<Box sx={{ borderBottom: "1px solid", borderColor: "divider" }} />}>
+                    <DetailRow
+                        label={DURATION_LABEL}
+                        value={formatDuration(plan.duration)}
+                    />
+                    <DetailRow label={ROI_LABEL} value={formatRoi(plan.roi)} />
+                    <DetailRow
+                        label={RISK_LABEL}
+                        value={RISK_LABELS[plan.risk_management] ?? plan.risk_management}
+                    />
+                </Stack>
             </Stack>
         </Card>
     );

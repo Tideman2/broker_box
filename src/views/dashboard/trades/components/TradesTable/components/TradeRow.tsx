@@ -1,10 +1,9 @@
 import { Chip, Stack, TableCell, TableRow, Typography } from "@mui/material";
 
-import { formatAmount } from "@/utils/format";
-
 import { executedAtParts } from "../../../utils";
 
 import type { TradeResponse, TradeType } from "@/api/portfolio/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 const TYPE_COLOR: Record<TradeType, string> = {
     BUY: "primary.main",
@@ -19,6 +18,7 @@ type TradeRowProps = {
 };
 
 export default function TradeRow({ trade }: TradeRowProps) {
+    const { formatAmount } = useFormatCurrency();
     const color = tradeTypeColor(trade.type);
     const executed = executedAtParts(trade.executed_at);
 
@@ -52,27 +52,58 @@ export default function TradeRow({ trade }: TradeRowProps) {
                         border: "1px solid",
                         borderColor: color,
                         bgcolor: "transparent",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.05em",
+                        fontWeight: 600,
+                        fontSize: "0.7rem",
                     }}
                 />
             </TableCell>
 
-            <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
-                <Typography variant="body2">{trade.quantity}</Typography>
+            <TableCell
+                align="right"
+                sx={{ display: { xs: "none", sm: "table-cell" } }}
+            >
+                <Typography
+                    variant="body2"
+                    sx={{ fontVariantNumeric: "tabular-nums" }}
+                >
+                    {trade.quantity}
+                </Typography>
             </TableCell>
 
-            <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>
-                <Typography variant="body2">{formatAmount(trade.price)}</Typography>
+            <TableCell
+                align="right"
+                sx={{ display: { xs: "none", md: "table-cell" } }}
+            >
+                <Typography
+                    variant="body2"
+                    sx={{ fontVariantNumeric: "tabular-nums" }}
+                >
+                    {formatAmount(trade.price)}
+                </Typography>
             </TableCell>
 
-            <TableCell>
-                <Typography variant="body2">
+            <TableCell align="right">
+                <Typography
+                    variant="body2"
+                    sx={{
+                        fontWeight: 600,
+                        fontVariantNumeric: "tabular-nums",
+                    }}
+                >
                     {formatAmount(trade.total_value)}
                 </Typography>
             </TableCell>
 
-            <TableCell sx={{ whiteSpace: "nowrap" }}>
-                <Stack spacing={0}>
-                    <Typography variant="body2">{executed.date}</Typography>
+            <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
+                <Stack spacing={0} alignItems="flex-end">
+                    <Typography
+                        variant="body2"
+                        sx={{ fontVariantNumeric: "tabular-nums" }}
+                    >
+                        {executed.date}
+                    </Typography>
                     <Typography variant="caption" color="text.secondary">
                         {executed.time}
                     </Typography>

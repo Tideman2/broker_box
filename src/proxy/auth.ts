@@ -17,7 +17,6 @@ export async function checkAuthentication(
         request.nextUrl.pathname.startsWith("/auth");
 
     try {
-
         await serverAxios.get(authConfig.profileEndpoint);
 
         if (isAuthRoute) {
@@ -32,7 +31,7 @@ export async function checkAuthentication(
 
     } catch {
         const refreshToken = request.cookies.get(authConfig.refreshToken)?.value;
-
+        console.log("Refresh token from cookie:", refreshToken);
         if (!refreshToken) {
             if (isDashboardRoute) {
                 return {
@@ -45,24 +44,30 @@ export async function checkAuthentication(
             };
         }
 
-        const newAccessTokenResponse = await serverAxios.post(authConfig.refreshTokenEndpoint, {
-            token: refreshToken,
-        });
+        try {
+            const newAccessTokenResponse = await serverAxios.post(authConfig.refreshTokenEndpoint, {
+                token: refreshToken,
+            });
+            if (isDashboardRoute) {
+                if (newAccessTokenResponse.status === 200 || newAccessTokenResponse.status === 201) {
+                    const newAccessToken = newAccessTokenResponse.data.token;
+                    await setCookie(authConfig.sessionToken, newAccessToken);
+                    console.log("New access token set in cookie:", newAccessToken);
+                    return {
+                        authenticated: true,
+                    };
+                }
 
-        if (isDashboardRoute) {
-            if (newAccessTokenResponse.status === 200 || newAccessTokenResponse.status === 201) {
-                const newAccessToken = newAccessTokenResponse.data.token;
-                await setCookie(authConfig.sessionToken, newAccessToken);
-                console.log("New access token set in cookie:", newAccessToken);
                 return {
-                    authenticated: true,
+                    redirect: "/auth/login",
                 };
             }
-
+        } catch (error) {
             return {
-                redirect: "/auth/login",
+                authenticated: false,
             };
         }
+
 
         return {
             authenticated: false,

@@ -1,10 +1,13 @@
 "use client";
 
 import { Alert, Box, Button, Stack, Typography } from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import { alpha } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
 
 import { PATHS } from "@/routes/paths";
-import { formatAmount } from "@/utils/format";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 import {
     CONFIRM_LABEL,
@@ -30,25 +33,45 @@ export default function ConfirmSubscription({
     error,
     onConfirm,
 }: ConfirmSubscriptionProps) {
+    const { formatAmount } = useFormatCurrency();
     const router = useRouter();
 
     if (!sufficient) {
         return (
-            <Button
-                variant="contained"
-                size="large"
-                fullWidth
-                onClick={() => router.push(PATHS.dashboard.deposit)}
-            >
-                {DEPOSIT_FUNDS_LABEL}
-            </Button>
+            <Stack spacing={1.5}>
+                <Button
+                    variant="contained"
+                    size="large"
+                    fullWidth
+                    startIcon={<AccountBalanceWalletIcon />}
+                    onClick={() => router.push(PATHS.dashboard.deposit)}
+                    sx={{ borderRadius: 2, fontWeight: 700, py: 1.5 }}
+                >
+                    {DEPOSIT_FUNDS_LABEL}
+                </Button>
+            </Stack>
         );
     }
 
     return (
         <Stack spacing={1.5}>
-            <Box>
-                <Typography variant="caption" color="text.secondary">
+            <Box
+                sx={{
+                    display: "flex",
+                    gap: 1.5,
+                    alignItems: "flex-start",
+                    p: 2,
+                    borderRadius: 2,
+                    border: "1px solid",
+                    borderColor: "divider",
+                    backgroundColor: (theme) =>
+                        alpha(theme.palette.info.main, 0.05),
+                }}
+            >
+                <LockOutlinedIcon
+                    sx={{ fontSize: 18, color: "info.main", mt: 0.25, flexShrink: 0 }}
+                />
+                <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.6 }}>
                     {DEDUCTION_NOTICE.replace(
                         "{amount}",
                         formatAmount(planCost)
@@ -68,6 +91,7 @@ export default function ConfirmSubscription({
                 fullWidth
                 onClick={onConfirm}
                 disabled={submitting}
+                sx={{ borderRadius: 2, fontWeight: 700, py: 1.5 }}
             >
                 {submitting ? SUBSCRIBING_LABEL : CONFIRM_LABEL}
             </Button>

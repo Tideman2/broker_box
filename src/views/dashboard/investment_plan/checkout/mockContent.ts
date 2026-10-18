@@ -34,6 +34,7 @@ export const LOAD_ERROR_DESCRIPTION =
 export const SUCCESS_TITLE = "Subscription Successful";
 export const SUCCESS_DESCRIPTION = "You have successfully subscribed to {title}.";
 export const SUCCESS_AMOUNT_LABEL = "Investment Amount";
+export const SUCCESS_POOL_LABEL = "Subscription Balance";
 export const SUCCESS_REMAINING_LABEL = "Remaining Balance";
 export const VIEW_PORTFOLIO_LABEL = "View Portfolio";
 

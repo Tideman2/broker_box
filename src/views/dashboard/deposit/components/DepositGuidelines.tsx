@@ -1,5 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 import DashboardCard from "@/components/DashboardCard";
 
@@ -11,16 +12,25 @@ export default function DepositGuidelines() {
             icon={InfoOutlinedIcon}
             title="Deposit Guidelines"
         >
-            <Stack spacing={1.25}>
+            <Stack spacing={1.5}>
                 {GUIDELINES.map((guideline) => (
-                    <Typography
+                    <Stack
                         key={guideline}
-                        variant="caption"
-                        color="text.secondary"
-                        sx={{ display: "block", lineHeight: 1.6 }}
+                        direction="row"
+                        spacing={1}
+                        alignItems="flex-start"
                     >
-                        • {guideline}
-                    </Typography>
+                        <CheckCircleIcon
+                            sx={{ fontSize: 16, color: "success.main", mt: 0.2, flexShrink: 0 }}
+                        />
+                        <Typography
+                            variant="caption"
+                            color="text.secondary"
+                            sx={{ display: "block", lineHeight: 1.6 }}
+                        >
+                            {guideline}
+                        </Typography>
+                    </Stack>
                 ))}
             </Stack>
         </DashboardCard>

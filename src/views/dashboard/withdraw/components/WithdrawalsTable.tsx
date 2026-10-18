@@ -5,9 +5,10 @@ import LoadingState from "@/components/LoadingState";
 
 import StatusPill from "@/components/StatusPill";
 
-import { formatAmount, formatDate } from "./utils";
+import { formatDate } from "./utils";
 
 import type { UserWithdrawalRecordsResponse } from "@/api/withdraw/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 const HEAD_CELLS = ["ID", "Asset", "Amount", "Status", "Date"];
 
@@ -30,6 +31,7 @@ export default function WithdrawalsTable({
     emptyDescription = "Your withdrawal requests will appear here.",
     onRowClick,
 }: WithdrawalsTableProps) {
+    const { formatAmount } = useFormatCurrency();
     if (loading) return <LoadingState height={40} lines={5} />;
 
     if (error) {
@@ -58,10 +60,14 @@ export default function WithdrawalsTable({
                         {HEAD_CELLS.map((cell) => (
                             <TableCell
                                 key={cell}
+                                align={cell === "Amount" ? "right" : "left"}
                                 sx={{
                                     color: "text.secondary",
-                                    fontSize: "0.75rem",
+                                    fontSize: "0.7rem",
+                                    fontWeight: 700,
+                                    letterSpacing: "0.08em",
                                     textTransform: "uppercase",
+                                    whiteSpace: "nowrap",
                                 }}
                             >
                                 {cell}
@@ -81,14 +87,17 @@ export default function WithdrawalsTable({
                                     : undefined
                             }
                         >
-                            <TableCell sx={{ whiteSpace: "nowrap", color: "text.secondary" }}>
+                            <TableCell sx={{ whiteSpace: "nowrap", color: "text.secondary", fontVariantNumeric: "tabular-nums" }}>
                                 #{record.id}
                             </TableCell>
                             <TableCell sx={{ whiteSpace: "nowrap", fontWeight: 600 }}>
                                 {record.asset_symbol} · {record.asset_name}
                             </TableCell>
-                            <TableCell sx={{ whiteSpace: "nowrap" }}>
-                                <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                            <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
+                                <Typography
+                                    variant="body2"
+                                    sx={{ fontWeight: 700, fontVariantNumeric: "tabular-nums" }}
+                                >
                                     {formatAmount(record.amount, 0)}
                                 </Typography>
                             </TableCell>

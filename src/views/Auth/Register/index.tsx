@@ -1,5 +1,5 @@
 'use client';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, Alert } from '@mui/material';
 import { useEffect } from 'react';
 
 import { useRegister } from '@/contexts/register/hook';
@@ -38,10 +38,24 @@ export default function Register() {
     }, [state.currentStep])
 
     return (
-        <Stack spacing={3}>
-            <ThemeToggleButtonComponent />
+        <Stack spacing={2.5} sx={{ width: '100%' }}>
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
+                <Stack spacing={0.5}>
+                    <Typography variant="h4">
+                        Create account
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Five quick steps to get trading.
+                    </Typography>
+                </Stack>
+                <ThemeToggleButtonComponent />
+            </Stack>
             <RegisterStepper />
-            {state.error && <Typography variant="body2" color="error">{state.error}</Typography>}
+            {state.error && (
+                <Alert severity="error" variant="outlined">
+                    <Typography variant="body2">{state.error}</Typography>
+                </Alert>
+            )}
             {renderCurrentStep()}
         </Stack>
     );

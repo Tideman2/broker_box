@@ -1,12 +1,13 @@
 export const authConfig = {
     sessionToken: "sessionToken",
     refreshToken: "refreshToken",
-    refreshTokenEndpoint: "/auth/refresh-token",
+    refreshTokenEndpoint: "/auth/refresh",
     profileEndpoint: '/auth/user',
+    changePasswordEndpoint: '/auth/change-password',
     loginEndpoint: '/auth/login',
     logoutEndpoint: '/auth/logout',
     registerEndpoint: '/auth/register',
-    resetPasswordEndpoint: '/user/reset-password',
-    verifyResetPasswordEndpoint: '/user/reset-password/verify',
-    completeResetPasswordEndpoint: '/user/reset-password/complete',
+    resetPasswordEndpoint: '/auth/forgot-password',
+    verifyResetPasswordEndpoint: '/auth/verify-otp',
+    completeResetPasswordEndpoint: '/auth/reset-password',
 };

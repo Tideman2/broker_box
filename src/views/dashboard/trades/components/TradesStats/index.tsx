@@ -7,7 +7,7 @@ import PercentIcon from "@mui/icons-material/Percent";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 
-import { formatAmount, toNumber } from "@/utils/format";
+import { toNumber } from "@/utils/format";
 import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
 
@@ -15,6 +15,7 @@ import { TRADES_CONTENT } from "../../mockContent";
 import { winRatePercent } from "../../utils";
 
 import type { TradeOverviewResponse } from "@/api/portfolio/types";
+import { useFormatCurrency } from "@/contexts/currency/hooks";
 
 type TradeStat = {
     id: string;
@@ -38,6 +39,7 @@ export default function TradesStats({
     error,
     onRetry,
 }: TradesStatsProps) {
+    const { formatAmount } = useFormatCurrency();
     if (loading) {
         return (
             <Grid container spacing={3}>
@@ -108,12 +110,26 @@ export default function TradesStats({
                                     fontSize: 22,
                                 }}
                             />
-                            <Typography variant="caption" color="text.secondary">
+                            <Typography
+                                variant="caption"
+                                color="text.secondary"
+                                sx={{
+                                    textTransform: "uppercase",
+                                    letterSpacing: "0.06em",
+                                    fontWeight: 600,
+                                }}
+                            >
                                 {stat.label}
                             </Typography>
                             <Typography
                                 variant="h6"
-                                sx={stat.color ? { color: stat.color } : undefined}
+                                sx={{
+                                    fontWeight: 700,
+                                    fontVariantNumeric: "tabular-nums",
+                                    ...(stat.color
+                                        ? { color: stat.color }
+                                        : undefined),
+                                }}
                             >
                                 {stat.value}
                             </Typography>

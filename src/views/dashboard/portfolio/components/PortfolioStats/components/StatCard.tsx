@@ -24,11 +24,14 @@ export type KpiStat = {
     caption?: string;
 };
 
-const STATUS_COLOR: Record<NonNullable<KpiStat["status"]>, string> = {
-    success: "success.main",
-    warning: "warning.main",
-    error: "error.main",
-    neutral: "info.main",
+const STATUS_CHIP_COLOR: Record<
+    NonNullable<KpiStat["status"]>,
+    "success" | "warning" | "error" | "info"
+> = {
+    success: "success",
+    warning: "warning",
+    error: "error",
+    neutral: "info",
 };
 
 const MEDIUM_SX: SxProps<Theme> = { fontSize: "1.1rem", whiteSpace: "nowrap" };
@@ -39,7 +42,6 @@ type StatCardProps = {
 
 export default function StatCard({ stat }: StatCardProps) {
     const isUp = stat.trend === "up";
-    const statusColor = stat.status ? STATUS_COLOR[stat.status] : undefined;
 
     return (
         <Card sx={{ p: 2, height: "100%" }}>
@@ -53,16 +55,19 @@ export default function StatCard({ stat }: StatCardProps) {
                     {stat.status && stat.statusLabel ? (
                         <Chip
                             size="small"
+                            color={STATUS_CHIP_COLOR[stat.status]}
                             label={stat.statusLabel}
                             sx={{
-                                color: statusColor,
-                                bgcolor: "transparent",
-                                pl: 0,
+                                textTransform: "uppercase",
+                                letterSpacing: "0.05em",
+                                fontWeight: 600,
+                                fontSize: "0.7rem",
                             }}
                         />
                     ) : stat.trend && stat.changePct !== undefined ? (
                         <Chip
                             size="small"
+                            color={isUp ? "success" : "error"}
                             icon={
                                 isUp ? (
                                     <ArrowUpwardIcon sx={{ fontSize: 14 }} />
@@ -72,23 +77,34 @@ export default function StatCard({ stat }: StatCardProps) {
                             }
                             label={formatPercent(stat.changePct)}
                             sx={{
-                                color: isUp ? "success.main" : "error.main",
-                                bgcolor: "transparent",
-                                pl: 0,
-                                "& .MuiChip-icon": {
-                                    color: isUp ? "success.main" : "error.main",
-                                },
+                                fontWeight: 600,
+                                "& .MuiChip-icon": { fontSize: 14 },
                             }}
                         />
                     ) : null}
                 </Stack>
 
-                <Typography variant="caption" color="text.secondary">
+                <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{
+                        textTransform: "uppercase",
+                        letterSpacing: "0.06em",
+                        fontWeight: 600,
+                    }}
+                >
                     {stat.label}
                 </Typography>
 
                 <Tooltip title={stat.statusLabel ?? stat.label}>
-                    <Typography variant="h6" sx={MEDIUM_SX}>
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            ...MEDIUM_SX,
+                            fontWeight: 700,
+                            fontVariantNumeric: "tabular-nums",
+                        }}
+                    >
                         {stat.value}
                     </Typography>
                 </Tooltip>

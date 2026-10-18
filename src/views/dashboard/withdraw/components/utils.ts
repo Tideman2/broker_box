@@ -1,4 +1,4 @@
-export { formatAmount, toNumber } from "@/utils/format";
+export { toNumber } from "@/utils/format";
 export {
     STATUS_LABELS,
     STATUS_TONES,
