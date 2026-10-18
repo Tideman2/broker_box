@@ -4,23 +4,13 @@ import type { RiskManagement } from "@/api/plan/types";
 import type { SubscriptionStatus } from "@/api/subscription/types";
 
 /**
- * The cancel flow must not be exposed until the backend blockers below are
- * resolved. The handler is commented out rather than deleted.
- *
- * 1. cancel_subscription() returns {"message", "id"} but the handler declared
- *    response_model=SubscriptionResponse, so FastAPI raised a 500
- *    ResponseValidationError on every call. It must return a built
- *    SubscriptionResponse instead.
- * 2. Funds are locked on subscribe (_lock_funds) and never released:
- *    _unlock_funds and _consume_lock_funds exist but are never called, so a
- *    cancelled subscription would strand the principal in wallet.locked.
- * 3. Subscriptions never mature: _complete_subscription is never called and
- *    there is no scheduler, so expiration_date is never acted on.
- *
- * Blockers 2 and 3 need a business decision on how principal is treated
- * before restoring the route. Flip this to true once it is back and correct.
+ * POST /subscription/cancel/{id} settles immediately: open positions are
+ * liquidated at the current price back into the subscription's pool, the pool
+ * is returned to wallet.available, and the response comes back CANCELLED with a
+ * pool of "0.00". The client must therefore refresh both the subscription list
+ * and the available balance after a cancel.
  */
-export const SUBSCRIPTION_CANCEL_ENABLED = false;
+export const SUBSCRIPTION_CANCEL_ENABLED = true;
 
 export const RISK_LABELS: Record<RiskManagement, string> = {
     STANDARD: "Standard Risk",
@@ -55,6 +45,18 @@ export const ACTIVE_SUBSCRIPTION_STATUSES: SubscriptionStatus[] = [
     "ACTIVE",
     "PENDING",
 ];
+
+/**
+ * Cancel is rejected with 401 for anything that is not ACTIVE, including a
+ * PENDING one, so the cancel affordance is gated separately from the list
+ * above rather than derived from it.
+ */
+export const CANCELLABLE_STATUSES: SubscriptionStatus[] = ["ACTIVE"];
+
+/** Losses render as errors so a red P/L is never mistaken for a gain. */
+export const profitTone = (
+    profitLoss: number
+): Exclude<StatusTone, "info"> => (profitLoss < 0 ? "error" : "success");
 
 export const formatDuration = (days: number): string =>
     `${days} ${days === 1 ? "Day" : "Days"}`;

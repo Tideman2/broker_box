@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Alert, Button, Stack } from "@mui/material";
+import { Alert, Button, Stack, Typography } from "@mui/material";
 
 import ContentWrapper from "@/layout/components/ContentWrapper";
 
@@ -10,6 +10,7 @@ import { getPlans } from "@/app/actions/plan-actions";
 import {
     cancelSubscription,
     getSubscriptions,
+    getSubscriptionSummary,
 } from "@/app/actions/subscription-actions";
 import { getAvailableBalance } from "@/app/actions/deposit-actions";
 
@@ -29,14 +30,17 @@ import PlanGrid from "./components/PlanGrid";
 
 import {
     ACTIVE_PLAN_EMPTY,
+    ACTIVE_PLANS_LABEL,
     BALANCE_ERROR_DESCRIPTION,
     BALANCE_ERROR_TITLE,
     BALANCE_LOADING_LABEL,
     PLANS_RETRY_LABEL,
     SUBSCRIPTIONS_ERROR_LABEL,
+    SUMMARY_ERROR_LABEL,
 } from "./mockContent";
 import {
     ACTIVE_SUBSCRIPTION_STATUSES,
+    CANCELLABLE_STATUSES,
     SUBSCRIPTION_CANCEL_ENABLED,
 } from "./constants";
 
@@ -68,6 +72,24 @@ export default function InvestmentPlan() {
         refetchOnWindowFocus: false,
     });
 
+    const subscriptions = subscriptionsQuery.data?.subscriptions ?? [];
+    // A live subscription is running or about to start; only a running one is
+    // reported by GET /subscription/summary, so the summary request is skipped
+    // entirely for a user who has none.
+    const liveSubscriptions = subscriptions.filter((subscription) =>
+        ACTIVE_SUBSCRIPTION_STATUSES.includes(subscription.status)
+    );
+    const hasActiveSubscription = liveSubscriptions.some(
+        (subscription) => subscription.status === "ACTIVE"
+    );
+
+    const summaryQuery = useQuery({
+        queryKey: subscriptionQueryKeys.summary,
+        queryFn: getSubscriptionSummary,
+        enabled: !subscriptionsQuery.isLoading && hasActiveSubscription,
+        refetchOnWindowFocus: false,
+    });
+
     const cancelMutation = useMutation({
         mutationFn: cancelSubscription,
         onMutate: () => setCancelError(""),
@@ -85,6 +107,11 @@ export default function InvestmentPlan() {
             queryClient.invalidateQueries({
                 queryKey: subscriptionQueryKeys.subscriptions,
             });
+            // A cancel settles the subscription, so its summary row is gone.
+            queryClient.invalidateQueries({
+                queryKey: subscriptionQueryKeys.summary,
+            });
+            // The released pool lands back in the available balance.
             queryClient.invalidateQueries({
                 predicate: (query) => isAvailableBalanceKey(query.queryKey),
             });
@@ -93,12 +120,9 @@ export default function InvestmentPlan() {
     });
 
     const plans = plansQuery.data?.plans ?? [];
-    const subscriptions = subscriptionsQuery.data?.subscriptions ?? [];
-    console.log(subscriptions)
-    const activeSubscription =
-        subscriptions.find((subscription) =>
-            ACTIVE_SUBSCRIPTION_STATUSES.includes(subscription.status)
-        ) ?? null;
+    const summaries = summaryQuery.data ?? [];
+    const summaryFor = (subscriptionId: number) =>
+        summaries.find((row) => row.subscription_id === subscriptionId) ?? null;
 
     const handleCancel = (subscription: SubscriptionResponse) => {
         setCancelError("");
@@ -149,27 +173,66 @@ export default function InvestmentPlan() {
                     </Alert>
                 )}
 
+                {/* Performance is supplementary: without it the cards still show
+                    the plan, the pool and the expiry, so a failed summary fetch
+                    must never take the section down. */}
+                {summaryQuery.isError && hasActiveSubscription && (
+                    <Alert
+                        severity="warning"
+                        variant="outlined"
+                        action={
+                            <Button
+                                size="small"
+                                color="inherit"
+                                onClick={() => summaryQuery.refetch()}
+                            >
+                                {PLANS_RETRY_LABEL}
+                            </Button>
+                        }
+                    >
+                        {SUMMARY_ERROR_LABEL}
+                    </Alert>
+                )}
+
                 {!subscriptionsQuery.isLoading &&
                     !subscriptionsQuery.isError &&
-                    !activeSubscription && (
+                    liveSubscriptions.length === 0 && (
                         <Alert severity="info" variant="outlined">
                             {ACTIVE_PLAN_EMPTY}
                         </Alert>
                     )}
 
-                {activeSubscription && (
-                    <ActiveSubscriptionCard
-                        subscription={activeSubscription}
-                        onCancel={handleCancel}
-                        showCancel={SUBSCRIPTION_CANCEL_ENABLED}
-                        cancelling={cancelMutation.isPending}
-                    />
+                {liveSubscriptions.length > 0 && (
+                    <Stack spacing={2}>
+                        <Typography variant="overline" color="text.secondary">
+                            {ACTIVE_PLANS_LABEL}
+                        </Typography>
+
+                        {liveSubscriptions.map((subscription) => (
+                            <ActiveSubscriptionCard
+                                key={subscription.id}
+                                subscription={subscription}
+                                summary={summaryFor(subscription.id)}
+                                showCancel={
+                                    SUBSCRIPTION_CANCEL_ENABLED &&
+                                    CANCELLABLE_STATUSES.includes(
+                                        subscription.status
+                                    )
+                                }
+                                cancelling={cancelMutation.isPending}
+                                onCancel={handleCancel}
+                            />
+                        ))}
+                    </Stack>
                 )}
 
                 <PlanGrid
                     plans={plans}
                     loading={plansQuery.isLoading}
                     error={plansQuery.isError}
+                    activePlanIds={liveSubscriptions.map(
+                        (subscription) => subscription.plan_id
+                    )}
                     onRetry={() => plansQuery.refetch()}
                 />
             </Stack>

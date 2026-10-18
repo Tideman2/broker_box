@@ -34,6 +34,17 @@ export const SUBSCRIPTIONS_ERROR_LABEL =
 export const VIEW_DETAILS_LABEL = "View Details";
 export const CANCEL_PLAN_LABEL = "Cancel Plan";
 
+export const POOL_LABEL = "Subscription balance";
+export const PERFORMANCE_LABEL = "Performance";
+export const CURRENT_VALUE_LABEL = "Current value";
+export const PROFIT_LABEL = "Profit / loss";
+export const ROI_METRIC_LABEL = "Return";
+/** Shown for a live subscription that has not started, so no summary exists yet. */
+export const SUMMARY_PENDING_LABEL =
+    "Performance appears once the plan is active.";
+export const SUMMARY_ERROR_LABEL =
+    "We could not load performance for this plan.";
+
 export const CANCEL_TITLE = "Cancel Investment Plan?";
 export const CANCEL_DESCRIPTION =
     "Are you sure you want to cancel your {title}?";
