@@ -15,6 +15,7 @@ import {
     BACK_LABEL,
     SUCCESS_AMOUNT_LABEL,
     SUCCESS_DESCRIPTION,
+    SUCCESS_POOL_LABEL,
     SUCCESS_REMAINING_LABEL,
     SUCCESS_TITLE,
     VIEW_PORTFOLIO_LABEL,
@@ -23,12 +24,15 @@ import {
 type SubscriptionSuccessProps = {
     planTitle: string;
     investedAmount: number;
+    /** Spendable cash held inside the new subscription. */
+    pool: number;
     remainingBalance: number;
 };
 
 export default function SubscriptionSuccess({
     planTitle,
     investedAmount,
+    pool,
     remainingBalance,
 }: SubscriptionSuccessProps) {
     const { formatAmount } = useFormatCurrency();
@@ -78,6 +82,10 @@ export default function SubscriptionSuccess({
                     <DetailRow
                         label={SUCCESS_AMOUNT_LABEL}
                         value={formatAmount(investedAmount)}
+                    />
+                    <DetailRow
+                        label={SUCCESS_POOL_LABEL}
+                        value={formatAmount(pool)}
                     />
                     <DetailRow
                         label={SUCCESS_REMAINING_LABEL}

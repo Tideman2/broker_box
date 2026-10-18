@@ -99,6 +99,10 @@ export default function InvestmentPlanCheckout({
             queryClient.invalidateQueries({
                 queryKey: subscriptionQueryKeys.subscriptions,
             });
+            // The new subscription has a summary row as soon as it is ACTIVE.
+            queryClient.invalidateQueries({
+                queryKey: subscriptionQueryKeys.summary,
+            });
             queryClient.invalidateQueries({
                 predicate: (query) => isAvailableBalanceKey(query.queryKey),
             });
@@ -141,6 +145,7 @@ export default function InvestmentPlanCheckout({
                         investedAmount={toNumber(
                             result.subscription.invested_amount
                         )}
+                        pool={toNumber(result.subscription.pool)}
                         remainingBalance={
                             result.balanceAtSubmit -
                             toNumber(result.subscription.invested_amount)
