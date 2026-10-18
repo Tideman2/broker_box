@@ -128,11 +128,15 @@ export async function handleServerResetPassword(
 }
 
 export async function logout() {
+    console.log("Initiating server-side logout...");
     try {
+        console.log("Attempting to log out server-side...");
         await logoutUser();
+        console.log("Server Action Logout Success");
     } catch (error) {
         console.error("Server Action Logout Failure:", error);
     } finally {
+        console.log("Removing session and refresh tokens from cookies...");
         await removeCookie(authConfig.sessionToken);
         await removeCookie(authConfig.refreshToken);
     }

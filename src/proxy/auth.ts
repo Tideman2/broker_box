@@ -17,7 +17,6 @@ export async function checkAuthentication(
         request.nextUrl.pathname.startsWith("/auth");
 
     try {
-
         await serverAxios.get(authConfig.profileEndpoint);
 
         if (isAuthRoute) {

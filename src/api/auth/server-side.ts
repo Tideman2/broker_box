@@ -198,6 +198,7 @@ export const changePassword = async (
 
 export const logoutUser = async () => {
     try {
+        console.log("Attempting to log out user server-side...");
         const serverAxios = await getServerAxios()
         const response = await serverAxios.post(
             authConfig.logoutEndpoint

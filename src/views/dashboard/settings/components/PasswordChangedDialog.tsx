@@ -12,7 +12,6 @@ import {
 import LockResetOutlinedIcon from "@mui/icons-material/LockResetOutlined";
 
 import { PATHS } from "@/routes/paths";
-import { logout } from "@/app/actions/auth-actions";
 
 type PasswordChangedDialogProps = {
     open: boolean;
@@ -29,7 +28,6 @@ export default function PasswordChangedDialog({ open }: PasswordChangedDialogPro
     const handleSignOut = async () => {
         // The token is already revoked server-side; this only clears the
         // cookies so the client stops presenting a dead session.
-        await logout();
         router.replace(PATHS.auth.login);
     };
 
