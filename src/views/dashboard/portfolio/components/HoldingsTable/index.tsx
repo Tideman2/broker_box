@@ -144,7 +144,7 @@ export default function HoldingsTable({
                     title={rows.length === 0 ? "No holdings yet" : "No matching holdings"}
                     description={
                         rows.length === 0
-                            ? "Buy an instrument to start building your portfolio."
+                            ? "Your holdings will appear here once instruments are added to your portfolio."
                             : "Try a different search term."
                     }
                 />
