@@ -16,8 +16,12 @@ export type SubscriptionResponse = {
      * Spendable cash held inside this subscription. Subscribing moves the
      * amount from wallet.available into it, and cancelling or expiring returns
      * whatever is left. Serialized as a string because it is a Decimal.
+     *
+     * Optional for the same reason PlanResponse.is_recommended is: it was added
+     * after the field's consumers, so a backend still on the previous contract
+     * omits it rather than sending 0, and the UI must not invent a balance.
      */
-    pool: string;
+    pool?: string;
     expiration_date: string;
     status: SubscriptionStatus;
     created_at: string;

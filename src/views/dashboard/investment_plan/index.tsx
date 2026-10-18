@@ -88,6 +88,10 @@ export default function InvestmentPlan() {
         queryFn: getSubscriptionSummary,
         enabled: !subscriptionsQuery.isLoading && hasActiveSubscription,
         refetchOnWindowFocus: false,
+        // A 404 here means the backend is not on the new contract yet, which is
+        // not transient. The default 3 retries would delay the warning alert by
+        // ~7s and make its retry button look dead.
+        retry: false,
     });
 
     const cancelMutation = useMutation({
@@ -96,6 +100,13 @@ export default function InvestmentPlan() {
         onSuccess: (result) => {
             if (!result.success) {
                 setCancelError(result.error);
+                // A rejection usually means the cached status has drifted from
+                // the server's (cancelled elsewhere, expired meanwhile), so
+                // resync rather than leave a cancel button the backend will
+                // keep refusing.
+                queryClient.invalidateQueries({
+                    queryKey: subscriptionQueryKeys.subscriptions,
+                });
                 return;
             }
             setCancelTarget(null);
@@ -213,6 +224,7 @@ export default function InvestmentPlan() {
                                 key={subscription.id}
                                 subscription={subscription}
                                 summary={summaryFor(subscription.id)}
+                                summaryLoading={summaryQuery.isLoading}
                                 showCancel={
                                     SUBSCRIPTION_CANCEL_ENABLED &&
                                     CANCELLABLE_STATUSES.includes(
@@ -230,9 +242,13 @@ export default function InvestmentPlan() {
                     plans={plans}
                     loading={plansQuery.isLoading}
                     error={plansQuery.isError}
-                    activePlanIds={liveSubscriptions.map(
-                        (subscription) => subscription.plan_id
-                    )}
+                    /* The badge says "Active", so it must not light up for a
+                       subscription that is only pending to start. */
+                    activePlanIds={subscriptions
+                        .filter(
+                            (subscription) => subscription.status === "ACTIVE"
+                        )
+                        .map((subscription) => subscription.plan_id)}
                     onRetry={() => plansQuery.refetch()}
                 />
             </Stack>

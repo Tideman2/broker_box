@@ -25,7 +25,7 @@ type SubscriptionSuccessProps = {
     planTitle: string;
     investedAmount: number;
     /** Spendable cash held inside the new subscription. */
-    pool: number;
+    pool?: number;
     remainingBalance: number;
 };
 
@@ -83,10 +83,14 @@ export default function SubscriptionSuccess({
                         label={SUCCESS_AMOUNT_LABEL}
                         value={formatAmount(investedAmount)}
                     />
-                    <DetailRow
-                        label={SUCCESS_POOL_LABEL}
-                        value={formatAmount(pool)}
-                    />
+                    {/* Omitted rather than defaulted when the field is absent,
+                        so an older backend cannot show a fabricated $0.00. */}
+                    {pool != null && (
+                        <DetailRow
+                            label={SUCCESS_POOL_LABEL}
+                            value={formatAmount(pool)}
+                        />
+                    )}
                     <DetailRow
                         label={SUCCESS_REMAINING_LABEL}
                         value={formatAmount(remainingBalance)}

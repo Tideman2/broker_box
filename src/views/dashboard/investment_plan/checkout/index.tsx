@@ -145,7 +145,11 @@ export default function InvestmentPlanCheckout({
                         investedAmount={toNumber(
                             result.subscription.invested_amount
                         )}
-                        pool={toNumber(result.subscription.pool)}
+                        pool={
+                            result.subscription.pool != null
+                                ? toNumber(result.subscription.pool)
+                                : undefined
+                        }
                         remainingBalance={
                             result.balanceAtSubmit -
                             toNumber(result.subscription.invested_amount)

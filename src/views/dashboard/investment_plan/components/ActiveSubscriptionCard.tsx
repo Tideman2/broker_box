@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Chip, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Skeleton, Stack, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { alpha } from "@mui/material/styles";
@@ -19,6 +19,7 @@ import {
     PROFIT_LABEL,
     ROI_METRIC_LABEL,
     SUMMARY_PENDING_LABEL,
+    SUMMARY_UNAVAILABLE_LABEL,
     VIEW_DETAILS_LABEL,
 } from "../mockContent";
 import {
@@ -37,12 +38,13 @@ import { useFormatCurrency } from "@/contexts/currency/hooks";
 type ActiveSubscriptionCardProps = {
     subscription: SubscriptionResponse;
     /**
-     * The matching summary row. Null for a subscription that has not started
-     * yet, since GET /subscription/summary only reports ACTIVE ones. A failed
-     * summary fetch also arrives as null — the card is meant to keep working
-     * without it, so the two cases do not need to be told apart here.
+     * The matching summary row. Null when none applies — the subscription has
+     * not started (summary covers ACTIVE only), the fetch failed, or the
+     * backend has not caught up yet. `summaryLoading` tells the still-loading
+     * case apart so an active card never claims performance is still coming.
      */
     summary?: SubscriptionSummary | null;
+    summaryLoading?: boolean;
     onCancel: (subscription: SubscriptionResponse) => void;
     showCancel?: boolean;
     cancelling?: boolean;
@@ -84,6 +86,7 @@ function Metric({ label, value, tone }: MetricProps) {
 export default function ActiveSubscriptionCard({
     subscription,
     summary,
+    summaryLoading,
     onCancel,
     showCancel,
     cancelling,
@@ -91,11 +94,15 @@ export default function ActiveSubscriptionCard({
     const { formatAmount } = useFormatCurrency();
     const router = useRouter();
 
+    const isActive = subscription.status === "ACTIVE";
     const profitLoss = summary ? toNumber(summary.profit_loss) : 0;
     // A plain formatAmount renders a gain without a sign, which reads like a
-    // balance rather than a movement, so gains are prefixed.
+    // balance rather than a movement, so only an actual gain is prefixed — a
+    // flat position should not read as a positive.
     const profitValue =
-        profitLoss < 0 ? formatAmount(profitLoss) : `+${formatAmount(profitLoss)}`;
+        profitLoss > 0
+            ? `+${formatAmount(profitLoss)}`
+            : formatAmount(profitLoss);
 
     return (
         <Card
@@ -119,9 +126,10 @@ export default function ActiveSubscriptionCard({
                     <Typography
                         variant="overline"
                         sx={{ letterSpacing: "0.12em", fontWeight: 700 }}
-                        color="success.main"
+                        color={isActive ? "success.main" : "text.secondary"}
                     >
-                        Active subscription
+                        {SUBSCRIPTION_STATUS_LABELS[subscription.status]}{" "}
+                        subscription
                     </Typography>
                     <Typography variant="h6" sx={{ fontWeight: 800 }}>
                         {subscription.plan_title}
@@ -207,10 +215,15 @@ export default function ActiveSubscriptionCard({
                     useFlexGap
                     sx={{ mt: 1 }}
                 >
-                    <Metric
-                        label={POOL_LABEL}
-                        value={formatAmount(toNumber(subscription.pool))}
-                    />
+                    {/* Omitted rather than defaulted when the field is absent,
+                        so a backend on the previous contract cannot show a
+                        fabricated $0.00 balance. */}
+                    {subscription.pool != null && (
+                        <Metric
+                            label={POOL_LABEL}
+                            value={formatAmount(toNumber(subscription.pool))}
+                        />
+                    )}
                     {summary ? (
                         <>
                             <Metric
@@ -228,13 +241,25 @@ export default function ActiveSubscriptionCard({
                                 tone={profitTone(profitLoss)}
                             />
                         </>
+                    ) : summaryLoading ? (
+                        <Skeleton
+                            variant="rounded"
+                            width={120}
+                            height={36}
+                            sx={{ borderRadius: 1.5 }}
+                        />
                     ) : (
                         <Typography
                             variant="caption"
                             color="text.secondary"
                             sx={{ alignSelf: "center" }}
                         >
-                            {SUMMARY_PENDING_LABEL}
+                            {/* Only a subscription that has not started is still
+                                waiting; telling an active one that performance
+                                is coming would be false. */}
+                            {isActive
+                                ? SUMMARY_UNAVAILABLE_LABEL
+                                : SUMMARY_PENDING_LABEL}
                         </Typography>
                     )}
                 </Stack>
