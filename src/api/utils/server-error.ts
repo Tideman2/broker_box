@@ -24,3 +24,22 @@ export const extractServerErrorMessage = (
 
     return fallback;
 };
+
+/**
+ * Keeps the server status alongside the message so callers can branch on the
+ * contract (409 duplicate/pending, 404 missing) instead of matching strings.
+ */
+export const extractServerError = (
+    error: unknown,
+    fallback = "Something went wrong. Please try again."
+): { error: string; status?: number } => {
+    const status =
+        error && typeof error === "object"
+            ? (error as AxiosError).response?.status
+            : undefined;
+
+    return {
+        error: extractServerErrorMessage(error, fallback),
+        ...(status != null && { status }),
+    };
+};

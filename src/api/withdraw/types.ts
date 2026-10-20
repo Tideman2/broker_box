@@ -48,6 +48,17 @@ export type AddCryptoDestinationRequest = {
     crypto_destination: CryptoDestination;
 };
 
+/**
+ * PATCH is a partial update, but each detail block replaces the stored values
+ * in full: send either `bank_destination` or `crypto_destination`, never both.
+ * The destination type itself cannot be changed.
+ */
+export type UpdateDestinationInput = {
+    label?: string;
+    bank_destination?: BankDestination;
+    crypto_destination?: CryptoDestination;
+};
+
 export type WithdrawStatus = "pending" | "confirmed" | "rejected";
 
 export type UserWithdrawalRecordsResponse = {
