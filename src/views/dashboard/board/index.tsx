@@ -15,19 +15,17 @@ import {
 import { getSubscriptions } from '@/app/actions/subscription-actions';
 import { getAvailableBalance } from '@/app/actions/deposit-actions';
 import { getPlans } from '@/app/actions/plan-actions';
+import { getMoneyFlow } from '@/app/actions/wallet-actions';
 import {
     depositQueryKeys,
     planQueryKeys,
     portfolioQueryKeys,
     subscriptionQueryKeys,
+    walletQueryKeys,
 } from '@/api/react-query-keys';
 import { ACTIVE_SUBSCRIPTION_STATUSES } from '@/views/dashboard/investment_plan/constants';
 
-import {
-    financialFlowData,
-    marketSentimentData,
-    portfolioAnalyticsData,
-} from './mockData';
+import { marketSentimentData, portfolioAnalyticsData } from './mockData';
 
 import PortfolioCommand from './components/PortfolioCommand';
 import PortfolioStats from './components/PortfolioStats';
@@ -40,10 +38,12 @@ import DashboardFooter from './components/DashboardFooter';
 
 import type { PortfolioStat } from './mockData';
 import type { SubscriptionResponse } from '@/api/subscription/types';
+import type { MoneyFlowItem } from '@/api/wallet/types';
 import type { TradeResponse } from '@/api/portfolio/types';
 
-/** Stable reference so the recent-trades prop never changes identity on render. */
+/** Stable references so list props never change identity on render. */
 const NO_TRADES: TradeResponse[] = [];
+const NO_MONEY_FLOW: MoneyFlowItem[] = [];
 
 export default function DashboardBoard() {
     const balanceQuery = useQuery({
@@ -88,6 +88,12 @@ export default function DashboardBoard() {
         refetchOnWindowFocus: false,
     });
 
+    const moneyFlowQuery = useQuery({
+        queryKey: walletQueryKeys.moneyFlow,
+        queryFn: getMoneyFlow,
+        refetchOnWindowFocus: false,
+    });
+
     const topInvestment = useMemo(() => {
         const subscription = (
             subscriptionsQuery.data?.subscriptions ?? []
@@ -98,7 +104,7 @@ export default function DashboardBoard() {
             .reduce<SubscriptionResponse | null>(
                 (best, entry) =>
                     best == null ||
-                    Number(entry.invested_amount) > Number(best.invested_amount)
+                        Number(entry.invested_amount) > Number(best.invested_amount)
                         ? entry
                         : best,
                 null
@@ -107,23 +113,29 @@ export default function DashboardBoard() {
         const plan =
             subscription != null
                 ? plansQuery.data?.plans.find(
-                      (entry) => entry.id === subscription.plan_id
-                  ) ?? null
+                    (entry) => entry.id === subscription.plan_id
+                ) ?? null
                 : null;
 
         return { subscription, plan };
     }, [subscriptionsQuery.data, plansQuery.data]);
 
+    const activeInvestment = useMemo(
+        () =>
+            (subscriptionsQuery.data?.subscriptions ?? [])
+                .filter((subscription) =>
+                    ACTIVE_SUBSCRIPTION_STATUSES.includes(subscription.status)
+                )
+                .reduce(
+                    (sum, subscription) =>
+                        sum + Number(subscription.invested_amount),
+                    0
+                ),
+        [subscriptionsQuery.data]
+    );
+
     const stats: PortfolioStat[] = useMemo(() => {
         const available = balanceQuery.data ?? 0;
-        const invested = (subscriptionsQuery.data?.subscriptions ?? [])
-            .filter((subscription) =>
-                ACTIVE_SUBSCRIPTION_STATUSES.includes(subscription.status)
-            )
-            .reduce(
-                (sum, subscription) => sum + Number(subscription.invested_amount),
-                0
-            );
         const holdingsValue = (holdingsQuery.data ?? []).reduce(
             (sum, holding) => sum + holding.instrument_value,
             0
@@ -134,7 +146,7 @@ export default function DashboardBoard() {
             portfolioValue > 0 ? (totalPnl / portfolioValue) * 100 : 0;
 
         return [
-            { label: 'Total Balance', value: available + invested },
+            { label: 'Total Balance', value: available + activeInvestment },
             { label: 'Active Investment', value: holdingsValue },
             {
                 label: 'Profit / Loss',
@@ -146,7 +158,7 @@ export default function DashboardBoard() {
         ];
     }, [
         balanceQuery.data,
-        subscriptionsQuery.data,
+        activeInvestment,
         holdingsQuery.data,
         profitLossQuery.data,
         overviewQuery.data,
@@ -186,7 +198,7 @@ export default function DashboardBoard() {
                     onRetry={retryStats}
                 />
 
-                <PortfolioAnalytics data={portfolioAnalyticsData} />
+                {/* <PortfolioAnalytics data={portfolioAnalyticsData} /> */}
 
                 <Grid container spacing={3}>
                     <Grid size={{ xs: 12, md: 6 }}>
@@ -217,7 +229,23 @@ export default function DashboardBoard() {
                     onRetry={() => recentTradesQuery.refetch()}
                 />
 
-                <FinancialFlow data={financialFlowData} />
+                <FinancialFlow
+                    moneyIn={moneyFlowQuery.data?.money_in ?? NO_MONEY_FLOW}
+                    moneyOut={moneyFlowQuery.data?.money_out ?? NO_MONEY_FLOW}
+                    balance={
+                        balanceQuery.isSuccess && subscriptionsQuery.isSuccess
+                            ? (balanceQuery.data ?? 0) + activeInvestment
+                            : undefined
+                    }
+                    availableBalance={
+                        balanceQuery.isSuccess
+                            ? balanceQuery.data ?? 0
+                            : undefined
+                    }
+                    loading={moneyFlowQuery.isLoading}
+                    error={moneyFlowQuery.isError}
+                    onRetry={() => moneyFlowQuery.refetch()}
+                />
 
                 <DashboardFooter />
             </Stack>

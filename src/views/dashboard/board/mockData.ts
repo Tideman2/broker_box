@@ -20,19 +20,6 @@ export type MarketSentimentData = {
     breakdown: Array<{ label: string; value: number }>;
 };
 
-export type FlowEntry = {
-    label: string;
-    amount: number;
-    date: string;
-};
-
-export type FinancialFlowData = {
-    balance: number;
-    availableBalance: number;
-    inflow: FlowEntry[];
-    outflow: FlowEntry[];
-};
-
 const buildSeries = (labels: string[], base: number): PortfolioPoint[] =>
     labels.map((label, index) => ({
         date: label,
@@ -60,17 +47,3 @@ export const marketSentimentData: MarketSentimentData = {
     ],
 };
 
-export const financialFlowData: FinancialFlowData = {
-    balance: 24562.0,
-    availableBalance: 6062.5,
-    inflow: [
-        { label: 'Deposit — Bank Transfer', amount: 5000, date: 'Sep 10' },
-        { label: 'Strategy payout', amount: 1280.4, date: 'Sep 08' },
-        { label: 'Deposit — Credit Card', amount: 2500, date: 'Sep 04' },
-    ],
-    outflow: [
-        { label: 'Withdrawal — Bank Transfer', amount: 1200, date: 'Sep 11' },
-        { label: 'Trading fees', amount: 64.2, date: 'Sep 09' },
-        { label: 'Withdrawal — BTC', amount: 800, date: 'Sep 05' },
-    ],
-};
