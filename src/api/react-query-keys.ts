@@ -31,6 +31,10 @@ export const subscriptionQueryKeys = {
     summary: ["subscription", "summary"] as const,
 };
 
+export const walletQueryKeys = {
+    moneyFlow: ["wallet", "money-flow"] as const,
+};
+
 export const settingsQueryKeys = {
     profile: ["settings", "profile"] as const,
     preferences: ["settings", "preferences"] as const,
