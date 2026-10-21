@@ -1,14 +1,44 @@
 'use client';
 
 import { TextField, Button, Stack, Typography } from '@mui/material';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { RegisterContext } from '@/contexts/register/context';
+import { z } from 'zod';
+
+const addressSchema = z.object({
+    address1: z.string().trim().min(3, 'Address must be at least 3 characters'),
+    address2: z.string().trim().optional(),
+    city: z.string().trim().min(2, 'City must be at least 2 characters'),
+    state: z.string().trim().min(2, 'State must be at least 2 characters'),
+    zip: z.string().trim().min(3, 'Zip code must be at least 3 characters'),
+});
 
 export default function AddressStep() {
     const ctx = useContext(RegisterContext)!;
     const { state, addAddressInfo, goToNextStep, goToPreviousStep } = ctx;
 
     const data = state.state;
+
+    const [errors, setErrors] = useState<Record<string, string>>({});
+
+    const handleSubmit = () => {
+        const result = addressSchema.safeParse(data);
+
+        if (!result.success) {
+            const fieldErrors: Record<string, string> = {};
+
+            result.error.issues.forEach((err) => {
+                const field = err.path[0] as string;
+                fieldErrors[field] = err.message;
+            });
+
+            setErrors(fieldErrors);
+            return;
+        }
+
+        setErrors({});
+        goToNextStep();
+    };
 
     return (
         <Stack spacing={2.5}>
@@ -26,6 +56,8 @@ export default function AddressStep() {
                 onChange={(e) =>
                     addAddressInfo(e.target.value, data.address2, data.city, data.state, data.zip)
                 }
+                error={!!errors.address1}
+                helperText={errors.address1}
                 fullWidth
             />
 
@@ -46,6 +78,8 @@ export default function AddressStep() {
                 onChange={(e) =>
                     addAddressInfo(data.address1, data.address2, e.target.value, data.state, data.zip)
                 }
+                error={!!errors.city}
+                helperText={errors.city}
                 fullWidth
             />
 
@@ -56,6 +90,8 @@ export default function AddressStep() {
                 onChange={(e) =>
                     addAddressInfo(data.address1, data.address2, data.city, e.target.value, data.zip)
                 }
+                error={!!errors.state}
+                helperText={errors.state}
                 fullWidth
             />
 
@@ -66,12 +102,14 @@ export default function AddressStep() {
                 onChange={(e) =>
                     addAddressInfo(data.address1, data.address2, data.city, data.state, e.target.value)
                 }
+                error={!!errors.zip}
+                helperText={errors.zip}
                 fullWidth
             />
 
             <Stack direction="row" spacing={2}>
                 <Button onClick={goToPreviousStep} color="inherit">Back</Button>
-                <Button variant="contained" fullWidth size="large" onClick={goToNextStep}>
+                <Button variant="contained" fullWidth size="large" onClick={handleSubmit}>
                     Continue
                 </Button>
             </Stack>

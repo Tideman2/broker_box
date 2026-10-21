@@ -8,7 +8,7 @@ import {
     resetPassword,
     verifyOtp,
 } from "@/api/auth/server-side";
-import { extractServerErrorMessage } from "@/api/utils/server-error";
+import { extractServerError, extractServerErrorMessage } from "@/api/utils/server-error";
 import { authConfig } from "@/config/auth";
 import { setCookie, removeCookie } from "@/api/utils/cookies";
 
@@ -26,13 +26,16 @@ import type { RegistrationData } from "@/contexts/register/types";
 
 type AuthActionResult =
     | { success: true }
-    | { success: false; error: string };
+    | { success: false; error: string; status?: number };
 
 export async function handleServerLogin(
     payload: LoginUserPayload
 ): Promise<AuthActionResult> {
     try {
-        const data = await loginUser(payload);
+        const data = await loginUser({
+            email: payload.email.trim(),
+            password: payload.password,
+        });
 
         if (!data || !data.token) {
             return { success: false, error: "Invalid credentials or token missing." };
@@ -43,11 +46,9 @@ export async function handleServerLogin(
 
         return { success: true };
     } catch (error) {
-        console.error("Server Action Login Failure:", error);
-        return {
-            success: false,
-            error: extractServerErrorMessage(error, "Authentication failed."),
-        };
+        const failure = extractServerError(error, "Authentication failed.");
+        console.error("Server Action Login Failure:", failure);
+        return { success: false, ...failure };
     }
 }
 
@@ -62,14 +63,16 @@ export async function handleServerRegister(
         }
 
         await setCookie(authConfig.sessionToken, result.token);
+        await setCookie(authConfig.refreshToken, result.refresh_token);
 
         return { success: true };
     } catch (error) {
-        console.error("Server Action Register Failure:", error);
-        return {
-            success: false,
-            error: extractServerErrorMessage(error, "Registration failed. Please try again."),
-        };
+        const failure = extractServerError(
+            error,
+            "Registration failed. Please try again."
+        );
+        console.error("Server Action Register Failure:", failure);
+        return { success: false, ...failure };
     }
 }
 
