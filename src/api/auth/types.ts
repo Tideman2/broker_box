@@ -56,3 +56,18 @@ export type ChangePasswordPayload = {
 export type ChangePasswordResponse = {
     message: string;
 };
+
+/** `POST /auth/login` — the response is a raw object, there is no envelope. */
+export type LoginResponse = {
+    user_id: number;
+    token: string;
+    refresh_token: string;
+};
+
+/** `POST /auth/register`. */
+export type RegisterResponse = {
+    id: number;
+    message: string;
+    token: string;
+    refresh_token: string;
+};

@@ -31,6 +31,7 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [formError, setFormError] = useState('');
     const [errors, setErrors] = useState({
         email: '',
         password: '',
@@ -45,14 +46,19 @@ export default function Login() {
         };
 
 
-        if (!EMAIL_REGEX.test(email)) {
+        if (!email.trim()) {
+            newErrors.email = 'Email is required.';
+        } else if (!EMAIL_REGEX.test(email.trim())) {
             newErrors.email = 'Please enter a valid email address.';
         }
 
-        // if (!PASSWORD_REGEX.test(password)) {
-        //     newErrors.password =
-        //         'Password must be at least 8 characters and contain an uppercase letter, lowercase letter, and number.';
-        // }
+        if (!password) {
+            newErrors.password = 'Password is required.';
+        } else if (password.length < 8) {
+            newErrors.password = 'Password must be at least 8 characters.';
+        } else if (password.length > 100) {
+            newErrors.password = 'Password must be at most 100 characters.';
+        }
 
         setErrors(newErrors);
         return !newErrors.email && !newErrors.password;
@@ -68,19 +74,21 @@ export default function Login() {
 
         if (!isValid) return;
 
+        setFormError('');
         setLoading(true);
 
         try {
             const result = await handleServerLogin({
-                email,
+                email: email.trim(),
                 password,
             });
 
             if (!result.success) {
-                setErrors({
-                    email: result.error,
-                    password: '',
-                });
+                setFormError(
+                    result.status === 429
+                        ? 'Too many attempts. Please wait a moment and try again.'
+                        : result.error
+                );
 
                 return;
             }
@@ -89,10 +97,7 @@ export default function Login() {
         } catch (error) {
             console.error('Login failed:', error);
 
-            setErrors({
-                email: 'Login failed. Please try again.',
-                password: '',
-            });
+            setFormError('Login failed. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -118,9 +123,13 @@ export default function Login() {
                 Log in to manage your trades and portfolio.
             </Typography>
 
-            {errors.email && errors.email.startsWith('Login failed') && (
-                <Alert severity="error" variant="outlined">
-                    {errors.email}
+            {formError && (
+                <Alert
+                    severity="error"
+                    variant="outlined"
+                    onClose={() => setFormError('')}
+                >
+                    {formError}
                 </Alert>
             )}
 

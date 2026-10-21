@@ -5,6 +5,8 @@ import type { RegistrationData } from "@/contexts/register/types";
 import type {
     ChangePasswordPayload,
     ChangePasswordResponse,
+    LoginResponse,
+    RegisterResponse,
     UpdateProfilePayload,
     User,
 } from "./types";
@@ -60,42 +62,28 @@ export type ResetPasswordResponse = {
     message: string;
 };
 
-export const loginUser = async (data: LoginUserPayload) => {
-    try {
-        const serverAxios = await getServerAxios()
-        const response = await serverAxios.post(
-            authConfig.loginEndpoint,
-            data
-        );
+export const loginUser = async (
+    data: LoginUserPayload
+): Promise<LoginResponse> => {
+    const serverAxios = await getServerAxios();
+    const response = await serverAxios.post<LoginResponse>(
+        authConfig.loginEndpoint,
+        data
+    );
 
-        return response.data;
-    } catch (error) {
-        console.error(
-            "Error logging in user:",
-            error
-        );
-        throw error;
-    }
-}
+    return response.data;
+};
 
 export const registerUser = async (
     data: RegistrationData
-) => {
-    try {
-        const serverAxios = await getServerAxios()
-        const response = await serverAxios.post(
-            authConfig.registerEndpoint,
-            transformRegistrationData(data)
-        );
+): Promise<RegisterResponse> => {
+    const serverAxios = await getServerAxios();
+    const response = await serverAxios.post<RegisterResponse>(
+        authConfig.registerEndpoint,
+        transformRegistrationData(data)
+    );
 
-        return response.data;
-    } catch (error) {
-        console.error(
-            "Error registering user:",
-            error
-        );
-        throw error;
-    }
+    return response.data;
 };
 
 export const requestPasswordReset = async (
@@ -217,19 +205,24 @@ export const logoutUser = async () => {
 export const transformRegistrationData = (
     data: RegistrationData
 ): RegisterUserPayload => {
+    const dob = data.dob.trim();
+    const username = data.username?.trim();
+    const address2 = data.address2?.trim();
+
     return {
-        country: data.country,
-        email: data.email,
+        country: data.country.trim(),
+        email: data.email.trim(),
+        // Passwords are never trimmed: leading/trailing spaces are valid.
         password: data.password,
-        full_name: data.fullName,
-        phone: data.phone,
-        dob: data.dob || undefined,
-        username: data.username || undefined,
-        address1: data.address1,
-        address2: data.address2 || undefined,
-        city: data.city,
-        state: data.state,
-        zip: data.zip,
+        full_name: data.fullName.trim(),
+        phone: data.phone.trim(),
+        ...(dob && { dob }),
+        ...(username && { username }),
+        address1: data.address1.trim(),
+        ...(address2 && { address2 }),
+        city: data.city.trim(),
+        state: data.state.trim(),
+        zip: data.zip.trim(),
         accept_terms: data.acceptTerms,
         marketing_opt_in: data.marketingOptIn ?? false,
     };

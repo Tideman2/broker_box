@@ -15,7 +15,6 @@ export default function TermsStep() {
     const router = useRouter();
 
     const data = state.state;
-    console.log('TermsStep data:', data);
 
     const handleFinish = () => {
         if (!data.acceptTerms) {
@@ -28,7 +27,11 @@ export default function TermsStep() {
         handleServerRegister(data)
             .then((result) => {
                 if (!result.success) {
-                    setError(result.error);
+                    setError(
+                        result.status === 429
+                            ? 'Too many attempts. Please wait a moment and try again.'
+                            : result.error
+                    );
                     return;
                 }
                 router.push(PATHS.dashboard.root);
