@@ -32,6 +32,8 @@ type WithdrawalRequestProps = {
     selectedId: number | null;
     onSelect: (destination: DestinationResponse) => void;
     onAddNew: () => void;
+    onEditDestination: (destination: DestinationResponse) => void;
+    onDeleteDestination: (destination: DestinationResponse) => void;
     destinationsLoading?: boolean;
     destinationsError?: boolean;
     destinationsRetry?: () => void;
@@ -45,6 +47,8 @@ export default function WithdrawalRequest({
     selectedId,
     onSelect,
     onAddNew,
+    onEditDestination,
+    onDeleteDestination,
     destinationsLoading,
     destinationsError,
     destinationsRetry,
@@ -179,6 +183,8 @@ export default function WithdrawalRequest({
                         selectedId={selectedId}
                         onSelect={onSelect}
                         onAddNew={onAddNew}
+                        onEdit={onEditDestination}
+                        onDelete={onDeleteDestination}
                         loading={destinationsLoading}
                         error={destinationsError}
                         onRetry={destinationsRetry}

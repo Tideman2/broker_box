@@ -3,20 +3,23 @@
 import {
     addBankDestination as fetchAddBankDestination,
     addCryptoDestination as fetchAddCryptoDestination,
+    deleteWithdrawDestination as fetchDeleteWithdrawDestination,
     getAssets as fetchGetAssets,
     getAvailableBalance as fetchGetAvailableBalance,
     getWithdrawalDetail as fetchGetWithdrawalDetail,
     getWithdrawalRecords as fetchGetWithdrawalRecords,
     getWithdrawDestinations as fetchGetWithdrawDestinations,
+    updateWithdrawDestination as fetchUpdateWithdrawDestination,
     withdrawFunds as fetchWithdrawFunds,
 } from "@/api/withdraw";
-import { extractServerErrorMessage } from "@/api/utils/server-error";
+import { extractServerError } from "@/api/utils/server-error";
 
 import type {
     AddBankDestinationRequest,
     AddCryptoDestinationRequest,
     AssetResponse,
     DestinationResponse,
+    UpdateDestinationInput,
     UserWithdrawalRecordsResponse,
     WithdrawFundsRequest,
     WithdrawFundsResponse,
@@ -54,7 +57,7 @@ export async function addBankDestination(
         const data = await fetchAddBankDestination(payload);
         return { success: true, data };
     } catch (error) {
-        return { success: false, error: extractServerErrorMessage(error) };
+        return { success: false, ...extractServerError(error) };
     }
 }
 
@@ -65,7 +68,30 @@ export async function addCryptoDestination(
         const data = await fetchAddCryptoDestination(payload);
         return { success: true, data };
     } catch (error) {
-        return { success: false, error: extractServerErrorMessage(error) };
+        return { success: false, ...extractServerError(error) };
+    }
+}
+
+export async function updateWithdrawDestination(
+    id: number,
+    payload: UpdateDestinationInput
+): Promise<ActionResult<DestinationResponse>> {
+    try {
+        const data = await fetchUpdateWithdrawDestination(id, payload);
+        return { success: true, data };
+    } catch (error) {
+        return { success: false, ...extractServerError(error) };
+    }
+}
+
+export async function deleteWithdrawDestination(
+    id: number
+): Promise<ActionResult<null>> {
+    try {
+        await fetchDeleteWithdrawDestination(id);
+        return { success: true, data: null };
+    } catch (error) {
+        return { success: false, ...extractServerError(error) };
     }
 }
 
@@ -76,6 +102,6 @@ export async function withdrawFunds(
         const data = await fetchWithdrawFunds(payload);
         return { success: true, data };
     } catch (error) {
-        return { success: false, error: extractServerErrorMessage(error) };
+        return { success: false, ...extractServerError(error) };
     }
 }

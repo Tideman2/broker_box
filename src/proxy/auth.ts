@@ -31,7 +31,6 @@ export async function checkAuthentication(
 
     } catch {
         const refreshToken = request.cookies.get(authConfig.refreshToken)?.value;
-        console.log("Refresh token from cookie:", refreshToken);
         if (!refreshToken) {
             if (isDashboardRoute) {
                 return {
@@ -52,7 +51,6 @@ export async function checkAuthentication(
                 if (newAccessTokenResponse.status === 200 || newAccessTokenResponse.status === 201) {
                     const newAccessToken = newAccessTokenResponse.data.token;
                     await setCookie(authConfig.sessionToken, newAccessToken);
-                    console.log("New access token set in cookie:", newAccessToken);
                     return {
                         authenticated: true,
                     };

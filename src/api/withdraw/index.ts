@@ -6,6 +6,7 @@ import type {
     AddCryptoDestinationRequest,
     AssetResponse,
     DestinationResponse,
+    UpdateDestinationInput,
     UserWithdrawalRecordsResponse,
     WithdrawFundsRequest,
     WithdrawFundsResponse,
@@ -65,6 +66,34 @@ export const addCryptoDestination = async (
         return response.data;
     } catch (error) {
         console.error("Error adding crypto destination:", error);
+        throw error;
+    }
+};
+
+export const updateWithdrawDestination = async (
+    id: number,
+    payload: UpdateDestinationInput
+): Promise<DestinationResponse> => {
+    try {
+        const server = await getServerAxios();
+        const response = await server.patch<DestinationResponse>(
+            `${withdrawConfig.destinationsEndpoint}/${id}`,
+            payload
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error updating withdraw destination:", error);
+        throw error;
+    }
+};
+
+export const deleteWithdrawDestination = async (id: number): Promise<void> => {
+    try {
+        const server = await getServerAxios();
+        // 204 No Content: there is no body to parse.
+        await server.delete(`${withdrawConfig.destinationsEndpoint}/${id}`);
+    } catch (error) {
+        console.error("Error deleting withdraw destination:", error);
         throw error;
     }
 };

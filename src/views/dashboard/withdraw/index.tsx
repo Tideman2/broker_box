@@ -22,7 +22,8 @@ import WithdrawalRequest from "./components/WithdrawalRequest";
 import NetworkFees from "./components/NetworkFees";
 import SupportCard from "./components/SupportCard";
 import RecentWithdrawals from "./components/RecentWithdrawals";
-import AddDestinationModal from "./components/AddDestinationModal";
+import DestinationModal from "./components/DestinationModal";
+import DeleteDestinationDialog from "./components/DeleteDestinationDialog";
 import FullHistoryDialog from "./components/FullHistoryDialog";
 import WithdrawalDetailModal from "./components/WithdrawalDetailModal";
 import WithdrawSuccessModal from "./components/WithdrawSuccessModal";
@@ -35,6 +36,8 @@ export default function Withdraw() {
 
     const [selectedDestination, setSelectedDestination] = useState<DestinationResponse | null>(null);
     const [addModalOpen, setAddModalOpen] = useState(false);
+    const [editingDestination, setEditingDestination] = useState<DestinationResponse | null>(null);
+    const [deletingDestination, setDeletingDestination] = useState<DestinationResponse | null>(null);
     const [historyOpen, setHistoryOpen] = useState(false);
     const [detailRecordId, setDetailRecordId] = useState<number | null>(null);
     const [successData, setSuccessData] = useState<WithdrawFundsResponse | null>(null);
@@ -84,6 +87,16 @@ export default function Withdraw() {
         setSelectedDestination(destination);
     };
 
+    const handleDestinationSaved = (updated: DestinationResponse) => {
+        setSelectedDestination((current) =>
+            current?.id === updated.id ? updated : current
+        );
+    };
+
+    const handleDestinationDeleted = (id: number) => {
+        setSelectedDestination((current) => (current?.id === id ? null : current));
+    };
+
     const handleSubmit = (amount: number, destinationId: number) => {
         withdrawMutation.mutate({ amount, destination_id: destinationId });
     };
@@ -119,6 +132,8 @@ export default function Withdraw() {
                             selectedId={selectedDestination?.id ?? null}
                             onSelect={handleSelect}
                             onAddNew={() => setAddModalOpen(true)}
+                            onEditDestination={setEditingDestination}
+                            onDeleteDestination={setDeletingDestination}
                             destinationsLoading={destinationsQuery.isLoading}
                             destinationsError={destinationsQuery.isError}
                             destinationsRetry={() => destinationsQuery.refetch()}
@@ -145,10 +160,29 @@ export default function Withdraw() {
                 <DashboardFooter />
             </Stack>
 
-            <AddDestinationModal
-                key={addModalOpen ? "open" : "closed"}
-                open={addModalOpen}
-                onClose={() => setAddModalOpen(false)}
+            <DestinationModal
+                key={
+                    editingDestination
+                        ? `edit-${editingDestination.id}`
+                        : addModalOpen
+                            ? "add-open"
+                            : "add-closed"
+                }
+                open={addModalOpen || editingDestination != null}
+                destination={editingDestination}
+                onClose={() => {
+                    setAddModalOpen(false);
+                    setEditingDestination(null);
+                }}
+                onSaved={handleDestinationSaved}
+                onMissing={handleDestinationDeleted}
+            />
+
+            <DeleteDestinationDialog
+                key={deletingDestination?.id ?? "none"}
+                destination={deletingDestination}
+                onClose={() => setDeletingDestination(null)}
+                onDeleted={handleDestinationDeleted}
             />
 
             <FullHistoryDialog

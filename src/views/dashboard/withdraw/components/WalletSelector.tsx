@@ -19,6 +19,8 @@ type WalletSelectorProps = {
     selectedId: number | null;
     onSelect: (destination: DestinationResponse) => void;
     onAddNew: () => void;
+    onEdit: (destination: DestinationResponse) => void;
+    onDelete: (destination: DestinationResponse) => void;
     loading?: boolean;
     error?: boolean;
     onRetry?: () => void;
@@ -29,6 +31,8 @@ export default function WalletSelector({
     selectedId,
     onSelect,
     onAddNew,
+    onEdit,
+    onDelete,
     loading,
     error,
     onRetry,
@@ -117,27 +121,35 @@ export default function WalletSelector({
                                     }}
                                 />
                                 <Stack direction="row" spacing={0}>
-                                    <Tooltip title="Coming soon">
-                                        <span>
-                                            <IconButton
-                                                size="small"
-                                                disabled
-                                                aria-label="Edit destination"
-                                            >
-                                                <EditIcon sx={{ fontSize: 15 }} />
-                                            </IconButton>
-                                        </span>
+                                    <Tooltip title="Edit destination">
+                                        <IconButton
+                                            size="small"
+                                            aria-label={`Edit ${destination.label}`}
+                                            onClick={(event) => {
+                                                event.stopPropagation();
+                                                onEdit(destination);
+                                            }}
+                                            onKeyDown={(event) =>
+                                                event.stopPropagation()
+                                            }
+                                        >
+                                            <EditIcon sx={{ fontSize: 15 }} />
+                                        </IconButton>
                                     </Tooltip>
-                                    <Tooltip title="Coming soon">
-                                        <span>
-                                            <IconButton
-                                                size="small"
-                                                disabled
-                                                aria-label="Delete destination"
-                                            >
-                                                <DeleteIcon sx={{ fontSize: 15 }} />
-                                            </IconButton>
-                                        </span>
+                                    <Tooltip title="Delete destination">
+                                        <IconButton
+                                            size="small"
+                                            aria-label={`Delete ${destination.label}`}
+                                            onClick={(event) => {
+                                                event.stopPropagation();
+                                                onDelete(destination);
+                                            }}
+                                            onKeyDown={(event) =>
+                                                event.stopPropagation()
+                                            }
+                                        >
+                                            <DeleteIcon sx={{ fontSize: 15 }} />
+                                        </IconButton>
                                     </Tooltip>
                                 </Stack>
                             </Stack>

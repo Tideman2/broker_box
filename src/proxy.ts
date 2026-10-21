@@ -12,13 +12,24 @@ export async function proxy(request: NextRequest) {
         .from(crypto.randomUUID())
         .toString("base64");
 
-    const scriptSrc = process.env.NODE_ENV === "development"
-        ? `'self' 'nonce-${nonce}' 'unsafe-eval'`
-        : `'self' 'nonce-${nonce}'`;
+    const isDev = process.env.NODE_ENV === "development";
+
+    /**
+     * `'strict-dynamic'` is required in production so the nonce trust given to
+     * Next's bootstrap propagates to the chunks it loads. React only needs
+     * `'unsafe-eval'` in development for enhanced debugging.
+     */
+    const scriptSrc = [
+        "'self'",
+        `'nonce-${nonce}'`,
+        "'strict-dynamic'",
+        ...(isDev ? ["'unsafe-eval'"] : []),
+    ].join(" ");
 
     const csp = [
         "default-src 'self'",
         `script-src ${scriptSrc}`,
+        // Emotion/MUI injects styles at runtime, so inline styles must stay allowed.
         "style-src 'self' 'unsafe-inline'",
         "img-src 'self' blob: data:",
         "font-src 'self'",
@@ -27,11 +38,18 @@ export async function proxy(request: NextRequest) {
         "frame-ancestors 'none'",
         "frame-src https://www.tradingview-widget.com",
         "form-action 'self'",
+        ...(isDev ? [] : ["upgrade-insecure-requests"]),
     ].join("; ");
 
     const requestHeaders = new Headers(request.headers);
 
     requestHeaders.set("x-nonce", nonce);
+    /**
+     * Next.js only extracts the nonce and attaches it to its scripts when the
+     * policy is present on the request headers. Setting it on the response
+     * alone leaves the rendered inline scripts nonce-less and blocked.
+     */
+    requestHeaders.set("Content-Security-Policy", csp);
 
     const authResult = await checkAuthentication(request);
 
