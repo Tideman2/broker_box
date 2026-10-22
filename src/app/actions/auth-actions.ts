@@ -32,6 +32,7 @@ export async function handleServerLogin(
     payload: LoginUserPayload
 ): Promise<AuthActionResult> {
     try {
+        console.log("Payload", payload)
         const data = await loginUser({
             email: payload.email.trim(),
             password: payload.password,
@@ -46,6 +47,7 @@ export async function handleServerLogin(
 
         return { success: true };
     } catch (error) {
+        console.error(error)
         const failure = extractServerError(error, "Authentication failed.");
         console.error("Server Action Login Failure:", failure);
         return { success: false, ...failure };
