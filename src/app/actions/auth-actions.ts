@@ -12,6 +12,7 @@ import { extractServerError, extractServerErrorMessage } from "@/api/utils/serve
 import { authConfig } from "@/config/auth";
 import { setCookie, removeCookie } from "@/api/utils/cookies";
 
+import type { AxiosError } from "axios";
 import type { ActionResult } from "@/api/utils/action-result";
 import type {
     ForgotPasswordPayload,
@@ -28,11 +29,41 @@ type AuthActionResult =
     | { success: true }
     | { success: false; error: string; status?: number };
 
+/**
+ * TEMPORARY diagnostics for the production-only 429. Logs which upstream
+ * answered, with the edge identifiers (`server`, `cf-ray`, `retry-after`) that
+ * tell a backend rejection apart from a Cloudflare/Render rate limit.
+ * Never logs the payload, because it contains the password.
+ */
+const logBackendFailure = (operation: string, error: unknown) => {
+    const axiosError = error as AxiosError | undefined;
+    const response = axiosError?.response;
+    const headers = (response?.headers ?? {}) as Record<string, unknown>;
+
+    console.error(`[auth:${operation}] backend request failed`, {
+        baseURL: process.env.BACKEND_URL,
+        method: axiosError?.config?.method,
+        path: axiosError?.config?.url,
+        status: response?.status,
+        statusText: response?.statusText,
+        contentType: headers["content-type"],
+        server: headers["server"],
+        cfRay: headers["cf-ray"],
+        renderId: headers["rndr-id"],
+        retryAfter: headers["retry-after"],
+        rateLimit: headers["x-ratelimit-limit"],
+        rateLimitRemaining: headers["x-ratelimit-remaining"],
+        body:
+            typeof response?.data === "string"
+                ? response.data.slice(0, 300)
+                : response?.data,
+    });
+};
+
 export async function handleServerLogin(
     payload: LoginUserPayload
 ): Promise<AuthActionResult> {
     try {
-        console.log("Payload", payload)
         const data = await loginUser({
             email: payload.email.trim(),
             password: payload.password,
@@ -47,7 +78,7 @@ export async function handleServerLogin(
 
         return { success: true };
     } catch (error) {
-        console.error(error)
+        logBackendFailure("login", error);
         const failure = extractServerError(error, "Authentication failed.");
         console.error("Server Action Login Failure:", failure);
         return { success: false, ...failure };

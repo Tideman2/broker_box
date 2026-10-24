@@ -11,7 +11,7 @@ const FooterCopyright = () => {
             <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} sx={{ pt: 1 }}>
                 <BrandLogo width={32} height={32} />
                 <Typography variant="caption" color="text.secondary">
-                    &copy; {new Date().getFullYear()} {GLOBAL_CONFIG.site.name}. All rights reserved.
+                    &copy; {2019} {GLOBAL_CONFIG.site.name}. All rights reserved.
                 </Typography>
             </Stack>
         </Stack>

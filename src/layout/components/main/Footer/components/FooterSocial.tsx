@@ -6,7 +6,7 @@ const socialLinks = [
     { icon: <Facebook />, href: 'https://facebook.com' },
     { icon: <Twitter />, href: 'https://twitter.com' },
     { icon: <Instagram />, href: 'https://instagram.com' },
-    { icon: <LinkedIn />, href: 'https://linkedin.com' },
+    { icon: <LinkedIn />, href: 'https://linkedin.com' }
 ];
 
 const FooterSocial = () => {
