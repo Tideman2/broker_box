@@ -24,6 +24,7 @@ import {
     walletQueryKeys,
 } from '@/api/react-query-keys';
 import { ACTIVE_SUBSCRIPTION_STATUSES } from '@/views/dashboard/investment_plan/constants';
+import { toNumber } from '@/utils/format';
 
 import { marketSentimentData, portfolioAnalyticsData } from './mockData';
 
@@ -137,7 +138,7 @@ export default function DashboardBoard() {
     const stats: PortfolioStat[] = useMemo(() => {
         const available = balanceQuery.data ?? 0;
         const holdingsValue = (holdingsQuery.data ?? []).reduce(
-            (sum, holding) => sum + holding.instrument_value,
+            (sum, holding) => sum + toNumber(holding.instrument_value),
             0
         );
         const totalPnl = profitLossQuery.data?.portfolio_total_profit_loss ?? 0;

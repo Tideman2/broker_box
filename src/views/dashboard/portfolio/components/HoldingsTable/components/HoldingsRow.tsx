@@ -32,7 +32,7 @@ type HoldingsRowProps = {
 };
 
 export default function HoldingsRow({ row }: HoldingsRowProps) {
-    const { formatCurrency } = useFormatCurrency();
+    const { formatAmount } = useFormatCurrency();
     const isUp = row.performance >= 0;
     const color = categoryColor(row.category);
 
@@ -94,7 +94,7 @@ export default function HoldingsRow({ row }: HoldingsRowProps) {
                     variant="body2"
                     sx={{ fontVariantNumeric: "tabular-nums" }}
                 >
-                    {formatCurrency(row.current_price)}
+                    {formatAmount(row.current_price)}
                 </Typography>
             </TableCell>
 
@@ -106,7 +106,7 @@ export default function HoldingsRow({ row }: HoldingsRowProps) {
                     variant="body2"
                     sx={{ fontVariantNumeric: "tabular-nums" }}
                 >
-                    {formatCurrency(row.instrument_value)}
+                    {formatAmount(row.instrument_value)}
                 </Typography>
             </TableCell>
 

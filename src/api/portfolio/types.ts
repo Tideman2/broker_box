@@ -12,16 +12,20 @@ export type PortfolioOverviewResponse = {
     portfolio_risk_label: string;
 };
 
+/**
+ * The holdings endpoint returns every Decimal field as a string, so price,
+ * quantity and value must go through `toNumber` before arithmetic.
+ */
 export type HoldingResponse = {
     instrument_id: number;
     symbol: string;
     name: string;
     category: string;
-    current_price: number;
-    total_buy: number;
-    total_sell: number;
-    net_quantity: number;
-    instrument_value: number;
+    current_price: string;
+    total_buy: string;
+    total_sell: string;
+    net_quantity: string;
+    instrument_value: string;
     portfolio_risk_label: string;
 };
 
